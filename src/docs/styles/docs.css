@@ -1,0 +1,58 @@
+@import "../../components/usible.css";
+
+:root {
+  --docs-bg: #ffffff;
+  --docs-text: #1f2937;
+  --docs-text-muted: #6b7280;
+  --docs-border: #e5e7eb;
+  --docs-sidebar-bg: #f9fafb;
+  --docs-code-bg: #1f2937;
+}
+
+.dark {
+  --docs-bg: #111827;
+  --docs-text: #f9fafb;
+  --docs-text-muted: #9ca3af;
+  --docs-border: #374151;
+  --docs-sidebar-bg: #1f2937;
+  --docs-code-bg: #0f172a;
+}
+
+body {
+  background-color: var(--docs-bg);
+  color: var(--docs-text);
+  font-family: "Public Sans", Inter, system-ui, sans-serif;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hover\:scrollbar-thumb-gray-400:hover::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+}
+
+.dark .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+.dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+.dark .hover\:scrollbar-thumb-gray-500:hover::-webkit-scrollbar-thumb {
+  background-color: #6b7280;
+}

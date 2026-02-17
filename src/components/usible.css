@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: var(--usible-primary, #3b82f6);
+  --color-primary-light: var(--usible-primary-light, #93c5fd);
+  --color-primary-dark: var(--usible-primary-dark, #1d4ed8);
+
+  --color-secondary: var(--usible-secondary, #8b5cf6);
+  --color-secondary-light: var(--usible-secondary-light, #c4b5fd);
+  --color-secondary-dark: var(--usible-secondary-dark, #6d28d9);
+
+  --color-ternary: var(--usible-ternary, #06b6d4);
+  --color-ternary-light: var(--usible-ternary-light, #67e8f9);
+  --color-ternary-dark: var(--usible-ternary-dark, #0891b2);
+
+  --color-success: var(--usible-success, #22c55e);
+  --color-success-light: var(--usible-success-light, #86efac);
+  --color-success-dark: var(--usible-success-dark, #16a34a);
+
+  --color-warning: var(--usible-warning, #f59e0b);
+  --color-warning-light: var(--usible-warning-light, #fcd34d);
+  --color-warning-dark: var(--usible-warning-dark, #d97706);
+
+  --color-error: var(--usible-error, #ef4444);
+  --color-error-light: var(--usible-error-light, #fca5a5);
+  --color-error-dark: var(--usible-error-dark, #dc2626);
+
+  --radius-usible: var(--usible-radius, 0.5rem);
+  --radius-usible-lg: var(--usible-radius-lg, 1rem);
+}
+
+:root {
+  --usible-primary: #3b82f6;
+  --usible-primary-light: #93c5fd;
+  --usible-primary-dark: #1d4ed8;
+
+  --usible-secondary: #8b5cf6;
+  --usible-secondary-light: #c4b5fd;
+  --usible-secondary-dark: #6d28d9;
+
+  --usible-ternary: #06b6d4;
+  --usible-ternary-light: #67e8f9;
+  --usible-ternary-dark: #0891b2;
+
+  --usible-success: #22c55e;
+  --usible-success-light: #86efac;
+  --usible-success-dark: #16a34a;
+
+  --usible-warning: #f59e0b;
+  --usible-warning-light: #fcd34d;
+  --usible-warning-dark: #d97706;
+
+  --usible-error: #ef4444;
+  --usible-error-light: #fca5a5;
+  --usible-error-dark: #dc2626;
+
+  --usible-radius: 0.5rem;
+  --usible-radius-lg: 1rem;
+}
+
+.dark {
+  --usible-primary: #60a5fa;
+  --usible-primary-light: #93c5fd;
+  --usible-primary-dark: #3b82f6;
+
+  --usible-secondary: #a78bfa;
+  --usible-secondary-light: #c4b5fd;
+  --usible-secondary-dark: #8b5cf6;
+
+  --usible-ternary: #22d3ee;
+  --usible-ternary-light: #67e8f9;
+  --usible-ternary-dark: #06b6d4;
+
+  --usible-success: #4ade80;
+  --usible-success-light: #86efac;
+  --usible-success-dark: #22c55e;
+
+  --usible-warning: #fbbf24;
+  --usible-warning-light: #fcd34d;
+  --usible-warning-dark: #f59e0b;
+
+  --usible-error: #f87171;
+  --usible-error-light: #fca5a5;
+  --usible-error-dark: #ef4444;
+}
+
+/* Shiki Dark Mode Support */
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}

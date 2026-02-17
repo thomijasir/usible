@@ -1,0 +1,42 @@
+{
+  "name": "usible",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build",
+    "dev": "rsbuild dev --open",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint src/ && tsc --noEmit",
+    "preview": "rsbuild preview",
+    "test": "rstest",
+    "test:coverage": "rstest --coverage",
+    "test:watch": "rstest --watch"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.15.4",
+    "dompurify": "^3.3.1",
+    "motion": "^12.34.0",
+    "shiki": "^3.22.0",
+    "solid-js": "^1.9.10",
+    "tailwind-merge": "^3.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@rsbuild/core": "^1.7.1",
+    "@rsbuild/plugin-babel": "^1.0.6",
+    "@rsbuild/plugin-solid": "^1.0.6",
+    "@rstest/core": "^0.7.8",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "happy-dom": "^20.0.11",
+    "prettier": "^3.7.3",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0"
+  }
+}
