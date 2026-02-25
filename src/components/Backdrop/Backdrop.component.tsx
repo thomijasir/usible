@@ -15,7 +15,7 @@ export function Backdrop(props: BackdropProps) {
           backdropRef.style.display = "block";
           await animate(
             backdropRef,
-            { opacity: props.opacity ?? 0.7 },
+            { opacity: props.opacity ?? 0.5 },
             { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
           ).finished;
         } else if (!isOpen && prevIsOpen) {
@@ -40,6 +40,7 @@ export function Backdrop(props: BackdropProps) {
         opacity: 0,
         display: "none",
         "touch-action": "none",
+        "backdrop-filter": "blur(8px)",
       }}
     />
   );

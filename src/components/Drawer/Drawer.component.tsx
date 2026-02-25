@@ -4,7 +4,7 @@ import type { DrawerProps } from "./Drawer.interface";
 import { Backdrop } from "../Backdrop";
 
 export function Drawer(props: DrawerProps) {
-  const drawerId = () => `drawer-${createUniqueId()}`;
+  const drawerId = `drawer-${createUniqueId()}`;
   let drawerRef: HTMLDivElement | undefined;
   let startY = 0;
   let currentY = 0;
@@ -105,7 +105,7 @@ export function Drawer(props: DrawerProps) {
       <Backdrop isOpen={props.isOpen} onClick={props.onClose} />
       <div
         ref={drawerRef}
-        id={drawerId()}
+        id={drawerId}
         role="dialog"
         aria-modal="true"
         aria-labelledby={props.ariaLabelledBy}
@@ -119,7 +119,7 @@ export function Drawer(props: DrawerProps) {
           "touch-action": "none",
           display: "none",
         }}
-        class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 overflow-hidden focus:outline-none">
+        class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl z-50 overflow-hidden focus:outline-none">
         {props.showHandle && (
           <div class="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing">
             <div class="w-12 h-1.5 bg-gray-300 rounded-full" />

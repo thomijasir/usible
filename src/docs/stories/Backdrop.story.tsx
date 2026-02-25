@@ -3,7 +3,12 @@ import { ComponentPreview, PropsTable } from "../components";
 import { For, type Component, createSignal } from "solid-js";
 
 export const BackdropStory: Component = () => {
-  const [isOpen, setIsOpen] = createSignal(false);
+  const [basicOpen, setBasicOpen] = createSignal(false);
+  const [customOpen, setCustomOpen] = createSignal(false);
+  const [higherOpen, setHigherOpen] = createSignal(false);
+  const [interactiveOpen, setInteractiveOpen] = createSignal(false);
+  const [loadingOpen, setLoadingOpen] = createSignal(false);
+
   const propsReference = [
     { name: "isOpen", type: "boolean", description: "Visibility state" },
     { name: "onClick", type: "() => void", description: "Click handler" },
@@ -17,69 +22,111 @@ export const BackdropStory: Component = () => {
   const example = [
     {
       title: "Basic Backdrop",
-      code: `<Backdrop isOpen={true} onClick={() => console.log('clicked')} />`,
+      code: `<Button onClick={() => setBasicOpen(true)}>Show Backdrop</Button>
+<Backdrop isOpen={basicOpen()} onClick={() => setBasicOpen(false)} />`,
       render: (
         <div class="relative h-48 bg-gray-100 dark:bg-gray-800 rounded-lg">
           <div class="p-4">Content behind backdrop</div>
-          <Backdrop isOpen={true} onClick={() => console.log("clicked")} />
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => setBasicOpen(true)}>
+            Show Backdrop
+          </button>
+          <Backdrop isOpen={basicOpen()} onClick={() => setBasicOpen(false)} />
         </div>
       ),
     },
     {
       title: "Custom Opacity",
-      code: `<Backdrop isOpen={true} opacity={0.8} onClick={() => {}} />`,
+      code: `<Button onClick={() => setCustomOpen(true)}>Show Backdrop</Button>
+<Backdrop isOpen={customOpen()} opacity={0.8} onClick={() => setCustomOpen(false)} />`,
       render: (
         <div class="relative h-48 bg-gray-100 dark:bg-gray-800 rounded-lg">
           <div class="p-4">Content behind backdrop</div>
-          <Backdrop isOpen={true} opacity={0.8} onClick={() => {}} />
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => setCustomOpen(true)}>
+            Show Backdrop
+          </button>
+          <Backdrop
+            isOpen={customOpen()}
+            opacity={0.8}
+            onClick={() => setCustomOpen(false)}
+          />
         </div>
       ),
     },
     {
       title: "Higher Opacity",
-      code: `<Backdrop isOpen={true} opacity={0.8} onClick={() => {}} />`,
+      code: `<Button onClick={() => setHigherOpen(true)}>Show Backdrop</Button>
+<Backdrop isOpen={higherOpen()} opacity={0.9} onClick={() => setHigherOpen(false)} />`,
       render: (
         <div class="relative h-48 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
           <div class="p-4">Content behind backdrop</div>
-          <Backdrop isOpen={true} opacity={0.8} onClick={() => {}} />
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => setHigherOpen(true)}>
+            Show Backdrop
+          </button>
+          <Backdrop
+            isOpen={higherOpen()}
+            opacity={0.9}
+            onClick={() => setHigherOpen(false)}
+          />
         </div>
       ),
     },
     {
       title: "Interactive Demo",
-      code: `<Button onClick={() => setIsOpen(true)}>Show Backdrop</Button>
-<Backdrop isOpen={isOpen()} onClick={() => setIsOpen(false)} />`,
+      code: `<Button onClick={() => setInteractiveOpen(true)}>Show Backdrop</Button>
+<Backdrop isOpen={interactiveOpen()} onClick={() => setInteractiveOpen(false)} />`,
       render: (
         <div class="relative h-32 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
           <button
+            type="button"
             class="px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={() => setIsOpen(!isOpen())}>
+            onClick={() => setInteractiveOpen(true)}>
             Toggle Backdrop
           </button>
-          <Backdrop isOpen={isOpen()} onClick={() => setIsOpen(false)} />
+          <Backdrop
+            isOpen={interactiveOpen()}
+            onClick={() => setInteractiveOpen(false)}
+          />
         </div>
       ),
     },
     {
-      title: " Loading Overlay",
-      code: `<div class="relative p-4 border rounded-lg">
+      title: "Loading Overlay",
+      code: `<Button onClick={() => setLoadingOpen(true)}>Show Loading</Button>
+<div class="relative p-4 border rounded-lg">
   <div class="space-y-2">
     <p class="font-medium">Processing your order...</p>
     <p class="text-sm text-gray-500">Please wait while we confirm your payment.</p>
   </div>
-  <Backdrop isOpen={true} opacity={0.7}>
+  <Backdrop isOpen={loadingOpen()} opacity={0.7} />
+  <div class="absolute inset-0 flex items-center justify-center z-50">
     <Loader size="large" color="white" />
-  </Backdrop>
+  </div>
 </div>`,
       render: (
         <div class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded mb-4"
+            onClick={() => setLoadingOpen(true)}>
+            Show Loading
+          </button>
           <div class="space-y-2">
             <p class="font-medium">Processing your order...</p>
             <p class="text-sm text-gray-500 dark:text-gray-400">
               Please wait while we confirm your payment.
             </p>
           </div>
-          <div class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
+          <Backdrop isOpen={loadingOpen()} opacity={0.7} />
+          <div class="absolute inset-0 flex items-center justify-center z-50">
             <Loader size="large" color="white" />
           </div>
         </div>

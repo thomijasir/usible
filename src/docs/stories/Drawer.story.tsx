@@ -3,7 +3,12 @@ import { ComponentPreview, PropsTable } from "../components";
 import { For, type Component, createSignal } from "solid-js";
 
 export const DrawerStory: Component = () => {
-  const [isOpen, setIsOpen] = createSignal(false);
+  const [basicOpen, setBasicOpen] = createSignal(false);
+  const [heightOpen, setHeightOpen] = createSignal(false);
+  const [actionOpen, setActionOpen] = createSignal(false);
+  const [filterOpen, setFilterOpen] = createSignal(false);
+  const [noHandleOpen, setNoHandleOpen] = createSignal(false);
+
   const propsReference = [
     { name: "isOpen", type: "boolean", description: "Drawer visibility" },
     { name: "onClose", type: "() => void", description: "Close handler" },
@@ -19,20 +24,20 @@ export const DrawerStory: Component = () => {
   const example = [
     {
       title: "Basic Drawer",
-      code: `<Drawer isOpen={true} onClose={() => {}}>
+      code: `<Drawer isOpen={basicOpen()} onClose={() => setBasicOpen(false)}>
   <div class="p-4">Drawer content</div>
 </Drawer>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
-          <Drawer isOpen={isOpen()} onClose={() => setIsOpen(false)}>
+          <Button onClick={() => setBasicOpen(true)}>Open Drawer</Button>
+          <Drawer isOpen={basicOpen()} onClose={() => setBasicOpen(false)}>
             <div class="p-4">
               <h3 class="text-lg font-semibold mb-2">Drawer Title</h3>
               <p class="text-gray-600 dark:text-gray-300 mb-4">
                 This is the drawer content. Swipe down or click outside to
                 close.
               </p>
-              <Button block onClick={() => setIsOpen(false)}>
+              <Button block onClick={() => setBasicOpen(false)}>
                 Close
               </Button>
             </div>
@@ -42,15 +47,17 @@ export const DrawerStory: Component = () => {
     },
     {
       title: "Custom Height",
-      code: `<Drawer isOpen={true} onClose={() => {}} height="50vh">
+      code: `<Drawer isOpen={heightOpen()} onClose={() => setHeightOpen(false)} height="50vh">
   <div class="p-4">Half screen drawer</div>
 </Drawer>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Half Height Drawer</Button>
+          <Button onClick={() => setHeightOpen(true)}>
+            Half Height Drawer
+          </Button>
           <Drawer
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={heightOpen()}
+            onClose={() => setHeightOpen(false)}
             height="50vh">
             <div class="p-4 h-full">
               <h3 class="text-lg font-semibold mb-2">Half Screen</h3>
@@ -64,7 +71,7 @@ export const DrawerStory: Component = () => {
     },
     {
       title: "Action Sheet",
-      code: `<Drawer isOpen={true} onClose={() => {}}>
+      code: `<Drawer isOpen={actionOpen()} onClose={() => setActionOpen(false)}>
   <div class="p-4 space-y-2">
     <Button block>Share</Button>
     <Button block>Edit</Button>
@@ -73,13 +80,16 @@ export const DrawerStory: Component = () => {
 </Drawer>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Open Action Sheet</Button>
-          <Drawer isOpen={isOpen()} onClose={() => setIsOpen(false)}>
+          <Button onClick={() => setActionOpen(true)}>Open Action Sheet</Button>
+          <Drawer isOpen={actionOpen()} onClose={() => setActionOpen(false)}>
             <div class="p-4 space-y-2">
               <h3 class="text-lg font-semibold mb-4">Actions</h3>
               <Button block>Share</Button>
               <Button block>Edit</Button>
-              <Button block variant="outlined" onClick={() => setIsOpen(false)}>
+              <Button
+                block
+                variant="outlined"
+                onClick={() => setActionOpen(false)}>
                 Cancel
               </Button>
               <Button block color="error">
@@ -92,7 +102,7 @@ export const DrawerStory: Component = () => {
     },
     {
       title: " Filter Drawer",
-      code: `<Drawer isOpen={true} onClose={() => {}} height="60vh">
+      code: `<Drawer isOpen={filterOpen()} onClose={() => setFilterOpen(false)} height="60vh">
   <div class="p-4">
     <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
     <div class="space-y-4">
@@ -107,10 +117,10 @@ export const DrawerStory: Component = () => {
 </Drawer>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Open Filters</Button>
+          <Button onClick={() => setFilterOpen(true)}>Open Filters</Button>
           <Drawer
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={filterOpen()}
+            onClose={() => setFilterOpen(false)}
             height="60vh">
             <div class="p-4">
               <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
@@ -136,13 +146,40 @@ export const DrawerStory: Component = () => {
                 <Button
                   variant="outlined"
                   block
-                  onClick={() => setIsOpen(false)}>
+                  onClick={() => setFilterOpen(false)}>
                   Reset
                 </Button>
-                <Button block onClick={() => setIsOpen(false)}>
+                <Button block onClick={() => setFilterOpen(false)}>
                   Apply
                 </Button>
               </div>
+            </div>
+          </Drawer>
+        </div>
+      ),
+    },
+    {
+      title: "With Handle",
+      code: `<Drawer isOpen={noHandleOpen()} onClose={() => setNoHandleOpen(false)} showHandle>
+  <div class="p-4">Drawer handle</div>
+</Drawer>`,
+      render: (
+        <div class="flex justify-center">
+          <Button onClick={() => setNoHandleOpen(true)}>
+            Open With Handle
+          </Button>
+          <Drawer
+            isOpen={noHandleOpen()}
+            onClose={() => setNoHandleOpen(false)}
+            showHandle>
+            <div class="p-4">
+              <p class="text-gray-600 dark:text-gray-300">
+                This drawer has drag handle. You can pull or drag the handle
+                bar.
+              </p>
+              <Button block onClick={() => setNoHandleOpen(false)} class="mt-4">
+                Close
+              </Button>
             </div>
           </Drawer>
         </div>

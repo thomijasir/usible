@@ -22,4 +22,5 @@ export * from "./Switch.story";
 export * from "./Text.story";
 export * from "./TextArea.story";
 export * from "./TextHighlight.story";
+export * from "./TimePicker.story";
 export * from "./Timeline.story";

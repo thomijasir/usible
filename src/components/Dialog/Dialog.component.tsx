@@ -1,5 +1,5 @@
 import { createEffect, on } from "solid-js";
-import { animate } from "motion";
+import { animate, type AnimationPlaybackControls } from "motion";
 import { twMerge } from "tailwind-merge";
 import type { DialogProps } from "./Dialog.interface";
 import { Backdrop } from "../Backdrop";
@@ -7,9 +7,11 @@ import { Text } from "../Text";
 
 export function Dialog(props: DialogProps) {
   let dialogRef: HTMLDivElement | undefined;
+  let containerRef: HTMLDivElement | undefined;
   const titleId = `dialog-title-${Math.random().toString(36).slice(2, 9)}`;
   const descId = `dialog-desc-${Math.random().toString(36).slice(2, 9)}`;
   let previousActiveElement: HTMLElement | null = null;
+  let currentAnimation: AnimationPlaybackControls | undefined;
 
   const handleBackdropClick = () => {
     if (props.dismissible !== false) {
@@ -27,28 +29,51 @@ export function Dialog(props: DialogProps) {
     on(
       () => props.isOpen,
       async (isOpen, prevIsOpen) => {
-        if (!dialogRef) return;
+        if (!dialogRef || !containerRef) return;
+
+        currentAnimation?.stop();
 
         if (isOpen && !prevIsOpen) {
           previousActiveElement = document.activeElement as HTMLElement;
+          containerRef.style.display = "flex";
+          dialogRef.style.opacity = "0";
+          dialogRef.style.transform = "translateY(12px)";
+          dialogRef.style.visibility = "visible";
           dialogRef.style.display = "block";
-          dialogRef.style.opacity = "0";
-          await animate(
+          currentAnimation = animate(
             dialogRef as HTMLElement,
-            { scale: [0.95, 1], y: [10, 0] },
+            { opacity: [0, 1], y: [12, 0] },
             { duration: 0.2, ease: "easeOut" },
-          ).finished;
-          dialogRef.style.opacity = "1";
-          dialogRef.focus();
+          );
+          try {
+            await currentAnimation.finished;
+            dialogRef.style.transform = "";
+            dialogRef.focus();
+          } catch {
+            // animation was cancelled by a subsequent transition
+          }
         } else if (!isOpen && prevIsOpen) {
-          dialogRef.style.opacity = "0";
-          await animate(
+          currentAnimation = animate(
             dialogRef as HTMLElement,
-            { scale: 0.95, y: 10 },
-            { duration: 0.2, ease: "easeOut" },
-          ).finished;
-          dialogRef.style.display = "none";
-          previousActiveElement?.focus();
+            { opacity: [1, 0], y: [0, 12] },
+            { duration: 0.15, ease: "easeIn" },
+          );
+          try {
+            await currentAnimation.finished;
+            dialogRef.style.display = "none";
+            dialogRef.style.visibility = "hidden";
+            dialogRef.style.transform = "";
+            containerRef.style.display = "none";
+            previousActiveElement?.focus();
+          } catch {
+            // animation was cancelled
+            if (!props.isOpen) {
+              dialogRef.style.display = "none";
+              dialogRef.style.visibility = "hidden";
+              dialogRef.style.transform = "";
+              containerRef.style.display = "none";
+            }
+          }
         }
       },
     ),
@@ -61,11 +86,14 @@ export function Dialog(props: DialogProps) {
         onClick={handleBackdropClick}
         opacity={0.5}
       />
-      <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div
+        ref={containerRef}
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+        style={{ display: "none" }}>
         <div
           ref={dialogRef}
           class={twMerge(
-            "bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-xs sm:max-w-sm overflow-hidden pointer-events-auto transition-opacity",
+            "bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-xs sm:max-w-sm overflow-hidden pointer-events-auto",
             props.class,
           )}
           role="dialog"
@@ -74,7 +102,11 @@ export function Dialog(props: DialogProps) {
           aria-describedby={props.children ? descId : undefined}
           tabindex={-1}
           onKeyDown={handleKeyDown}
-          style={{ display: "none" }}>
+          style={{
+            display: "none",
+            visibility: "hidden",
+            transform: "translateY(12px)",
+          }}>
           {props.title && (
             <div class="px-6 pt-6 pb-2" id={titleId}>
               {typeof props.title === "string" ? (

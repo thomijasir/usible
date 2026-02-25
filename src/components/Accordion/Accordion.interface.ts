@@ -15,6 +15,11 @@ export interface AccordionItem {
 }
 
 /**
+ * Accordion caret icon position
+ */
+export type AccordionCaretPosition = "left" | "right";
+
+/**
  * Accordion component props for collapsible content sections
  *
  * @example
@@ -35,6 +40,10 @@ export interface AccordionProps {
   defaultExpandedId?: string | number;
   /** If true, multiple items can be expanded simultaneously */
   allowMultiple?: boolean;
+  /** Position of the caret icon - @default "right" */
+  caretPosition?: AccordionCaretPosition;
+  /** Custom caret icon (JSX element) */
+  caretIcon?: JSX.Element;
   /** Additional CSS classes */
   class?: string;
 }

@@ -31,8 +31,8 @@ const componentGroups = [
       { id: "slider", label: "Slider" },
       { id: "numpad", label: "Numpad" },
       { id: "currency-input", label: "Currency Input" },
-      { id: "datepicker", label: "Date Picker" },
-      { id: "timepicker", label: "Time Picker" },
+      { id: "date-picker", label: "Date Picker" },
+      { id: "time-picker", label: "Time Picker" },
     ],
   },
   {

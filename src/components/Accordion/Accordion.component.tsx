@@ -1,4 +1,4 @@
-import { createSignal, For, createEffect, on } from "solid-js";
+import { createSignal, For, createEffect, createMemo, on } from "solid-js";
 import { animate } from "motion";
 import type { AccordionProps } from "./Accordion.interface";
 import { Text } from "../Text";
@@ -8,6 +8,9 @@ export function Accordion(props: AccordionProps) {
   const [expandedIds, setExpandedIds] = createSignal<(string | number)[]>(
     props.defaultExpandedId ? [props.defaultExpandedId] : [],
   );
+
+  const caretPosition = () => props.caretPosition ?? "right";
+  const hasCustomIcon = () => !!props.caretIcon;
 
   const toggleItem = (id: string | number) => {
     const current = expandedIds();
@@ -24,10 +27,10 @@ export function Accordion(props: AccordionProps) {
 
   return (
     <div
-      class={`flex flex-col divide-y divide-gray-100 dark:divide-gray-800 border-t border-b border-gray-100 dark:border-gray-800 ${props.class ?? ""}`}>
+      class={`w-full flex flex-col divide-y divide-gray-100 dark:divide-gray-800 border-t border-b border-gray-100 dark:border-gray-800 ${props.class ?? ""}`}>
       <For each={props.items}>
         {(item) => {
-          const isExpanded = () => expandedIds().includes(item.id);
+          const isExpanded = createMemo(() => expandedIds().includes(item.id));
           const isDisabled = () => item.disabled;
           let contentRef: HTMLDivElement | undefined;
           let iconRef: SVGSVGElement | undefined;
@@ -61,7 +64,7 @@ export function Accordion(props: AccordionProps) {
 
           createEffect(
             on(isExpanded, async (expanded) => {
-              if (iconRef) {
+              if (iconRef && !hasCustomIcon()) {
                 await animate(
                   iconRef as SVGSVGElement,
                   { rotate: expanded ? 180 : 0 },
@@ -71,9 +74,12 @@ export function Accordion(props: AccordionProps) {
             }),
           );
 
+          const isLeft = () => caretPosition() === "left";
+
           return (
             <div class="bg-white dark:bg-gray-900">
               <button
+                type="button"
                 onClick={() => !isDisabled() && toggleItem(item.id)}
                 disabled={isDisabled()}
                 class={`w-full flex items-center justify-between p-4 text-left transition-colors ${
@@ -83,7 +89,7 @@ export function Accordion(props: AccordionProps) {
                 }`}
                 aria-expanded={isExpanded()}
                 aria-controls={`accordion-panel-${item.id}`}>
-                <div class="flex-1 pr-4">
+                <div class={`flex-1 ${isLeft() ? "order-2 pl-4" : "pr-4"}`}>
                   {typeof item.title === "string" ? (
                     <Text variant="subtitle1" class="font-medium">
                       {item.title}
@@ -93,8 +99,15 @@ export function Accordion(props: AccordionProps) {
                   )}
                 </div>
 
-                <div class="text-gray-400 shrink-0">
-                  <ChevronDownIcon ref={iconRef} class="w-5 h-5" />
+                <div
+                  class={`text-gray-400 shrink-0 ${
+                    isLeft() ? "order-1 mr-auto" : ""
+                  }`}>
+                  {hasCustomIcon() ? (
+                    props.caretIcon
+                  ) : (
+                    <ChevronDownIcon ref={iconRef} class="w-5 h-5" />
+                  )}
                 </div>
               </button>
 

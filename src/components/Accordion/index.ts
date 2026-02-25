@@ -1,2 +1,6 @@
 export { Accordion } from "./Accordion.component";
-export type { AccordionProps, AccordionItem } from "./Accordion.interface";
+export type {
+  AccordionProps,
+  AccordionItem,
+  AccordionCaretPosition,
+} from "./Accordion.interface";

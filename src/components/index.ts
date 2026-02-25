@@ -18,6 +18,7 @@ export * from "./Numpad";
 export * from "./Drawer";
 export * from "./CurrencyInput";
 export * from "./DatePicker";
+export * from "./TimePicker";
 export * from "./TextHighlight";
 export * from "./Timeline";
 export * from "./MenuList";

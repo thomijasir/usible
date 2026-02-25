@@ -3,7 +3,11 @@ import { ComponentPreview, PropsTable } from "../components";
 import { For, type Component, createSignal } from "solid-js";
 
 export const DialogStory: Component = () => {
-  const [isOpen, setIsOpen] = createSignal(false);
+  const [basicOpen, setBasicOpen] = createSignal(false);
+  const [actionsOpen, setActionsOpen] = createSignal(false);
+  const [noDismissOpen, setNoDismissOpen] = createSignal(false);
+  const [formOpen, setFormOpen] = createSignal(false);
+
   const propsReference = [
     { name: "isOpen", type: "boolean", description: "Dialog visibility" },
     { name: "onClose", type: "() => void", description: "Close handler" },
@@ -29,24 +33,24 @@ export const DialogStory: Component = () => {
   const example = [
     {
       title: "Basic Dialog",
-      code: `<Dialog isOpen={true} onClose={() => {}} title="Confirm">
+      code: `<Dialog isOpen={basicOpen()} onClose={() => setBasicOpen(false)} title="Confirm">
   <p>Are you sure?</p>
 </Dialog>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
+          <Button onClick={() => setBasicOpen(true)}>Open Dialog</Button>
           <Dialog
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={basicOpen()}
+            onClose={() => setBasicOpen(false)}
             title="Confirm Action">
             <p class="text-gray-600 dark:text-gray-300">
               Are you sure you want to proceed with this action?
             </p>
             <div class="flex gap-2 mt-4 justify-end">
-              <Button variant="outlined" onClick={() => setIsOpen(false)}>
+              <Button variant="outlined" onClick={() => setBasicOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={() => setIsOpen(false)}>Confirm</Button>
+              <Button onClick={() => setBasicOpen(false)}>Confirm</Button>
             </div>
           </Dialog>
         </div>
@@ -54,27 +58,27 @@ export const DialogStory: Component = () => {
     },
     {
       title: "Dialog with Actions",
-      code: `<Dialog isOpen={true} onClose={() => {}} title="Delete Item" actions={actions}>
+      code: `<Dialog isOpen={actionsOpen()} onClose={() => setActionsOpen(false)} title="Delete Item" actions={actions}>
   <p>This action cannot be undone.</p>
 </Dialog>`,
       render: (
         <div class="flex justify-center">
-          <Button color="error" onClick={() => setIsOpen(true)}>
+          <Button color="error" onClick={() => setActionsOpen(true)}>
             Delete Item
           </Button>
           <Dialog
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={actionsOpen()}
+            onClose={() => setActionsOpen(false)}
             title="Delete Item">
             <p class="text-gray-600 dark:text-gray-300">
               Are you sure you want to delete this item? This action cannot be
               undone.
             </p>
             <div class="flex gap-2 mt-4 justify-end">
-              <Button variant="outlined" onClick={() => setIsOpen(false)}>
+              <Button variant="outlined" onClick={() => setActionsOpen(false)}>
                 Cancel
               </Button>
-              <Button color="error" onClick={() => setIsOpen(false)}>
+              <Button color="error" onClick={() => setActionsOpen(false)}>
                 Delete
               </Button>
             </div>
@@ -84,15 +88,17 @@ export const DialogStory: Component = () => {
     },
     {
       title: "Non-dismissible Dialog",
-      code: `<Dialog isOpen={true} onClose={() => {}} title="Important" dismissible={false}>
+      code: `<Dialog isOpen={noDismissOpen()} onClose={() => setNoDismissOpen(false)} title="Important" dismissible={false}>
   <p>Please read this carefully.</p>
 </Dialog>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Open Non-dismissible</Button>
+          <Button onClick={() => setNoDismissOpen(true)}>
+            Open Non-dismissible
+          </Button>
           <Dialog
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={noDismissOpen()}
+            onClose={() => setNoDismissOpen(false)}
             title="Important Notice"
             dismissible={false}>
             <p class="text-gray-600 dark:text-gray-300">
@@ -100,7 +106,7 @@ export const DialogStory: Component = () => {
               button below.
             </p>
             <div class="mt-4">
-              <Button block onClick={() => setIsOpen(false)}>
+              <Button block onClick={() => setNoDismissOpen(false)}>
                 I Understand
               </Button>
             </div>
@@ -110,7 +116,7 @@ export const DialogStory: Component = () => {
     },
     {
       title: " Form Dialog",
-      code: `<Dialog isOpen={true} onClose={() => {}} title="Edit Profile">
+      code: `<Dialog isOpen={formOpen()} onClose={() => setFormOpen(false)} title="Edit Profile">
   <div class="space-y-4">
     <Input label="Name" placeholder="John Doe" />
     <Input label="Email" type="email" placeholder="john@example.com" />
@@ -122,10 +128,10 @@ export const DialogStory: Component = () => {
 </Dialog>`,
       render: (
         <div class="flex justify-center">
-          <Button onClick={() => setIsOpen(true)}>Edit Profile</Button>
+          <Button onClick={() => setFormOpen(true)}>Edit Profile</Button>
           <Dialog
-            isOpen={isOpen()}
-            onClose={() => setIsOpen(false)}
+            isOpen={formOpen()}
+            onClose={() => setFormOpen(false)}
             title="Edit Profile">
             <div class="space-y-4">
               <Input label="Name" placeholder="John Doe" />
@@ -136,10 +142,10 @@ export const DialogStory: Component = () => {
               />
             </div>
             <div class="flex gap-2 mt-4 justify-end">
-              <Button variant="outlined" onClick={() => setIsOpen(false)}>
+              <Button variant="outlined" onClick={() => setFormOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={() => setIsOpen(false)}>Save</Button>
+              <Button onClick={() => setFormOpen(false)}>Save</Button>
             </div>
           </Dialog>
         </div>

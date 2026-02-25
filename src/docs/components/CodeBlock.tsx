@@ -1,31 +1,106 @@
-import {
-  type Component,
-  createSignal,
-  createResource,
-  Suspense,
-} from "solid-js";
-import { codeToHtml } from "shiki";
+import { type Component, createSignal } from "solid-js";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
 }
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function highlightTSX(code: string): string {
+  let result = "";
+  let i = 0;
+  let inTag = false;
+
+  while (i < code.length) {
+    if (!inTag) {
+      if (code[i] === "<") {
+        // Opening or closing tag — capture '<', optional '/', then tag name
+        let j = i + 1;
+        if (code[j] === "/") j++;
+        while (j < code.length && /[\w.]/.test(code[j])) j++;
+        result += `<span class="hl-tag">${escapeHtml(code.slice(i, j))}</span>`;
+        i = j;
+        inTag = true;
+      } else if (code[i] === "{") {
+        // JSX expression block
+        let j = i + 1;
+        let depth = 1;
+        while (j < code.length && depth > 0) {
+          if (code[j] === "{") depth++;
+          else if (code[j] === "}") depth--;
+          j++;
+        }
+        result += `<span class="hl-expr">${escapeHtml(code.slice(i, j))}</span>`;
+        i = j;
+      } else {
+        // Plain text between tags
+        let j = i;
+        while (j < code.length && code[j] !== "<" && code[j] !== "{") j++;
+        result += escapeHtml(code.slice(i, j));
+        i = j;
+      }
+    } else {
+      // Inside a tag — handle attrs, strings, expressions, closing punctuation
+      if (code[i] === "/" && code[i + 1] === ">") {
+        result += `<span class="hl-tag">/&gt;</span>`;
+        i += 2;
+        inTag = false;
+      } else if (code[i] === ">") {
+        result += `<span class="hl-tag">&gt;</span>`;
+        i++;
+        inTag = false;
+      } else if (code[i] === '"') {
+        // Quoted attribute value
+        let j = i + 1;
+        while (j < code.length && code[j] !== '"') {
+          if (code[j] === "\\") j++;
+          j++;
+        }
+        j++; // consume closing quote
+        result += `<span class="hl-str">${escapeHtml(code.slice(i, j))}</span>`;
+        i = j;
+      } else if (code[i] === "{") {
+        // Expression attribute value e.g. onClick={handler}
+        let j = i + 1;
+        let depth = 1;
+        while (j < code.length && depth > 0) {
+          if (code[j] === "{") depth++;
+          else if (code[j] === "}") depth--;
+          j++;
+        }
+        result += `<span class="hl-expr">${escapeHtml(code.slice(i, j))}</span>`;
+        i = j;
+      } else if (code[i] === "=") {
+        result += "=";
+        i++;
+      } else if (/\s/.test(code[i])) {
+        result += code[i]; // preserve whitespace/newlines as-is
+        i++;
+      } else if (/[\w-]/.test(code[i])) {
+        // Attribute name
+        let j = i;
+        while (j < code.length && /[\w-:]/.test(code[j])) j++;
+        result += `<span class="hl-attr">${escapeHtml(code.slice(i, j))}</span>`;
+        i = j;
+      } else {
+        result += escapeHtml(code[i]);
+        i++;
+      }
+    }
+  }
+
+  return result;
+}
+
 export const CodeBlock: Component<CodeBlockProps> = (props) => {
   const [copied, setCopied] = createSignal(false);
-
-  const [highlightedCode] = createResource(
-    () => ({ code: props.code, lang: props.language || "tsx" }),
-    async ({ code, lang }) => {
-      return await codeToHtml(code, {
-        lang,
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
-      });
-    },
-  );
 
   const copyCode = async () => {
     await navigator.clipboard.writeText(props.code);
@@ -42,17 +117,9 @@ export const CodeBlock: Component<CodeBlockProps> = (props) => {
         {copied() ? "Copied!" : "Copy"}
       </button>
       <div class="overflow-hidden rounded-md border border-gray-200 dark:border-gray-800">
-        <Suspense
-          fallback={
-            <pre class="p-4 overflow-x-auto text-sm bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-              <code>{props.code}</code>
-            </pre>
-          }>
-          <div
-            class="p-4 overflow-x-auto text-sm bg-white dark:bg-[#0d1117] [&>pre]:bg-transparent! [&>pre]:m-0! [&>pre]:w-fit [&_span]:!bg-transparent"
-            innerHTML={highlightedCode()}
-          />
-        </Suspense>
+        <pre class="p-4 overflow-x-auto text-sm bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+          <code innerHTML={highlightTSX(props.code)} />
+        </pre>
       </div>
     </div>
   );
