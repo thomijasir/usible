@@ -11,61 +11,50 @@ interface SidebarProps {
 const componentGroups = [
   {
     title: "Basic Primitives",
-    items: ["text", "loader", "skeleton", "image", "html-render"],
+    items: [
+      { id: "text", label: "Text" },
+      { id: "loader", label: "Loader" },
+      { id: "skeleton", label: "Skeleton" },
+      { id: "image", label: "Image" },
+      { id: "html-render", label: "HTML Render" },
+    ],
   },
   {
     title: "Form Controls",
     items: [
-      "button",
-      "checkbox",
-      "switch",
-      "input",
-      "textarea",
-      "select",
-      "slider",
-      "numpad",
-      "currency-input",
-      "datepicker",
-      "timepicker",
+      { id: "button", label: "Button" },
+      { id: "checkbox", label: "Checkbox" },
+      { id: "switch", label: "Switch" },
+      { id: "input", label: "Input" },
+      { id: "text-area", label: "Text Area" },
+      { id: "select", label: "Select" },
+      { id: "slider", label: "Slider" },
+      { id: "numpad", label: "Numpad" },
+      { id: "currency-input", label: "Currency Input" },
+      { id: "datepicker", label: "Date Picker" },
+      { id: "timepicker", label: "Time Picker" },
     ],
   },
   {
     title: "Feedback & Display",
-    items: ["chip", "info-box", "text-highlight", "timeline"],
+    items: [
+      { id: "chip", label: "Chip" },
+      { id: "info-box", label: "Info Box" },
+      { id: "text-highlight", label: "Text Highlight" },
+      { id: "timeline", label: "Timeline" },
+    ],
   },
   {
     title: "Overlay & Navigation",
-    items: ["backdrop", "dialog", "drawer", "menulist", "accordion"],
+    items: [
+      { id: "backdrop", label: "Backdrop" },
+      { id: "dialog", label: "Dialog" },
+      { id: "drawer", label: "Drawer" },
+      { id: "menulist", label: "MenuList" },
+      { id: "accordion", label: "Accordion" },
+    ],
   },
 ];
-
-const displayNames: Record<string, string> = {
-  text: "Text",
-  loader: "Loader",
-  skeleton: "Skeleton",
-  image: "Image",
-  ["html-render"]: "HTML Render",
-  button: "Button",
-  checkbox: "Checkbox",
-  switch: "Switch",
-  input: "Input",
-  textarea: "TextArea",
-  select: "Select",
-  slider: "Slider",
-  numpad: "Numpad",
-  ["currency-input"]: "Currency Input",
-  datepicker: "Date Picker",
-  timepicker: "Time Picker",
-  chip: "Chip",
-  ["info-box"]: "Info Box",
-  ["text-highlight"]: "Text Highlight",
-  timeline: "Timeline",
-  backdrop: "Backdrop",
-  dialog: "Dialog",
-  drawer: "Drawer",
-  menulist: "MenuList",
-  accordion: "Accordion",
-};
 
 export function Sidebar(props: SidebarProps) {
   return (
@@ -105,11 +94,11 @@ export function Sidebar(props: SidebarProps) {
                     <For each={group.items}>
                       {(item) => (
                         <A
-                          href={`/stories/${item}`}
+                          href={`/stories/${item.id}`}
                           class="block px-3 py-1.5 rounded-md text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                           activeClass="bg-primary/10 text-primary font-medium"
                           onClick={props.onClose}>
-                          {displayNames[item]}
+                          {item.label}
                         </A>
                       )}
                     </For>

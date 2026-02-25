@@ -49,7 +49,7 @@ export function TextArea(props: TextAreaProps) {
           )}>
           <textarea
             id={id()}
-            value={props.value}
+            value={props.value ?? ""}
             onInput={handleInput}
             disabled={props.disabled}
             rows={props.rows ?? 4}

@@ -78,7 +78,9 @@ const formatCurrency = (
 };
 
 export function CurrencyInput(props: CurrencyInputProps) {
-  const [displayValue, setDisplayValue] = createSignal("");
+  const [displayValue, setDisplayValue] = createSignal(
+    formatCurrency(props.locale ?? "en-US", props.value, props.decimalDigits ?? 2),
+  );
   const [isFocused, setIsFocused] = createSignal(false);
   let inputRef: HTMLInputElement | undefined;
 
@@ -176,6 +178,7 @@ export function CurrencyInput(props: CurrencyInputProps) {
   return (
     <div class="relative">
       <Input
+        ref={(el) => { inputRef = el; }}
         value={displayValue()}
         onInput={handleInput}
         onBlur={handleBlur}

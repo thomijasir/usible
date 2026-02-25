@@ -53,12 +53,17 @@ export const CurrencyInputStory: Component = () => {
       title: "Different Currencies",
       code: `<CurrencyInput value={100} currency="EUR" onChange={(v) => console.log(v)} />
 <CurrencyInput value={100} currency="GBP" onChange={(v) => console.log(v)} />
-<CurrencyInput value={100} currency="JPY" onChange={(v) => console.log(v)} />`,
+<CurrencyInput value={100} currency="JPY" decimalDigits={0} onChange={(v) => console.log(v)} />`,
       render: (
         <div class="flex flex-col gap-4">
           <CurrencyInput value={100} currency="EUR" onChange={() => {}} />
           <CurrencyInput value={100} currency="GBP" onChange={() => {}} />
-          <CurrencyInput value={100} currency="JPY" onChange={() => {}} />
+          <CurrencyInput
+            value={100}
+            currency="JPY"
+            decimalDigits={0}
+            onChange={() => {}}
+          />
         </div>
       ),
     },

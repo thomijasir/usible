@@ -63,6 +63,39 @@ export const ButtonStory: Component = () => {
       ),
     },
     {
+      title: "Text Buttons",
+      code: `<Button variant="text">Primary</Button>
+<Button variant="text" color="secondary">Secondary</Button>`,
+      render: (
+        <div class="flex flex-wrap gap-2">
+          <Button variant="text">Primary</Button>
+          <Button variant="text" color="secondary">Secondary</Button>
+        </div>
+      ),
+    },
+    {
+      title: "Icon Buttons",
+      code: `<Button variant="icon">★</Button>
+<Button variant="icon" color="secondary">★</Button>`,
+      render: (
+        <div class="flex flex-wrap gap-2">
+          <Button variant="icon">★</Button>
+          <Button variant="icon" color="secondary">★</Button>
+        </div>
+      ),
+    },
+    {
+      title: "Icon Outline Buttons",
+      code: `<Button variant="iconOutline">★</Button>
+<Button variant="iconOutline" color="secondary">★</Button>`,
+      render: (
+        <div class="flex flex-wrap gap-2">
+          <Button variant="iconOutline">★</Button>
+          <Button variant="iconOutline" color="secondary">★</Button>
+        </div>
+      ),
+    },
+    {
       title: "Button Sizes",
       code: `<Button size="small">Small</Button>
 <Button size="medium">Medium</Button>

@@ -13,68 +13,68 @@ const baseClasses =
 const variantClasses: Record<ButtonVariant, Record<ButtonColor, string>> = {
   filled: {
     primary:
-      "bg-usible-primary text-white hover:bg-usible-primary-dark active:bg-usible-primary-dark",
+      "bg-primary text-white hover:bg-primary-dark active:bg-primary-dark",
     secondary:
-      "bg-usible-secondary text-white hover:bg-usible-secondary-dark active:bg-usible-secondary-dark",
+      "bg-secondary text-white hover:bg-secondary-dark active:bg-secondary-dark",
     ternary:
-      "bg-usible-ternary text-white hover:bg-usible-ternary-dark active:bg-usible-ternary-dark",
+      "bg-ternary text-white hover:bg-ternary-dark active:bg-ternary-dark",
     success:
-      "bg-usible-success text-white hover:bg-usible-success-dark active:bg-usible-success-dark",
+      "bg-success text-white hover:bg-success-dark active:bg-success-dark",
     warning:
-      "bg-usible-warning text-white hover:bg-usible-warning-dark active:bg-usible-warning-dark",
+      "bg-warning text-white hover:bg-warning-dark active:bg-warning-dark",
     error:
-      "bg-usible-error text-white hover:bg-usible-error-dark active:bg-usible-error-dark",
+      "bg-error text-white hover:bg-error-dark active:bg-error-dark",
     transparent:
       "bg-transparent text-current hover:opacity-80 active:opacity-70",
   },
   outlined: {
     primary:
-      "border border-usible-primary text-usible-primary hover:bg-usible-primary hover:text-white active:bg-usible-primary active:text-white",
+      "border border-primary text-primary hover:bg-primary hover:text-white active:bg-primary active:text-white",
     secondary:
-      "border border-usible-secondary text-usible-secondary hover:bg-usible-secondary hover:text-white active:bg-usible-secondary active:text-white",
+      "border border-secondary text-secondary hover:bg-secondary hover:text-white active:bg-secondary active:text-white",
     ternary:
-      "border border-usible-ternary text-usible-ternary hover:bg-usible-ternary hover:text-white active:bg-usible-ternary active:text-white",
+      "border border-ternary text-ternary hover:bg-ternary hover:text-white active:bg-ternary active:text-white",
     success:
-      "border border-usible-success text-usible-success hover:bg-usible-success hover:text-white active:bg-usible-success active:text-white",
+      "border border-success text-success hover:bg-success hover:text-white active:bg-success active:text-white",
     warning:
-      "border border-usible-warning text-usible-warning hover:bg-usible-warning hover:text-white active:bg-usible-warning active:text-white",
+      "border border-warning text-warning hover:bg-warning hover:text-white active:bg-warning active:text-white",
     error:
-      "border border-usible-error text-usible-error hover:bg-usible-error hover:text-white active:bg-usible-error active:text-white",
+      "border border-error text-error hover:bg-error hover:text-white active:bg-error active:text-white",
     transparent:
       "border border-current text-current hover:opacity-80 active:opacity-70",
   },
   text: {
-    primary: "text-usible-primary hover:bg-usible-primary-light",
-    secondary: "text-usible-secondary hover:bg-usible-secondary-light",
-    ternary: "text-usible-ternary hover:bg-usible-ternary-light",
-    success: "text-usible-success hover:bg-usible-success-light",
-    warning: "text-usible-warning hover:bg-usible-warning-light",
-    error: "text-usible-error hover:bg-usible-error-light",
+    primary: "text-primary hover:bg-primary-light",
+    secondary: "text-secondary hover:bg-secondary-light",
+    ternary: "text-ternary hover:bg-ternary-light",
+    success: "text-success hover:bg-success-light",
+    warning: "text-warning hover:bg-warning-light",
+    error: "text-error hover:bg-error-light",
     transparent: "text-current hover:opacity-80",
   },
   icon: {
-    primary: "text-usible-primary hover:bg-usible-primary-light rounded-full",
+    primary: "text-primary hover:bg-primary-light rounded-full",
     secondary:
-      "text-usible-secondary hover:bg-usible-secondary-light rounded-full",
-    ternary: "text-usible-ternary hover:bg-usible-ternary-light rounded-full",
-    success: "text-usible-success hover:bg-usible-success-light rounded-full",
-    warning: "text-usible-warning hover:bg-usible-warning-light rounded-full",
-    error: "text-usible-error hover:bg-usible-error-light rounded-full",
+      "text-secondary hover:bg-secondary-light rounded-full",
+    ternary: "text-ternary hover:bg-ternary-light rounded-full",
+    success: "text-success hover:bg-success-light rounded-full",
+    warning: "text-warning hover:bg-warning-light rounded-full",
+    error: "text-error hover:bg-error-light rounded-full",
     transparent: "text-current hover:opacity-80 rounded-full",
   },
   iconOutline: {
     primary:
-      "border border-usible-primary text-usible-primary hover:bg-usible-primary hover:text-white active:bg-usible-primary active:text-white rounded-full",
+      "border border-primary text-primary hover:bg-primary hover:text-white active:bg-primary active:text-white rounded-full",
     secondary:
-      "border border-usible-secondary text-usible-secondary hover:bg-usible-secondary hover:text-white active:bg-usible-secondary active:text-white rounded-full",
+      "border border-secondary text-secondary hover:bg-secondary hover:text-white active:bg-secondary active:text-white rounded-full",
     ternary:
-      "border border-usible-ternary text-usible-ternary hover:bg-usible-ternary hover:text-white active:bg-usible-ternary active:text-white rounded-full",
+      "border border-ternary text-ternary hover:bg-ternary hover:text-white active:bg-ternary active:text-white rounded-full",
     success:
-      "border border-usible-success text-usible-success hover:bg-usible-success hover:text-white active:bg-usible-success active:text-white rounded-full",
+      "border border-success text-success hover:bg-success hover:text-white active:bg-success active:text-white rounded-full",
     warning:
-      "border border-usible-warning text-usible-warning hover:bg-usible-warning hover:text-white active:bg-usible-warning active:text-white rounded-full",
+      "border border-warning text-warning hover:bg-warning hover:text-white active:bg-warning active:text-white rounded-full",
     error:
-      "border border-usible-error text-usible-error hover:bg-usible-error hover:text-white active:bg-usible-error active:text-white rounded-full",
+      "border border-error text-error hover:bg-error hover:text-white active:bg-error active:text-white rounded-full",
     transparent:
       "border border-current text-current hover:opacity-80 active:opacity-70 rounded-full",
   },

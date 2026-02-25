@@ -1,8 +1,9 @@
 import { Numpad } from "~/components";
 import { ComponentPreview, PropsTable } from "../components";
-import { For, type Component } from "solid-js";
+import { For, createSignal, type Component } from "solid-js";
 
 export const NumpadStory: Component = () => {
+  const [pin, setPin] = createSignal<string[]>([]);
   const propsReference = [
     {
       name: "theme",
@@ -55,25 +56,44 @@ export const NumpadStory: Component = () => {
     },
     {
       title: " PIN Entry",
-      code: `<div class="text-center max-w-xs mx-auto">
+      code: `const [pin, setPin] = createSignal([]);
+
+<div class="text-center max-w-xs mx-auto">
   <h3 class="text-lg font-semibold mb-2">Enter PIN</h3>
   <div class="flex justify-center gap-2 mb-4">
-    {[1,2,3,4].map(() => (
-      <div class="w-4 h-4 rounded-full bg-gray-300" />
-    ))}
+    <For each={[0, 1, 2, 3]}>
+      {(i) => (
+        <div class={pin().length > i ? "w-4 h-4 rounded-full bg-primary" : "w-4 h-4 rounded-full bg-gray-300"} />
+      )}
+    </For>
   </div>
-  <Numpad onKeyPress={(k) => console.log(k)} />
+  <Numpad
+    onKeyPress={(k) => { if (pin().length < 4) setPin([...pin(), k]); }}
+    onBackspace={() => setPin(pin().slice(0, -1))}
+  />
 </div>`,
       render: (
         <div class="text-center max-w-xs mx-auto">
           <h3 class="text-lg font-semibold mb-2">Enter PIN</h3>
           <div class="flex justify-center gap-2 mb-4">
-            <div class="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" />
-            <div class="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" />
-            <div class="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" />
-            <div class="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" />
+            <For each={[0, 1, 2, 3]}>
+              {(i) => (
+                <div
+                  class={
+                    pin().length > i
+                      ? "w-4 h-4 rounded-full bg-primary"
+                      : "w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600"
+                  }
+                />
+              )}
+            </For>
           </div>
-          <Numpad onKeyPress={(k) => console.log(k)} />
+          <Numpad
+            onKeyPress={(k) => {
+              if (pin().length < 4) setPin([...pin(), k]);
+            }}
+            onBackspace={() => setPin(pin().slice(0, -1))}
+          />
         </div>
       ),
     },

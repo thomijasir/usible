@@ -8,8 +8,8 @@ const sizeClasses: Record<LoaderSize, string> = {
 };
 
 const colorClasses: Record<LoaderColor, string> = {
-  primary: "border-usible-primary/30 border-t-usible-primary",
-  secondary: "border-usible-secondary/30 border-t-usible-secondary",
+  primary: "border-primary/30 border-t-primary",
+  secondary: "border-secondary/30 border-t-secondary",
   white: "border-white/30 border-t-white",
   current: "border-current/30 border-t-current",
 };

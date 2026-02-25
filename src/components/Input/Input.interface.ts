@@ -66,4 +66,6 @@ export interface InputProps {
   class?: string;
   /** Additional CSS classes for the container element */
   containerClass?: string;
+  /** Ref to the underlying input element */
+  ref?: HTMLInputElement | ((el: HTMLInputElement) => void);
 }

@@ -79,9 +79,10 @@ export function Input(props: InputProps) {
           )}
 
           <input
+            ref={props.ref}
             id={id()}
             type={props.type ?? "text"}
-            value={props.value}
+            value={props.value ?? ""}
             onInput={handleInput}
             onChange={handleChange}
             onBlur={props.onBlur}
