@@ -104,7 +104,9 @@ export function Accordion(props: AccordionProps) {
                     isLeft() ? "order-1 mr-auto" : ""
                   }`}>
                   {hasCustomIcon() ? (
-                    props.caretIcon
+                    typeof props.caretIcon === "function"
+                      ? props.caretIcon(isExpanded())
+                      : props.caretIcon
                   ) : (
                     <ChevronDownIcon ref={iconRef} class="w-5 h-5" />
                   )}

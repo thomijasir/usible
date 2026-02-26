@@ -14,7 +14,9 @@ export function Autocomplete(props: AutocompleteProps) {
 
   return (
     <>
-      <div onClick={actions.handleOpen} class={twMerge("cursor-pointer", props.class)}>
+      <div
+        onClick={actions.handleOpen}
+        class={twMerge("cursor-pointer", props.class)}>
         <Input
           id={props.id}
           label={props.label}
@@ -31,9 +33,11 @@ export function Autocomplete(props: AutocompleteProps) {
         <Portal>
           <div
             class={twMerge(
-              "fixed inset-0 z-[9999] bg-white flex flex-col",
+              "fixed inset-0 z-999 bg-white flex flex-col",
               "transition-all duration-300 ease-out",
-              state.isOpen() ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
+              state.isOpen()
+                ? "translate-y-0 opacity-100"
+                : "translate-y-full opacity-0",
             )}>
             <div class="flex-none bg-white">
               <div class="flex items-center px-4 pt-4 pb-4">
@@ -43,7 +47,9 @@ export function Autocomplete(props: AutocompleteProps) {
                     size="medium"
                     value={state.searchQuery()}
                     onInput={actions.setSearchQuery}
-                    startAdornment={<SearchIcon class="w-5 h-5 text-gray-400" />}
+                    startAdornment={
+                      <SearchIcon class="w-5 h-5 text-gray-400" />
+                    }
                     fullWidth
                   />
                   <Button variant="text" onClick={actions.handleClose}>
@@ -71,22 +77,33 @@ export function Autocomplete(props: AutocompleteProps) {
                           onClick={() => actions.handleSelect(item.id)}
                           class="flex items-center gap-3 p-4 text-left border-b border-gray-50 last:border-0 active:bg-gray-50 transition-all duration-200">
                           <Show when={item.iconLeft}>
-                            <div class="text-gray-500 shrink-0">{item.iconLeft}</div>
+                            <div class="text-gray-500 shrink-0">
+                              {item.iconLeft}
+                            </div>
                           </Show>
                           <div class="flex-1 min-w-0">
-                            <TextHighlight highlight={state.searchQuery()} color="primary">
-                              <Text variant="body1" class="font-medium truncate block">
+                            <Text
+                              variant="body1"
+                              class="font-medium truncate block">
+                              <TextHighlight
+                                highlight={state.searchQuery()}
+                                color="primary">
                                 {item.label}
-                              </Text>
-                            </TextHighlight>
+                              </TextHighlight>
+                            </Text>
                             <Show when={item.description}>
-                              <Text variant="caption" color="ternary" class="truncate block mt-0.5">
+                              <Text
+                                variant="caption"
+                                color="ternary"
+                                class="truncate block mt-0.5">
                                 {item.description}
                               </Text>
                             </Show>
                           </div>
                           <Show when={item.iconRight}>
-                            <div class="text-gray-500 shrink-0">{item.iconRight}</div>
+                            <div class="text-gray-500 shrink-0">
+                              {item.iconRight}
+                            </div>
                           </Show>
                         </button>
                       )}

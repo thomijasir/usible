@@ -28,4 +28,6 @@ export interface DrawerProps {
   showHandle?: boolean;
   /** ID of the element that labels the drawer */
   ariaLabelledBy?: string;
+  /** If true, disables drag-to-close gesture (useful when content has scrollable areas) */
+  disableDrag?: boolean;
 }

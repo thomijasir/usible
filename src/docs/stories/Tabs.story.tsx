@@ -1,6 +1,6 @@
 import { Tabs } from "~/components";
 import { ComponentPreview, PropsTable } from "../components";
-import { For, type Component } from "solid-js";
+import { createSignal, For, type Component } from "solid-js";
 
 export const TabsStory: Component = () => {
   const propsReference = [
@@ -8,7 +8,7 @@ export const TabsStory: Component = () => {
       name: "tabs",
       type: "TabItem[]",
       description:
-        "Array of tab items: { label, value, content, icon?, disabled? }",
+        "Array of tab items: { label, value, content, icon?, disabled?, active? }",
     },
     {
       name: "value",
@@ -50,8 +50,29 @@ export const TabsStory: Component = () => {
       label: "Overview",
       value: "overview",
       content: (
-        <div class="py-4 text-gray-600">
-          Overview content: summary of the current status and key metrics.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Project Overview
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            This section provides a high-level summary of the current project
+            status, upcoming milestones, and key performance indicators. Use
+            this tab to get a quick snapshot without diving into details.
+          </p>
+          <div class="grid grid-cols-3 gap-3 pt-1">
+            <div class="rounded-lg bg-gray-50 dark:bg-gray-800 p-3 text-center">
+              <div class="text-xl font-bold text-primary">94%</div>
+              <div class="text-xs text-gray-400 mt-0.5">Completion</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 dark:bg-gray-800 p-3 text-center">
+              <div class="text-xl font-bold text-primary">12</div>
+              <div class="text-xs text-gray-400 mt-0.5">Open Tasks</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 dark:bg-gray-800 p-3 text-center">
+              <div class="text-xl font-bold text-primary">3</div>
+              <div class="text-xs text-gray-400 mt-0.5">Milestones</div>
+            </div>
+          </div>
         </div>
       ),
     },
@@ -59,8 +80,29 @@ export const TabsStory: Component = () => {
       label: "Details",
       value: "details",
       content: (
-        <div class="py-4 text-gray-600">
-          Details content: in-depth information and specifications.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Technical Details
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            Detailed specifications, configuration options, and technical
+            documentation for this component. Review this section before
+            integrating into production.
+          </p>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              Supports both controlled and uncontrolled usage
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              Three visual variants: standard, filled, block
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              Horizontal and vertical orientations
+            </li>
+          </ul>
         </div>
       ),
     },
@@ -68,8 +110,32 @@ export const TabsStory: Component = () => {
       label: "History",
       value: "history",
       content: (
-        <div class="py-4 text-gray-600">
-          History content: past events and change log.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Change History
+          </h3>
+          <div class="space-y-2">
+            {[
+              {
+                date: "Feb 27, 2026",
+                note: "Added smooth transition animation",
+              },
+              {
+                date: "Feb 20, 2026",
+                note: "Introduced block and filled variants",
+              },
+              { date: "Feb 12, 2026", note: "Initial component release" },
+            ].map((item) => (
+              <div class="flex items-start gap-3 text-sm">
+                <span class="text-xs text-gray-400 whitespace-nowrap pt-0.5">
+                  {item.date}
+                </span>
+                <span class="text-gray-600 dark:text-gray-400">
+                  {item.note}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       ),
     },
@@ -81,8 +147,14 @@ export const TabsStory: Component = () => {
       value: "profile",
       icon: <span>👤</span>,
       content: (
-        <div class="py-4 text-gray-600">
-          Profile settings and personal information.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Profile Settings
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Manage your personal information, display name, and avatar
+            preferences.
+          </p>
         </div>
       ),
     },
@@ -91,8 +163,14 @@ export const TabsStory: Component = () => {
       value: "security",
       icon: <span>🔒</span>,
       content: (
-        <div class="py-4 text-gray-600">
-          Password, two-factor authentication, and active sessions.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Security
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Configure your password, two-factor authentication, and review
+            active sessions.
+          </p>
         </div>
       ),
     },
@@ -101,8 +179,14 @@ export const TabsStory: Component = () => {
       value: "notifications",
       icon: <span>🔔</span>,
       content: (
-        <div class="py-4 text-gray-600">
-          Email and push notification preferences.
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Notifications
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Manage email digests, push notifications, and alert frequency
+            preferences.
+          </p>
         </div>
       ),
     },
@@ -113,7 +197,10 @@ export const TabsStory: Component = () => {
       label: "Active",
       value: "active",
       content: (
-        <div class="py-4 text-gray-600">This tab is active and accessible.</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+          This tab is active and accessible. The middle tab is disabled and
+          cannot be selected.
+        </div>
       ),
     },
     {
@@ -126,10 +213,54 @@ export const TabsStory: Component = () => {
       label: "Also Active",
       value: "also-active",
       content: (
-        <div class="py-4 text-gray-600">Another accessible tab.</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+          Another accessible tab with its own content.
+        </div>
       ),
     },
   ];
+
+  const ControlledDemo: Component = () => {
+    const steps = ["step-1", "step-2", "step-3"] as const;
+    const [active, setActive] = createSignal<string>(steps[0]);
+    const controlledTabs = steps.map((s, i) => ({
+      label: `Step ${i + 1}`,
+      value: s,
+      content: (
+        <div class="space-y-3">
+          <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+            Step {i + 1}
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is the content for step {i + 1}. The active tab is driven by
+            external state — the buttons below control it directly.
+          </p>
+        </div>
+      ),
+    }));
+    return (
+      <div class="space-y-4">
+        <Tabs
+          tabs={controlledTabs}
+          value={active()}
+          onChange={(v) => setActive(v as string)}
+        />
+        <div class="flex gap-2">
+          {steps.map((s, i) => (
+            <button
+              onClick={() => setActive(s)}
+              class={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                active() === s
+                  ? "bg-primary text-white border-primary"
+                  : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary/50"
+              }`}>
+              Go to Step {i + 1}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   const example = [
     {
@@ -175,6 +306,20 @@ export const TabsStory: Component = () => {
       render: <Tabs orientation="vertical" tabs={basicTabs} />,
     },
     {
+      title: "Controlled",
+      code: `const [active, setActive] = createSignal("step-1");
+
+<Tabs
+  tabs={tabs}
+  value={active()}
+  onChange={(v) => setActive(v as string)}
+/>
+
+// External buttons drive the active tab
+<button onClick={() => setActive("step-2")}>Go to Step 2</button>`,
+      render: <ControlledDemo />,
+    },
+    {
       title: "Disabled Tab",
       code: `<Tabs
   tabs={[
@@ -194,13 +339,17 @@ export const TabsStory: Component = () => {
           Tabs Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          A tabbed navigation component with standard, filled, and block variants supporting icons,
-          vertical orientation, and disabled tabs.
+          A tabbed navigation component with standard, filled, and block
+          variants supporting icons, vertical orientation, disabled tabs, and
+          smooth animated content transitions. The first tab displays
+          immediately without animation on initial render.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

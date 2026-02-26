@@ -64,7 +64,12 @@ function ScrollColumn(props: ScrollColumnProps) {
         ref={containerRef}
         onScroll={handleScroll}
         class="h-[220px] w-full overflow-y-auto snap-y snap-mandatory relative z-20"
-        style={{ "scroll-behavior": "smooth", "scrollbar-width": "none" }}>
+        style={{
+          "scroll-behavior": "smooth",
+          "scrollbar-width": "none",
+          "touch-action": "pan-y",
+          "-webkit-overflow-scrolling": "touch",
+        }}>
         <div style={{ height: `${ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2)}px` }} />
         <For each={props.items}>
           {(item) => (
@@ -215,7 +220,8 @@ export function TimePicker(props: TimePickerProps) {
         isOpen={isOpen()}
         onClose={() => setIsOpen(false)}
         height="auto"
-        showHandle={false}>
+        showHandle={false}
+        disableDrag>
         <div class="flex flex-col h-auto bg-white dark:bg-gray-800 rounded-t-3xl overflow-hidden">
           {/* Header */}
           <div class="py-4 border-b border-gray-100 dark:border-gray-700 flex justify-center items-center z-30">

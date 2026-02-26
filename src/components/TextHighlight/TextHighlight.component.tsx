@@ -14,16 +14,18 @@ const colorClasses: Record<TextColor, string> = {
 };
 
 export function TextHighlight(props: TextHighlightProps) {
-  const highlightText = (text: string) => {
+  const highlighted = () => {
     const highlight = props.highlight;
-    if (!highlight) {
+    const text = props.children as string;
+
+    if (!highlight || !text) {
       return text;
     }
 
     const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
 
-    return parts.map((part) => {
+    return parts.map((part: string) => {
       if (part.toLowerCase() === highlight.toLowerCase()) {
         return (
           <span
@@ -39,9 +41,5 @@ export function TextHighlight(props: TextHighlightProps) {
     });
   };
 
-  if (!props.highlight) {
-    return <>{props.children}</>;
-  }
-
-  return <>{highlightText(props.children)}</>;
+  return <>{highlighted()}</>;
 }

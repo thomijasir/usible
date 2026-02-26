@@ -42,8 +42,8 @@ export interface AccordionProps {
   allowMultiple?: boolean;
   /** Position of the caret icon - @default "right" */
   caretPosition?: AccordionCaretPosition;
-  /** Custom caret icon (JSX element) */
-  caretIcon?: JSX.Element;
+  /** Custom caret icon — static element or a render function receiving the expanded state */
+  caretIcon?: JSX.Element | ((expanded: boolean) => JSX.Element);
   /** Additional CSS classes */
   class?: string;
 }

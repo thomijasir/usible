@@ -1,6 +1,6 @@
 import { Backdrop, Loader } from "~/components";
 import { ComponentPreview, PropsTable } from "../components";
-import { For, type Component, createSignal } from "solid-js";
+import { For, Show, type Component, createSignal } from "solid-js";
 
 export const BackdropStory: Component = () => {
   const [basicOpen, setBasicOpen] = createSignal(false);
@@ -106,10 +106,12 @@ export const BackdropStory: Component = () => {
     <p class="font-medium">Processing your order...</p>
     <p class="text-sm text-gray-500">Please wait while we confirm your payment.</p>
   </div>
-  <Backdrop isOpen={loadingOpen()} opacity={0.7} />
-  <div class="absolute inset-0 flex items-center justify-center z-50">
-    <Loader size="large" color="white" />
-  </div>
+  <Backdrop isOpen={loadingOpen()} opacity={0.7} onClick={() => setLoadingOpen(false)} />
+  <Show when={loadingOpen()}>
+    <div class="absolute inset-0 flex items-center justify-center z-50">
+      <Loader size="large" color="white" />
+    </div>
+  </Show>
 </div>`,
       render: (
         <div class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
@@ -125,10 +127,12 @@ export const BackdropStory: Component = () => {
               Please wait while we confirm your payment.
             </p>
           </div>
-          <Backdrop isOpen={loadingOpen()} opacity={0.7} />
-          <div class="absolute inset-0 flex items-center justify-center z-50">
-            <Loader size="large" color="white" />
-          </div>
+          <Backdrop isOpen={loadingOpen()} opacity={0.7} onClick={() => setLoadingOpen(false)} />
+          <Show when={loadingOpen()}>
+            <div class="absolute inset-0 flex items-center justify-center z-50">
+              <Loader size="large" color="white" />
+            </div>
+          </Show>
         </div>
       ),
     },

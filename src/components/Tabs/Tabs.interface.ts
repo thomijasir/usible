@@ -5,6 +5,7 @@ export interface TabItem {
   value: string | number;
   icon?: JSX.Element;
   disabled?: boolean;
+  active?: boolean;
   content: JSX.Element;
 }
 

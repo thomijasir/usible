@@ -2,6 +2,35 @@ import { Accordion } from "~/components";
 import { ComponentPreview, PropsTable } from "../components";
 import { For, type Component } from "solid-js";
 
+const PlusMinusIcon = (props: { expanded: boolean }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="w-5 h-5">
+    <line x1="5" y1="12" x2="19" y2="12" />
+    {!props.expanded && <line x1="12" y1="5" x2="12" y2="19" />}
+  </svg>
+);
+
+const ArrowRightIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="w-5 h-5">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
 export const AccordionStory: Component = () => {
   const propsReference = [
     {
@@ -21,6 +50,18 @@ export const AccordionStory: Component = () => {
       description: "Allow multiple items open",
     },
     { name: "class", type: "string", description: "Additional CSS classes" },
+    {
+      name: "caretPosition",
+      type: '"left" | "right"',
+      default: '"right"',
+      description: "Position of the caret icon",
+    },
+    {
+      name: "caretIcon",
+      type: "JSX.Element",
+      description:
+        "Static JSX element or render function (expanded: boolean) => JSX.Element",
+    },
   ];
   const example = [
     {
@@ -136,44 +177,6 @@ export const AccordionStory: Component = () => {
       ),
     },
     {
-      title: " FAQ Page",
-      code: `<div class="max-w-2xl">
-  <h2 class="text-xl font-bold mb-4">Frequently Asked Questions</h2>
-  <Accordion items={[
-    { id: 1, title: "How do I reset my password?", content: "Click 'Forgot Password' on the login page..." },
-    { id: 2, title: "What payment methods do you accept?", content: "We accept Visa, Mastercard, PayPal..." },
-    { id: 3, title: "Can I cancel my subscription?", content: "Yes, you can cancel anytime from your account..." }
-  ]} />
-</div>`,
-      render: (
-        <div class="max-w-2xl">
-          <h2 class="text-xl font-bold mb-4">Frequently Asked Questions</h2>
-          <Accordion
-            items={[
-              {
-                id: 1,
-                title: "How do I reset my password?",
-                content:
-                  "Click 'Forgot Password' on the login page and follow the instructions sent to your email.",
-              },
-              {
-                id: 2,
-                title: "What payment methods do you accept?",
-                content:
-                  "We accept Visa, Mastercard, PayPal, and Apple Pay for all subscriptions.",
-              },
-              {
-                id: 3,
-                title: "Can I cancel my subscription?",
-                content:
-                  "Yes, you can cancel anytime from your account settings. No cancellation fees apply.",
-              },
-            ]}
-          />
-        </div>
-      ),
-    },
-    {
       title: " Settings Sections",
       code: `<Accordion allowMultiple items={[
   { id: "profile", title: "Profile Settings", content: "Edit your name, email, and avatar..." },
@@ -201,6 +204,74 @@ export const AccordionStory: Component = () => {
               title: "Notifications",
               content:
                 "Manage email and push notifications. Control what updates you receive.",
+            },
+          ]}
+        />
+      ),
+    },
+    {
+      title: "Custom Plus/Minus Icon (Left)",
+      code: `<Accordion
+  caretIcon={(expanded) => <PlusMinusIcon expanded={expanded} />}
+  caretPosition="left"
+  items={[...]}
+/>`,
+      render: (
+        <Accordion
+          caretIcon={(expanded) => <PlusMinusIcon expanded={expanded} />}
+          caretPosition="left"
+          items={[
+            {
+              id: "pm-1",
+              title: "What is a render function icon?",
+              content:
+                "Passing a function as caretIcon lets the icon react to the expanded state, so you can show different icons when open or closed.",
+            },
+            {
+              id: "pm-2",
+              title: "Why place the icon on the left?",
+              content:
+                "Left-positioned icons are common in tree views and nested lists, giving a clear visual hierarchy at the start of each row.",
+            },
+            {
+              id: "pm-3",
+              title: "Can I combine this with allowMultiple?",
+              content:
+                "Yes! Each item receives its own expanded state, so every plus/minus icon updates independently.",
+            },
+          ]}
+        />
+      ),
+    },
+    {
+      title: "Custom Caret Icon (Right)",
+      code: `<Accordion
+  caretIcon={<ArrowRightIcon />}
+  caretPosition="right"
+  items={[...]}
+/>`,
+      render: (
+        <Accordion
+          caretIcon={<ArrowRightIcon />}
+          caretPosition="right"
+          items={[
+            {
+              id: "custom-1",
+              title: "What is a custom caret?",
+              content:
+                "You can pass any JSX element as the caretIcon prop to replace the default chevron with your own icon.",
+            },
+            {
+              id: "custom-2",
+              title: "Can I use any icon library?",
+              content:
+                "Yes! Pass any SVG or icon component via caretIcon. The icon appears on the right by default.",
+            },
+            {
+              id: "custom-3",
+              title: "Does it animate?",
+              content:
+                "The default chevron animates on expand/collapse. Custom icons are rendered as-is without automatic rotation.",
             },
           ]}
         />

@@ -1,17 +1,45 @@
-import { createSignal, For, Show } from "solid-js";
+import { createEffect, createSignal, For, on, onCleanup, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
 import type { TabsProps } from "./Tabs.interface";
 
 export function Tabs(props: TabsProps) {
   const isControlled = () => props.value !== undefined;
-  const [internalValue, setInternalValue] = createSignal<string | number | undefined>(
-    props.value ?? props.defaultValue ?? props.tabs[0]?.value,
+  const [internalValue, setInternalValue] = createSignal<
+    string | number | undefined
+  >(
+    props.value ??
+      props.defaultValue ??
+      props.tabs.find((t) => t.active)?.value ??
+      props.tabs[0]?.value,
   );
 
-  const activeValue = () => (isControlled() ? props.value : internalValue());
+  const activeValue = () => {
+    if (isControlled()) return props.value;
+    return internalValue();
+  };
+
   const orientation = () => props.orientation ?? "horizontal";
   const variant = () => props.variant ?? "standard";
   const isHorizontal = () => orientation() === "horizontal";
+
+  const [visible, setVisible] = createSignal(true);
+  const [isFirstRender, setIsFirstRender] = createSignal(true);
+
+  createEffect(
+    on(
+      activeValue,
+      () => {
+        if (isFirstRender()) {
+          setIsFirstRender(false);
+          return;
+        }
+        setVisible(false);
+        const t = setTimeout(() => setVisible(true), 160);
+        onCleanup(() => clearTimeout(t));
+      },
+      { defer: true },
+    ),
+  );
 
   const handleClick = (value: string | number, disabled?: boolean) => {
     if (disabled) return;
@@ -22,33 +50,88 @@ export function Tabs(props: TabsProps) {
   const activeTab = () => props.tabs.find((t) => t.value === activeValue());
 
   return (
-    <div class={twMerge("flex flex-col w-full", props.class)}>
+    <div
+      class={twMerge(
+        "flex w-full",
+        isHorizontal() ? "flex-col" : "flex-row gap-4",
+        props.class,
+      )}>
+      {/* Tab bar */}
       <div
         class={twMerge(
-          "relative flex",
-          isHorizontal() ? "flex-row border-b border-gray-200" : "flex-col",
+          "flex",
+          isHorizontal() ? "flex-row" : "flex-col",
           props.centered && isHorizontal() ? "justify-center" : "",
-          variant() === "filled" ? "bg-gray-100 rounded-lg p-1" : "",
+          // Standard
+          variant() === "standard" && isHorizontal()
+            ? "border-b border-gray-200 dark:border-gray-700"
+            : "",
+          variant() === "standard" && !isHorizontal()
+            ? "border-r border-gray-200 dark:border-gray-700"
+            : "",
+          // Filled
+          variant() === "filled"
+            ? "bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-0.5 border-none"
+            : "",
+          // Block
+          variant() === "block"
+            ? "border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800/50"
+            : "",
         )}>
         <For each={props.tabs}>
-          {(tab) => {
+          {(tab, index) => {
             const isActive = () => tab.value === activeValue();
             return (
               <button
                 disabled={tab.disabled}
                 onClick={() => handleClick(tab.value, tab.disabled)}
                 class={twMerge(
-                  "relative flex items-center justify-center gap-2 px-4 py-3 font-medium text-sm transition-all duration-200 whitespace-nowrap",
-                  isHorizontal() ? "flex-row" : "flex-col",
+                  "relative flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                  isHorizontal() ? "flex-row" : "flex-row",
+
+                  // --- Standard ---
+                  variant() === "standard" && isActive() && isHorizontal()
+                    ? "text-primary border-b-2 border-primary -mb-px"
+                    : "",
+                  variant() === "standard" && isActive() && !isHorizontal()
+                    ? "text-primary border-r-2 border-primary -mr-px"
+                    : "",
+                  variant() === "standard" && !isActive() && !tab.disabled
+                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border-b-2 border-transparent -mb-px"
+                    : "",
+
+                  // --- Filled ---
+                  variant() === "filled" ? "rounded-lg flex-1" : "",
+                  variant() === "filled" && isActive()
+                    ? "bg-white dark:bg-gray-700 shadow-sm text-primary dark:text-primary"
+                    : "",
+                  variant() === "filled" && !isActive() && !tab.disabled
+                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/60 dark:hover:bg-gray-700/60"
+                    : "",
+
+                  // --- Block ---
                   variant() === "block" ? "flex-1" : "",
-                  variant() === "filled" ? "rounded-md" : "",
-                  isActive() && (variant() === "standard" || variant() === "block") ? "text-primary" : "",
-                  isActive() && variant() === "filled" ? "bg-white shadow-sm text-primary" : "",
-                  !isActive() && !tab.disabled ? "text-gray-600 hover:text-gray-900" : "",
-                  tab.disabled ? "opacity-40 cursor-not-allowed" : "",
+                  variant() === "block" && index() > 0
+                    ? "border-l border-gray-200 dark:border-gray-700"
+                    : "",
+                  variant() === "block" && isActive()
+                    ? "bg-white dark:bg-gray-700 text-primary shadow-sm"
+                    : "",
+                  variant() === "block" && !isActive() && !tab.disabled
+                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-white/70 dark:hover:bg-gray-700/50"
+                    : "",
+
+                  // Disabled
+                  tab.disabled
+                    ? "opacity-40 cursor-not-allowed pointer-events-none"
+                    : "cursor-pointer",
                 )}>
                 <Show when={tab.icon}>
-                  <span class={isActive() ? "text-primary" : "text-gray-500"}>
+                  <span
+                    class={twMerge(
+                      "text-base leading-none",
+                      isActive() ? "text-primary" : "text-gray-400",
+                    )}>
                     {tab.icon}
                   </span>
                 </Show>
@@ -57,16 +140,24 @@ export function Tabs(props: TabsProps) {
             );
           }}
         </For>
-        <Show when={(variant() === "standard" || variant() === "block") && activeValue() !== undefined}>
-          <div class="absolute bg-primary transition-all duration-300 ease-out"
-            style={isHorizontal()
-              ? { bottom: "0", height: "2px", left: "0", right: "0" }
-              : { left: "0", width: "2px", top: "0", bottom: "0" }}
-          />
-        </Show>
       </div>
-      <div class="relative w-full mt-4">
-        {activeTab()?.content}
+
+      {/* Tab content */}
+      <div
+        class={twMerge(
+          "w-full transition-all duration-200 ease-out",
+          isHorizontal() ? "mt-4" : "mt-0",
+          visible() ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1",
+        )}>
+        <Show
+          when={activeTab()?.content}
+          fallback={
+            <div class="flex items-center justify-center py-10 text-sm text-gray-400 dark:text-gray-600 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
+              No content available for this tab.
+            </div>
+          }>
+          {activeTab()?.content}
+        </Show>
       </div>
     </div>
   );

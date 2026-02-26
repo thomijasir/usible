@@ -38,7 +38,7 @@ export function Drawer(props: DrawerProps) {
   });
 
   const handlePointerDown = (e: PointerEvent) => {
-    if (!drawerRef) return;
+    if (!drawerRef || props.disableDrag) return;
     isDragging = true;
     startY = e.clientY;
     currentY = 0;
@@ -46,13 +46,13 @@ export function Drawer(props: DrawerProps) {
   };
 
   const handlePointerMove = (e: PointerEvent) => {
-    if (!isDragging || !drawerRef) return;
+    if (!isDragging || !drawerRef || props.disableDrag) return;
     currentY = Math.max(0, e.clientY - startY);
     drawerRef.style.transform = `translateY(${currentY}px)`;
   };
 
   const handlePointerUp = () => {
-    if (!isDragging || !drawerRef) return;
+    if (!isDragging || !drawerRef || props.disableDrag) return;
     isDragging = false;
 
     if (currentY > 150) {
@@ -116,7 +116,7 @@ export function Drawer(props: DrawerProps) {
         onPointerCancel={handlePointerUp}
         style={{
           height: heightStyle(),
-          "touch-action": "none",
+          "touch-action": props.disableDrag ? "auto" : "none",
           display: "none",
         }}
         class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl z-50 overflow-hidden focus:outline-none">
