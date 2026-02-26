@@ -3,7 +3,7 @@ import { createMemo, Show, type Component } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { DocsLayout } from "../layouts";
 import * as storyList from "../stories";
-import { stripAndKebabCase } from "../utils";
+import { stripAndKebabCase } from "../../utils";
 
 export function StoriesPage() {
   const params = useParams<{ name: string }>();

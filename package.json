@@ -1,6 +1,6 @@
 {
   "name": "usible",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,9 +10,9 @@
     "format:check": "prettier --check .",
     "lint": "eslint src/ && tsc --noEmit",
     "preview": "rsbuild preview",
-    "test": "rstest",
-    "test:coverage": "rstest --coverage",
-    "test:watch": "rstest --watch"
+    "test": "rstest src/",
+    "test:coverage": "bun run test --coverage",
+    "test:watch": "bun run test --watch"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.4",
@@ -27,6 +27,7 @@
     "@rsbuild/plugin-babel": "^1.0.6",
     "@rsbuild/plugin-solid": "^1.0.6",
     "@rstest/core": "^0.7.8",
+    "@rstest/coverage-istanbul": "^0.2.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

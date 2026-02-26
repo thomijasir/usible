@@ -1,7 +1,6 @@
 import { Router, Route } from "@solidjs/router";
 import { HomePage, GettingStartedPage, StoriesPage } from "./docs/pages";
-import "./docs/styles/docs.css";
-
+import "./App.css";
 function App() {
   return (
     <Router>

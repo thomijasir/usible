@@ -2,6 +2,8 @@
 .DS_Store
 *.local
 *.log*
+.coverage
+coverage
 
 # Dist
 node_modules

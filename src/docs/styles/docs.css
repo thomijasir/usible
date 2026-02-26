@@ -1,5 +1,3 @@
-@import "../../components/usible.css";
-
 :root {
   --docs-bg: #ffffff;
   --docs-text: #1f2937;
@@ -58,12 +56,34 @@ body {
 }
 
 /* Syntax highlighting */
-.hl-tag  { color: #1976d2; }
-.hl-attr { color: #0a7c5c; }
-.hl-str  { color: #b5531a; }
-.hl-expr { color: #6b7280; }
+.hl-tag {
+  color: #1976d2;
+}
 
-.dark .hl-tag  { color: #79b8ff; }
-.dark .hl-attr { color: #b5cea8; }
-.dark .hl-str  { color: #ce9178; }
-.dark .hl-expr { color: #9ca3af; }
+.hl-attr {
+  color: #0a7c5c;
+}
+
+.hl-str {
+  color: #b5531a;
+}
+
+.hl-expr {
+  color: #6b7280;
+}
+
+.dark .hl-tag {
+  color: #79b8ff;
+}
+
+.dark .hl-attr {
+  color: #b5cea8;
+}
+
+.dark .hl-str {
+  color: #ce9178;
+}
+
+.dark .hl-expr {
+  color: #9ca3af;
+}
