@@ -1,8 +1,11 @@
 import { createSignal, createMemo } from "solid-js";
 import type { AutocompleteProps } from "./Autocomplete.interface";
 
+const ANIMATION_DURATION = 300;
+
 export function createAutocompleteController(props: AutocompleteProps) {
   const [isOpen, setIsOpen] = createSignal(false);
+  const [isVisible, setIsVisible] = createSignal(false);
   const [searchQuery, setSearchQuery] = createSignal("");
 
   const filteredItems = createMemo(() => {
@@ -20,11 +23,15 @@ export function createAutocompleteController(props: AutocompleteProps) {
   );
 
   const handleOpen = () => {
-    if (!props.disabled) setIsOpen(true);
+    if (!props.disabled) {
+      setIsVisible(true);
+      requestAnimationFrame(() => setIsOpen(true));
+    }
   };
   const handleClose = () => {
     setIsOpen(false);
     setSearchQuery("");
+    setTimeout(() => setIsVisible(false), ANIMATION_DURATION);
   };
   const handleSelect = (id: string) => {
     props.onChange(id);
@@ -32,7 +39,7 @@ export function createAutocompleteController(props: AutocompleteProps) {
   };
 
   return {
-    state: { isOpen, searchQuery, filteredItems, selectedItem },
+    state: { isOpen, isVisible, searchQuery, filteredItems, selectedItem },
     actions: { handleOpen, handleClose, setSearchQuery, handleSelect },
   };
 }

@@ -87,9 +87,9 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const iconSizeClasses: Record<ButtonSize, string> = {
-  small: "p-1.5",
-  medium: "p-2",
-  large: "p-3",
+  small: "p-1.5 aspect-square",
+  medium: "p-2 aspect-square",
+  large: "p-3 aspect-square",
 };
 
 const disabledClasses = "opacity-50 cursor-not-allowed pointer-events-none";

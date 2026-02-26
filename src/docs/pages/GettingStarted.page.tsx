@@ -9,10 +9,68 @@ export function GettingStartedPage() {
             Getting Started
           </h1>
           <p class="text-gray-600 dark:text-gray-400">
-            Learn how to integrate Usible UI components into your SolidJS
-            project.
+            Welcome to Usible — a mobile-first UI component library for SolidJS.
+            Learn how to integrate it into your project and ship faster.
           </p>
         </div>
+
+        <section>
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+            Why Usible?
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Usible was built out of a need for a reliable starter kit that
+            accelerates mobile-first application development. Every component is
+            designed with a mobile-first mindset from the ground up — not as an
+            afterthought.
+          </p>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            The goal is simple: reduce the time between idea and working product.
+            Instead of rebuilding the same Input, Button, or Autocomplete every
+            project, Usible gives you a solid, consistent foundation so you can
+            focus on what makes your app unique.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900 rounded-xl p-4">
+              <h3 class="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                Mobile First
+              </h3>
+              <p class="text-sm text-blue-700 dark:text-blue-300">
+                Every component is built and tested for touch interactions,
+                small viewports, and mobile UX patterns before scaling up to
+                desktop.
+              </p>
+            </div>
+            <div class="bg-purple-50 dark:bg-purple-950 border border-purple-100 dark:border-purple-900 rounded-xl p-4">
+              <h3 class="font-semibold text-purple-900 dark:text-purple-100 mb-1">
+                Copy-Paste Ownership
+              </h3>
+              <p class="text-sm text-purple-700 dark:text-purple-300">
+                No npm package lock-in. Copy the components into your project
+                and own them completely — customize freely without constraints.
+              </p>
+            </div>
+            <div class="bg-green-50 dark:bg-green-950 border border-green-100 dark:border-green-900 rounded-xl p-4">
+              <h3 class="font-semibold text-green-900 dark:text-green-100 mb-1">
+                SolidJS Native
+              </h3>
+              <p class="text-sm text-green-700 dark:text-green-300">
+                Built specifically for SolidJS reactivity model — no wrappers,
+                no compatibility layers. Just lean, fast components that feel
+                natural.
+              </p>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-950 border border-amber-100 dark:border-amber-900 rounded-xl p-4">
+              <h3 class="font-semibold text-amber-900 dark:text-amber-100 mb-1">
+                Starter Kit Ready
+              </h3>
+              <p class="text-sm text-amber-700 dark:text-amber-300">
+                Drop Usible into a new project and immediately have a complete
+                UI foundation — inputs, buttons, modals, navigation, and more.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <section>
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">

@@ -17,6 +17,7 @@ const componentGroups = [
       { id: "skeleton", label: "Skeleton" },
       { id: "image", label: "Image" },
       { id: "html-render", label: "HTML Render" },
+      { id: "error-boundary", label: "Error Boundary" },
     ],
   },
   {
@@ -24,20 +25,25 @@ const componentGroups = [
     items: [
       { id: "button", label: "Button" },
       { id: "checkbox", label: "Checkbox" },
+      { id: "radio", label: "Radio" },
       { id: "switch", label: "Switch" },
       { id: "input", label: "Input" },
       { id: "text-area", label: "Text Area" },
       { id: "select", label: "Select" },
+      { id: "autocomplete", label: "Autocomplete" },
       { id: "slider", label: "Slider" },
       { id: "numpad", label: "Numpad" },
       { id: "currency-input", label: "Currency Input" },
       { id: "date-picker", label: "Date Picker" },
       { id: "time-picker", label: "Time Picker" },
+      { id: "document-upload", label: "Document Upload" },
+      { id: "media-upload", label: "Media Upload" },
     ],
   },
   {
     title: "Feedback & Display",
     items: [
+      { id: "card", label: "Card" },
       { id: "chip", label: "Chip" },
       { id: "info-box", label: "Info Box" },
       { id: "text-highlight", label: "Text Highlight" },
@@ -47,10 +53,10 @@ const componentGroups = [
   {
     title: "Overlay & Navigation",
     items: [
+      { id: "tabs", label: "Tabs" },
       { id: "backdrop", label: "Backdrop" },
       { id: "dialog", label: "Dialog" },
       { id: "drawer", label: "Drawer" },
-      { id: "menulist", label: "MenuList" },
       { id: "accordion", label: "Accordion" },
     ],
   },
@@ -73,7 +79,7 @@ export function Sidebar(props: SidebarProps) {
         )}>
         <nav class="p-4">
           <A
-            href="/"
+            href="/stories"
             class="block px-3 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 font-medium"
             activeClass="bg-primary/10 text-primary">
             Getting Started

@@ -56,16 +56,17 @@ export function Radio(props: RadioProps) {
       </div>
     );
 
-  const boxedClasses = `items-start p-4 rounded-xl border shadow-sm ${
-    props.checked ? "bg-blue-50 border-primary" : "bg-white border-gray-200"
-  }`;
+  const boxedClasses = () =>
+    `items-start p-4 rounded-xl border shadow-sm ${
+      props.checked ? "bg-blue-50 border-primary" : "bg-white border-gray-200"
+    }`;
   const plainClasses = "items-center p-0 border-0 bg-transparent";
 
   return (
     <div
       class={twMerge(
         "relative flex transition-all duration-200",
-        isBoxed() ? boxedClasses : plainClasses,
+        isBoxed() ? boxedClasses() : plainClasses,
         props.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
         props.error ? "border-error bg-red-50" : "",
         props.containerClass,

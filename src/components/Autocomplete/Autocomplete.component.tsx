@@ -27,9 +27,14 @@ export function Autocomplete(props: AutocompleteProps) {
         />
       </div>
 
-      <Show when={state.isOpen()}>
+      <Show when={state.isVisible()}>
         <Portal>
-          <div class="fixed inset-0 z-[9999] bg-white flex flex-col">
+          <div
+            class={twMerge(
+              "fixed inset-0 z-[9999] bg-white flex flex-col",
+              "transition-all duration-300 ease-out",
+              state.isOpen() ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
+            )}>
             <div class="flex-none bg-white">
               <div class="flex items-center px-4 pt-4 pb-4">
                 <div class="flex-1 flex items-center">

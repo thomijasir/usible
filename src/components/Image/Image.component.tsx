@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, batch, on } from "solid-js";
 import { twMerge } from "tailwind-merge";
 import type { ImageProps } from "./Image.interface";
 import { Skeleton } from "../Skeleton";
@@ -8,17 +8,24 @@ export function Image(props: ImageProps) {
   const [isLoading, setIsLoading] = createSignal(!!props.src);
   const [hasError, setHasError] = createSignal(false);
 
-  createEffect(() => {
-    if (props.src !== imgSrc()) {
-      setImgSrc(props.src);
-      if (props.src) {
-        setIsLoading(true);
-        setHasError(false);
-      } else {
-        setIsLoading(false);
-      }
-    }
-  });
+  createEffect(
+    on(
+      () => props.src,
+      (src) => {
+        if (src) {
+          batch(() => {
+            setImgSrc(src);
+            setIsLoading(true);
+            setHasError(false);
+          });
+        } else {
+          setImgSrc(undefined);
+          setIsLoading(false);
+        }
+      },
+      { defer: true },
+    ),
+  );
 
   const handleLoad = (e: Event) => {
     setIsLoading(false);
@@ -26,12 +33,17 @@ export function Image(props: ImageProps) {
   };
 
   const handleError = (e: Event) => {
-    setIsLoading(false);
-    setHasError(true);
-
     if (props.fallbackSrc && imgSrc() !== props.fallbackSrc) {
-      setImgSrc(props.fallbackSrc);
-      setHasError(false);
+      batch(() => {
+        setImgSrc(props.fallbackSrc);
+        setIsLoading(true);
+        setHasError(false);
+      });
+    } else {
+      batch(() => {
+        setIsLoading(false);
+        setHasError(true);
+      });
     }
 
     props.onError?.(e);

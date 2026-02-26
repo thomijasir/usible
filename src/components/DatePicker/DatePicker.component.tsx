@@ -180,7 +180,9 @@ export function DatePicker(props: DatePickerProps) {
         onClose={() => setIsOpen(false)}
         height="auto"
         showHandle>
-        <div class="px-5 pb-8 pt-2">
+        <div
+          class="px-5 pb-8 pt-2 max-w-sm mx-auto w-full"
+          onPointerDown={(e) => e.stopPropagation()}>
           <div class="flex items-center justify-between mb-4">
             <Button
               variant="text"
@@ -217,7 +219,7 @@ export function DatePicker(props: DatePickerProps) {
                 )}
               </For>
             </div>
-            <div class="grid grid-cols-7 gap-1 text-center min-h-75">
+            <div class="grid grid-cols-7 gap-1 text-center">
               <For each={calendarDays()}>{(day) => renderDay(day)}</For>
             </div>
           </div>
