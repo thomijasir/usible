@@ -79,7 +79,11 @@ const formatCurrency = (
 
 export function CurrencyInput(props: CurrencyInputProps) {
   const [displayValue, setDisplayValue] = createSignal(
-    formatCurrency(props.locale ?? "en-US", props.value, props.decimalDigits ?? 2),
+    formatCurrency(
+      props.locale ?? "en-US",
+      props.value,
+      props.decimalDigits ?? 2,
+    ),
   );
   const [isFocused, setIsFocused] = createSignal(false);
   let inputRef: HTMLInputElement | undefined;
@@ -178,7 +182,9 @@ export function CurrencyInput(props: CurrencyInputProps) {
   return (
     <div class="relative">
       <Input
-        ref={(el) => { inputRef = el; }}
+        ref={(el) => {
+          inputRef = el;
+        }}
         value={displayValue()}
         onInput={handleInput}
         onBlur={handleBlur}
@@ -191,7 +197,7 @@ export function CurrencyInput(props: CurrencyInputProps) {
         size={props.size}
         fullWidth={true}
         startAdornment={
-          <span class="text-gray-500 text-sm font-medium">
+          <span class="text-foreground-muted text-sm font-medium">
             {getCurrencySymbol(currency())}
           </span>
         }

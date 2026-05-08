@@ -10,8 +10,16 @@ export const RadioStory: Component = () => {
 
   const propsReference = [
     { name: "label", type: "JSX.Element | string", description: "Radio label" },
-    { name: "description", type: "string", description: "Supporting text below the label" },
-    { name: "icon", type: "JSX.Element", description: "Icon displayed alongside the label" },
+    {
+      name: "description",
+      type: "string",
+      description: "Supporting text below the label",
+    },
+    {
+      name: "icon",
+      type: "JSX.Element",
+      description: "Icon displayed alongside the label",
+    },
     { name: "checked", type: "boolean", description: "Checked state" },
     {
       name: "onChange",
@@ -34,8 +42,16 @@ export const RadioStory: Component = () => {
     },
     { name: "disabled", type: "boolean", description: "Disable the radio" },
     { name: "error", type: "boolean", description: "Error state" },
-    { name: "id", type: "string", description: "HTML id for the input element" },
-    { name: "class", type: "string", description: "Additional CSS classes for the input" },
+    {
+      name: "id",
+      type: "string",
+      description: "HTML id for the input element",
+    },
+    {
+      name: "class",
+      type: "string",
+      description: "Additional CSS classes for the input",
+    },
     {
       name: "containerClass",
       type: "string",
@@ -224,12 +240,15 @@ export const RadioStory: Component = () => {
           Radio Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          A radio input with boxed and plain variants, icon support, and flexible input positioning.
+          A radio input with boxed and plain variants, icon support, and
+          flexible input positioning.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

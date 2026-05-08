@@ -45,7 +45,7 @@ export const TabsStory: Component = () => {
     { name: "class", type: "string", description: "Additional CSS classes" },
   ];
 
-  const basicTabs = [
+  const createBasicTabs = () => [
     {
       label: "Overview",
       value: "overview",
@@ -141,7 +141,7 @@ export const TabsStory: Component = () => {
     },
   ];
 
-  const iconTabs = [
+  const createIconTabs = () => [
     {
       label: "Profile",
       value: "profile",
@@ -192,7 +192,7 @@ export const TabsStory: Component = () => {
     },
   ];
 
-  const disabledTabs = [
+  const createDisabledTabs = () => [
     {
       label: "Active",
       value: "active",
@@ -272,17 +272,17 @@ export const TabsStory: Component = () => {
     { label: "History", value: "history", content: <div>History content</div> },
   ]}
 />`,
-      render: <Tabs tabs={basicTabs} />,
+      render: <Tabs tabs={createBasicTabs()} />,
     },
     {
       title: "Filled Variant",
       code: `<Tabs variant="filled" tabs={tabs} />`,
-      render: <Tabs variant="filled" tabs={basicTabs} />,
+      render: <Tabs variant="filled" tabs={createBasicTabs()} />,
     },
     {
       title: "Block Variant",
       code: `<Tabs variant="block" tabs={tabs} />`,
-      render: <Tabs variant="block" tabs={basicTabs} />,
+      render: <Tabs variant="block" tabs={createBasicTabs()} />,
     },
     {
       title: "With Icons",
@@ -293,17 +293,17 @@ export const TabsStory: Component = () => {
     { label: "Notifications", value: "notifications", icon: <span>🔔</span>, content: <div>Notification preferences</div> },
   ]}
 />`,
-      render: <Tabs tabs={iconTabs} />,
+      render: <Tabs tabs={createIconTabs()} />,
     },
     {
       title: "Centered",
       code: `<Tabs centered tabs={tabs} />`,
-      render: <Tabs centered tabs={basicTabs} />,
+      render: <Tabs centered tabs={createBasicTabs()} />,
     },
     {
       title: "Vertical Orientation",
       code: `<Tabs orientation="vertical" tabs={tabs} />`,
-      render: <Tabs orientation="vertical" tabs={basicTabs} />,
+      render: <Tabs orientation="vertical" tabs={createBasicTabs()} />,
     },
     {
       title: "Controlled",
@@ -328,7 +328,7 @@ export const TabsStory: Component = () => {
     { label: "Also Active", value: "also-active", content: <div>Another tab</div> },
   ]}
 />`,
-      render: <Tabs tabs={disabledTabs} />,
+      render: <Tabs tabs={createDisabledTabs()} />,
     },
   ];
 

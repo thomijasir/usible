@@ -1,57 +1,47 @@
-import { describe, it, expect } from "@rstest/core";
+import { render } from "@solidjs/testing-library";
+import { describe, it, expect } from "vitest";
+import { Skeleton } from "./Skeleton.component";
 
-describe("Skeleton Component", () => {
-  it("renders with default text variant and pulse animation", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded mt-1 mb-1 h-4 w-full animate-pulse"></div>`;
-
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.className).toContain("bg-gray-200");
-    expect(skeleton?.className).toContain("animate-pulse");
-    expect(skeleton?.className).toContain("rounded");
+describe("Skeleton", () => {
+  it("default variant=text has rounded class", () => {
+    const { container } = render(() => <Skeleton />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("rounded");
   });
 
-  it("renders with rectangular variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded"></div>`;
-
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.className).toContain("rounded");
-    expect(skeleton?.className).not.toContain("rounded-full");
+  it("circular variant has themed pill radius class", () => {
+    const { container } = render(() => <Skeleton variant="circular" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("rounded-usible-pill");
   });
 
-  it("renders with circular variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded-full"></div>`;
-
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.className).toContain("rounded-full");
+  it("animation=pulse has animate-pulse class", () => {
+    const { container } = render(() => <Skeleton animation="pulse" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("animate-pulse");
   });
 
-  it("renders with no animation", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>`;
-
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.className).toContain("animate-pulse");
+  it("animation=none does not have animate-pulse class", () => {
+    const { container } = render(() => <Skeleton animation="none" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).not.toContain("animate-pulse");
   });
 
-  it("renders with custom width and height", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded" style="width: 200px; height: 100px;"></div>`;
-
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.style.width).toBe("200px");
-    expect(skeleton?.style.height).toBe("100px");
+  it("applies width style when provided", () => {
+    const { container } = render(() => <Skeleton width="200px" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.style.width).toBe("200px");
   });
 
-  it("renders with custom class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 rounded custom-skeleton"></div>`;
+  it("applies height style when provided", () => {
+    const { container } = render(() => <Skeleton height="50px" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.style.height).toBe("50px");
+  });
 
-    const skeleton = container.querySelector("div");
-    expect(skeleton?.className).toContain("custom-skeleton");
+  it("applies custom class", () => {
+    const { container } = render(() => <Skeleton class="my-skeleton" />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("my-skeleton");
   });
 });

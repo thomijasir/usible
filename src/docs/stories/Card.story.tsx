@@ -14,7 +14,8 @@ export const CardStory: Component = () => {
     {
       name: "onClick",
       type: "() => void",
-      description: "Click handler — adds a press scale effect and cursor-pointer",
+      description:
+        "Click handler — adds a press scale effect and cursor-pointer",
     },
     { name: "class", type: "string", description: "Additional CSS classes" },
   ];
@@ -151,13 +152,15 @@ export const CardStory: Component = () => {
           Card Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          A flexible container component with elevated, outlined, and filled variants and optional
-          interactivity.
+          A flexible container component with elevated, outlined, and filled
+          variants and optional interactivity.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

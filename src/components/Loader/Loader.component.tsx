@@ -10,7 +10,7 @@ const sizeClasses: Record<LoaderSize, string> = {
 const colorClasses: Record<LoaderColor, string> = {
   primary: "border-primary/30 border-t-primary",
   secondary: "border-secondary/30 border-t-secondary",
-  white: "border-white/30 border-t-white",
+  white: "border-inverse/30 border-t-inverse",
   current: "border-current/30 border-t-current",
 };
 
@@ -20,7 +20,7 @@ export function Loader(props: LoaderProps) {
 
   const classes = () =>
     twMerge(
-      "inline-block rounded-full animate-spin",
+      "inline-block rounded-usible-pill animate-spin",
       sizeClasses[size()],
       colorClasses[color()],
       props.class,

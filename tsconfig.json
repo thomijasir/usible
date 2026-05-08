@@ -11,6 +11,7 @@
     "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
+    "types": ["vitest/globals", "@testing-library/jest-dom", "node"],
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
@@ -20,6 +21,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     /* path resolve */
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]

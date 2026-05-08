@@ -16,7 +16,7 @@ function KeyButton(props: {
       type="button"
       onClick={props.onClick}
       class={twMerge(
-        "flex h-16 w-16 items-center justify-center rounded-full text-2xl font-medium transition-all duration-100 active:scale-95 focus:outline-none select-none",
+        "flex h-16 w-16 items-center justify-center rounded-usible-pill text-2xl font-medium transition-all duration-100 active:scale-95 focus:outline-none select-none",
         props.baseClassName,
         props.class,
       )}>
@@ -31,22 +31,24 @@ export function Numpad(props: NumpadProps) {
   const themeClasses = () => {
     if (theme() === "dark") {
       return {
-        container: "bg-gray-900 text-white",
-        key: "bg-gray-700 hover:bg-gray-600 active:bg-gray-500 text-white",
-        specialKey: "text-white hover:bg-gray-700 active:bg-gray-600",
+        container: "bg-foreground text-inverse",
+        key: "bg-surface-subtle hover:bg-surface-hover active:bg-surface-active text-foreground shadow-usible-sm",
+        specialKey:
+          "text-inverse hover:bg-surface-subtle/20 active:bg-surface-subtle/30",
       };
     }
     return {
-      container: "bg-white text-gray-900",
-      key: "bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-900 shadow-sm",
-      specialKey: "text-gray-900 hover:bg-gray-100 active:bg-gray-200",
+      container: "bg-surface text-foreground",
+      key: "bg-surface-muted hover:bg-surface-hover active:bg-surface-active text-foreground shadow-usible-sm",
+      specialKey:
+        "text-foreground hover:bg-surface-hover active:bg-surface-active",
     };
   };
 
   return (
     <div
       class={twMerge(
-        "flex flex-col items-center gap-6 rounded-xl max-w-xs mx-auto p-6",
+        "flex flex-col items-center gap-6 rounded-usible-lg max-w-xs mx-auto p-6",
         themeClasses().container,
         props.class,
       )}>

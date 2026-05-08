@@ -1,47 +1,40 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Backdrop } from "./Backdrop.component";
 
-describe("Backdrop Component", () => {
-  it("renders when isOpen is true", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `
-      <div class="fixed inset-0 bg-black z-40 backdrop-blur-md" style="opacity: 0.7; display: block;"></div>
-    `;
-
-    const backdrop = container.querySelector("div");
-    expect(backdrop).toBeTruthy();
-    expect(backdrop?.className).toContain("fixed inset-0");
-    expect(backdrop?.className).toContain("bg-black");
+describe("Backdrop", () => {
+  it("renders a div with aria-hidden=true", () => {
+    const { container } = render(() => <Backdrop isOpen={false} />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el).toBeInTheDocument();
+    expect(el).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("renders with custom opacity", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="fixed inset-0 bg-black z-40 backdrop-blur-md" style="opacity: 0.5;"></div>
-    `;
-
-    const backdrop = container.querySelector("div") as HTMLDivElement;
-    expect(backdrop?.style.opacity).toBe("0.5");
+  it("renders in the DOM when isOpen=false (visibility controlled by display/opacity)", () => {
+    const { container } = render(() => <Backdrop isOpen={false} />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el).toBeInTheDocument();
   });
 
-  it("has correct z-index", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="fixed inset-0 bg-black z-40"></div>
-    `;
-
-    const backdrop = container.querySelector("div");
-    expect(backdrop?.className).toContain("z-40");
+  it("renders in the DOM when isOpen=true", () => {
+    const { container } = render(() => <Backdrop isOpen={true} />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el).toBeInTheDocument();
   });
 
-  it("has backdrop blur effect", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="fixed inset-0 bg-black z-40 backdrop-blur-md"></div>
-    `;
+  it("calls onClick when the backdrop is clicked", () => {
+    const handleClick = vi.fn();
+    const { container } = render(() => (
+      <Backdrop isOpen={true} onClick={handleClick} />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    fireEvent.click(el);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
 
-    const backdrop = container.querySelector("div");
-    expect(backdrop?.className).toContain("backdrop-blur-md");
+  it("does not throw when clicked without onClick handler", () => {
+    const { container } = render(() => <Backdrop isOpen={true} />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(() => fireEvent.click(el)).not.toThrow();
   });
 });

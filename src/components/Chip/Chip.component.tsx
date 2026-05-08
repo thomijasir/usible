@@ -13,8 +13,7 @@ const sizeClasses: Record<ChipSize, string> = {
 
 const colorClasses: Record<ChipVariant, Record<ChipColor, string>> = {
   filled: {
-    default:
-      "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600",
+    default: "bg-surface-subtle text-foreground hover:bg-surface-active",
     primary: "bg-primary-light text-primary-dark hover:bg-primary-active",
     secondary:
       "bg-secondary-light text-secondary-dark hover:bg-secondary-active",
@@ -25,7 +24,7 @@ const colorClasses: Record<ChipVariant, Record<ChipColor, string>> = {
   },
   outlined: {
     default:
-      "border border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800",
+      "border border-border-strong text-foreground hover:bg-surface-hover",
     primary: "border border-primary text-primary hover:bg-primary-light/10",
     secondary:
       "border border-secondary text-secondary hover:bg-secondary-light/10",
@@ -59,7 +58,7 @@ export function Chip(props: ChipProps) {
   const size = () => props.size ?? "medium";
 
   const baseClasses =
-    "inline-flex items-center justify-center rounded-full font-medium transition-colors duration-200";
+    "inline-flex items-center justify-center rounded-usible-pill font-medium transition-colors duration-200";
 
   const disabledClasses = () =>
     props.disabled
@@ -100,7 +99,7 @@ export function Chip(props: ChipProps) {
           role="button"
           tabIndex={0}
           onClick={handleDelete}
-          class="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer">
+          class="ml-1.5 -mr-1 p-0.5 rounded-usible-pill hover:bg-surface-active cursor-pointer">
           <CloseIcon />
         </div>
       )}

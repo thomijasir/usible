@@ -1,93 +1,70 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Chip } from "./Chip.component";
 
-describe("Chip Component", () => {
-  it("renders with label", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full px-3 py-1 bg-usible-primary text-white">
-        <span>Tag</span>
-      </div>
-    `;
-
-    const chip = container.querySelector("span");
-    expect(chip?.textContent).toBe("Tag");
+describe("Chip", () => {
+  it("renders label text", () => {
+    render(() => <Chip label="My Chip" />);
+    expect(screen.getByText("My Chip")).toBeInTheDocument();
   });
 
-  it("renders with filled variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full px-3 py-1 bg-usible-primary text-white">
-        <span>Primary</span>
-      </div>
-    `;
-
-    const chip = container.querySelector("div");
-    expect(chip?.className).toContain("bg-usible-primary");
-    expect(chip?.className).toContain("text-white");
+  it("filled variant with primary color applies bg-primary-light class", () => {
+    const { container } = render(() => (
+      <Chip label="Chip" variant="filled" color="primary" />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("bg-primary-light");
   });
 
-  it("renders with outlined variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full px-3 py-1 border border-usible-primary text-usible-primary">
-        <span>Outlined</span>
-      </div>
-    `;
-
-    const chip = container.querySelector("div");
-    expect(chip?.className).toContain("border-usible-primary");
-    expect(chip?.className).toContain("text-usible-primary");
+  it("outlined variant shows border class", () => {
+    const { container } = render(() => (
+      <Chip label="Chip" variant="outlined" />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("border");
   });
 
-  it("renders with delete button", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full px-3 py-1 bg-usible-primary">
-        <span>Deletable</span>
-        <button class="ml-1" aria-label="delete">×</button>
-      </div>
-    `;
-
-    const deleteBtn = container.querySelector("button");
-    expect(deleteBtn).toBeTruthy();
-    expect(deleteBtn?.getAttribute("aria-label")).toBe("delete");
+  it("shows delete button when onDelete is provided", () => {
+    const handleDelete = vi.fn();
+    render(() => <Chip label="Chip" onDelete={handleDelete} />);
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("renders with small size", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full px-2 py-0.5 text-sm">
-        <span>Small</span>
-      </div>
-    `;
-
-    const chip = container.querySelector("div");
-    expect(chip?.className).toContain("px-2 py-0.5");
+  it("does not show delete button when onDelete is not provided", () => {
+    render(() => <Chip label="Chip" />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
-  it("renders with success color", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full bg-usible-success text-white">
-        <span>Success</span>
-      </div>
-    `;
-
-    const chip = container.querySelector("div");
-    expect(chip?.className).toContain("bg-usible-success");
+  it("delete button click calls onDelete", () => {
+    const handleDelete = vi.fn();
+    render(() => <Chip label="Chip" onDelete={handleDelete} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleDelete).toHaveBeenCalledTimes(1);
   });
 
-  it("renders with error color", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="inline-flex items-center rounded-full bg-usible-error text-white">
-        <span>Error</span>
-      </div>
-    `;
+  it("disabled chip shows opacity-50 class", () => {
+    const { container } = render(() => <Chip label="Chip" disabled />);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("opacity-50");
+  });
 
-    const chip = container.querySelector("div");
-    expect(chip?.className).toContain("bg-usible-error");
+  it("disabled chip prevents onClick from being called", () => {
+    const handleClick = vi.fn();
+    const { container } = render(() => (
+      <Chip label="Chip" onClick={handleClick} disabled />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    fireEvent.click(el);
+    expect(handleClick).not.toHaveBeenCalled();
+  });
+
+  it("onClick is called when chip is not disabled", () => {
+    const handleClick = vi.fn();
+    const { container } = render(() => (
+      <Chip label="Chip" onClick={handleClick} />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    fireEvent.click(el);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

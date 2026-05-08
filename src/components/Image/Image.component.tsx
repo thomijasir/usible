@@ -64,7 +64,7 @@ export function Image(props: ImageProps) {
 
   return (
     <div
-      class={twMerge("relative overflow-hidden bg-gray-100", props.class)}
+      class={twMerge("relative overflow-hidden bg-surface-muted", props.class)}
       style={containerStyle()}>
       {isLoading() && (
         <div class="absolute inset-0">
@@ -79,7 +79,7 @@ export function Image(props: ImageProps) {
 
       {!imgSrc() || (hasError() && !props.fallbackSrc) ? (
         <div
-          class="w-full h-full flex items-center justify-center text-gray-400"
+          class="w-full h-full flex items-center justify-center text-foreground-subtle"
           data-testid="image-fallback">
           <svg
             class="w-12 h-12"

@@ -10,7 +10,8 @@ const sizeClasses: Record<InputSize, string> = {
 };
 
 export function Input(props: InputProps) {
-  const id = () => props.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => props.id ?? fallbackId;
   const size = () => props.size ?? "medium";
   const isError = () => !!props.error;
   const errorId = () => `${id()}-error`;
@@ -52,7 +53,7 @@ export function Input(props: InputProps) {
         <label
           for={id()}
           class={twMerge(
-            "mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-200",
+            "mb-1.5 text-sm font-medium text-foreground",
             props.disabled ? "opacity-50" : "",
           )}>
           {props.label}
@@ -62,18 +63,18 @@ export function Input(props: InputProps) {
       <div class="relative">
         <div
           class={twMerge(
-            "flex items-center w-full rounded-lg border bg-gray-100 dark:bg-gray-800 transition-colors duration-200",
+            "flex items-center w-full rounded-usible border bg-surface-muted transition-colors duration-200",
             isError()
-              ? "border-error bg-red-50 dark:bg-red-900/10 text-error focus-within:border-error"
-              : "border-transparent focus-within:bg-white dark:focus-within:bg-gray-900 focus-within:border-primary-light",
+              ? "border-error bg-error-50 text-error focus-within:border-error"
+              : "border-transparent focus-within:bg-surface focus-within:border-primary-light",
             props.disabled
-              ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-900"
+              ? "opacity-50 cursor-not-allowed bg-surface-disabled"
               : "",
             props.onClick ? "cursor-pointer" : "",
           )}
           onClick={props.onClick}>
           {props.startAdornment && (
-            <div class="pl-3 text-gray-500 flex items-center justify-center">
+            <div class="pl-3 text-foreground-muted flex items-center justify-center">
               {props.startAdornment}
             </div>
           )}
@@ -92,7 +93,7 @@ export function Input(props: InputProps) {
             aria-invalid={isError() ? "true" : undefined}
             aria-describedby={getAriaDescribedBy()}
             class={twMerge(
-              "w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed",
+              "w-full bg-transparent text-foreground placeholder-placeholder focus:outline-none disabled:cursor-not-allowed",
               sizeClasses[size()],
               props.startAdornment ? "pl-2" : "",
               props.endAdornment ? "pr-2" : "",
@@ -101,7 +102,7 @@ export function Input(props: InputProps) {
           />
 
           {props.endAdornment && (
-            <div class="pr-3 text-gray-500 flex items-center justify-center">
+            <div class="pr-3 text-foreground-muted flex items-center justify-center">
               {props.endAdornment}
             </div>
           )}

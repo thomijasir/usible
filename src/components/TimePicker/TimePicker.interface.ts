@@ -15,8 +15,10 @@ import type { InputProps } from "../Input";
  * />
  * ```
  */
-export interface TimePickerProps
-  extends Omit<InputProps, "value" | "onChange" | "onInput"> {
+export interface TimePickerProps extends Omit<
+  InputProps,
+  "value" | "onChange" | "onInput"
+> {
   /** Currently selected time as a Date object */
   value?: Date | null;
   /** Called when the user confirms a new time */

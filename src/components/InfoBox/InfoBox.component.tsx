@@ -3,13 +3,13 @@ import type { InfoBoxProps, InfoBoxColor } from "./InfoBox.interface";
 import { Text } from "../Text";
 
 const colorStyles: Record<InfoBoxColor, string> = {
-  primary: "bg-blue-50 border-blue-200 text-blue-900",
-  secondary: "bg-purple-50 border-purple-200 text-purple-900",
-  ternary: "bg-gray-50 border-gray-200 text-gray-900",
-  text: "bg-transparent border-transparent text-gray-900",
-  success: "bg-green-50 border-green-200 text-green-900",
-  warning: "bg-yellow-50 border-yellow-200 text-yellow-900",
-  error: "bg-red-50 border-red-200 text-red-900",
+  primary: "bg-primary-50 border-primary-light text-primary-dark",
+  secondary: "bg-secondary-50 border-secondary-light text-secondary-dark",
+  ternary: "bg-ternary-50 border-ternary-light text-ternary-dark",
+  text: "bg-transparent border-transparent text-foreground",
+  success: "bg-success-50 border-success-light text-success-dark",
+  warning: "bg-warning-50 border-warning-light text-warning-dark",
+  error: "bg-error-50 border-error-light text-error-dark",
 };
 
 export function InfoBox(props: InfoBoxProps) {
@@ -18,7 +18,7 @@ export function InfoBox(props: InfoBoxProps) {
   return (
     <div
       class={twMerge(
-        "p-4 rounded-lg border flex items-start gap-3",
+        "p-4 rounded-usible border flex items-start gap-3",
         colorStyles[color()],
         props.class,
       )}>

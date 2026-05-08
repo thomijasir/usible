@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@rstest/core";
+import { describe, it, expect } from "vitest";
 import { stripAndKebabCase } from "./string";
 
 describe("stripAndKebabCase", () => {

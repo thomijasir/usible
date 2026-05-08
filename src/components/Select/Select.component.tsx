@@ -17,7 +17,8 @@ function ChevronDownIcon(props: { class?: string }) {
 }
 
 export function Select(props: SelectProps) {
-  const id = () => props.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => props.id ?? fallbackId;
   const isError = () => !!props.error;
   const errorId = () => `${id()}-error`;
   const helperId = () => `${id()}-helper`;
@@ -44,7 +45,7 @@ export function Select(props: SelectProps) {
         <label
           for={id()}
           class={twMerge(
-            "mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-200",
+            "mb-1.5 text-sm font-medium text-foreground",
             props.disabled ? "opacity-50" : "",
           )}>
           {props.label}
@@ -54,12 +55,12 @@ export function Select(props: SelectProps) {
       <div class="relative">
         <div
           class={twMerge(
-            "flex items-center w-full rounded-lg border bg-gray-50 dark:bg-gray-800 transition-colors duration-200",
+            "flex items-center w-full rounded-usible border bg-surface-muted transition-colors duration-200",
             isError()
-              ? "border-error bg-red-50 dark:bg-red-900/10 text-error focus-within:border-error"
-              : "border-transparent focus-within:bg-white dark:focus-within:bg-gray-900 focus-within:border-primary-light",
+              ? "border-error bg-error-50 text-error focus-within:border-error"
+              : "border-transparent focus-within:bg-surface focus-within:border-primary-light",
             props.disabled
-              ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-900"
+              ? "opacity-50 cursor-not-allowed bg-surface-disabled"
               : "",
           )}>
           <select
@@ -70,7 +71,7 @@ export function Select(props: SelectProps) {
             aria-invalid={isError() ? "true" : undefined}
             aria-describedby={getAriaDescribedBy()}
             class={twMerge(
-              "w-full bg-transparent py-3 px-3 text-gray-900 dark:text-white appearance-none",
+              "w-full bg-transparent py-3 px-3 text-foreground appearance-none",
               "focus:outline-none disabled:cursor-not-allowed",
               props.class,
             )}>
@@ -84,7 +85,7 @@ export function Select(props: SelectProps) {
             </For>
           </select>
 
-          <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+          <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground-muted">
             <ChevronDownIcon class="w-5 h-5" />
           </div>
         </div>

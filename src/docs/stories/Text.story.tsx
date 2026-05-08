@@ -11,13 +11,19 @@ export const TextStory: Component = () => {
       default: '"body1"',
       description: "Typography variant",
     },
+    {
+      name: "color",
+      type: '"primary" | "secondary" | "ternary" | "text" | "success" | "warning" | "error" | "white"',
+      default: '"text"',
+      description: "Color from design system",
+    },
     { name: "class", type: "string", description: "Additional CSS classes" },
   ];
   const example = [
     {
       title: "Basic Text",
       code: `<Text>Basic Text</Text>`,
-      render: <Text class="dark:text-gray-300">Basic Text</Text>,
+      render: <Text>Basic Text</Text>,
     },
 
     {
@@ -26,9 +32,7 @@ export const TextStory: Component = () => {
 <Text variant="h3">Heading 3</Text>`,
       render: (
         <div class="flex flex-col gap-2">
-          <Text variant="h1" class="dark:text-gray-300">
-            Heading 1
-          </Text>
+          <Text variant="h1">Heading 1</Text>
           <Text variant="h2">Heading 2</Text>
           <Text variant="h3">Heading 3</Text>
         </div>
@@ -49,15 +53,15 @@ export const TextStory: Component = () => {
     },
     {
       title: "Text Colors",
-      code: `<Text class="text-blue-600 dark:text-blue-400">Primary Color</Text>
-<Text class="text-red-600 dark:text-red-400">Error Color</Text>
-<Text class="text-green-600 dark:text-green-400">Success Color</Text>
+      code: `<Text color="primary">Primary Color</Text>
+<Text color="error">Error Color</Text>
+<Text color="success">Success Color</Text>
 <Text class="text-gray-500 dark:text-gray-400">Muted Color</Text>`,
       render: (
         <div class="flex flex-col gap-2">
-          <Text class="text-blue-600 dark:text-blue-400">Primary Color</Text>
-          <Text class="text-red-600 dark:text-red-400">Error Color</Text>
-          <Text class="text-green-600 dark:text-green-400">Success Color</Text>
+          <Text color="primary">Primary Color</Text>
+          <Text color="error">Error Color</Text>
+          <Text color="success">Success Color</Text>
           <Text class="text-gray-500 dark:text-gray-400">Muted Color</Text>
         </div>
       ),

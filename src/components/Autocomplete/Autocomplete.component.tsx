@@ -25,7 +25,9 @@ export function Autocomplete(props: AutocompleteProps) {
           disabled={props.disabled}
           error={props.error}
           helperText={props.helperText}
-          endAdornment={<ChevronDownIcon class="w-5 h-5 text-gray-400" />}
+          endAdornment={
+            <ChevronDownIcon class="w-5 h-5 text-foreground-subtle" />
+          }
         />
       </div>
 
@@ -33,13 +35,13 @@ export function Autocomplete(props: AutocompleteProps) {
         <Portal>
           <div
             class={twMerge(
-              "fixed inset-0 z-999 bg-white flex flex-col",
+              "fixed inset-0 z-999 bg-surface flex flex-col",
               "transition-all duration-300 ease-out",
               state.isOpen()
                 ? "translate-y-0 opacity-100"
                 : "translate-y-full opacity-0",
             )}>
-            <div class="flex-none bg-white">
+            <div class="flex-none bg-surface">
               <div class="flex items-center px-4 pt-4 pb-4">
                 <div class="flex-1 flex items-center">
                   <Input
@@ -48,7 +50,7 @@ export function Autocomplete(props: AutocompleteProps) {
                     value={state.searchQuery()}
                     onInput={actions.setSearchQuery}
                     startAdornment={
-                      <SearchIcon class="w-5 h-5 text-gray-400" />
+                      <SearchIcon class="w-5 h-5 text-foreground-subtle" />
                     }
                     fullWidth
                   />
@@ -75,9 +77,9 @@ export function Autocomplete(props: AutocompleteProps) {
                         <button
                           type="button"
                           onClick={() => actions.handleSelect(item.id)}
-                          class="flex items-center gap-3 p-4 text-left border-b border-gray-50 last:border-0 active:bg-gray-50 transition-all duration-200">
+                          class="flex items-center gap-3 p-4 text-left border-b border-border-muted last:border-0 active:bg-surface-hover transition-all duration-200">
                           <Show when={item.iconLeft}>
-                            <div class="text-gray-500 shrink-0">
+                            <div class="text-foreground-muted shrink-0">
                               {item.iconLeft}
                             </div>
                           </Show>
@@ -101,7 +103,7 @@ export function Autocomplete(props: AutocompleteProps) {
                             </Show>
                           </div>
                           <Show when={item.iconRight}>
-                            <div class="text-gray-500 shrink-0">
+                            <div class="text-foreground-muted shrink-0">
                               {item.iconRight}
                             </div>
                           </Show>

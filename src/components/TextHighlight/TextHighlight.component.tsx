@@ -6,11 +6,11 @@ const colorClasses: Record<TextColor, string> = {
   primary: "text-primary",
   secondary: "text-secondary",
   ternary: "text-ternary",
-  text: "text-gray-900",
+  text: "text-foreground",
   error: "text-error",
   success: "text-success",
   warning: "text-warning",
-  white: "text-white",
+  white: "text-inverse",
 };
 
 export function TextHighlight(props: TextHighlightProps) {

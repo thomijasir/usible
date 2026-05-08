@@ -1,4 +1,4 @@
-import { createEffect, on } from "solid-js";
+import { createEffect, createUniqueId, on, onCleanup } from "solid-js";
 import { animate, type AnimationPlaybackControls } from "motion";
 import { twMerge } from "tailwind-merge";
 import type { DialogProps } from "./Dialog.interface";
@@ -8,10 +8,25 @@ import { Text } from "../Text";
 export function Dialog(props: DialogProps) {
   let dialogRef: HTMLDivElement | undefined;
   let containerRef: HTMLDivElement | undefined;
-  const titleId = `dialog-title-${Math.random().toString(36).slice(2, 9)}`;
-  const descId = `dialog-desc-${Math.random().toString(36).slice(2, 9)}`;
+  const titleId = `dialog-title-${createUniqueId()}`;
+  const descId = `dialog-desc-${createUniqueId()}`;
   let previousActiveElement: HTMLElement | null = null;
   let currentAnimation: AnimationPlaybackControls | undefined;
+  let previousBodyOverflow: string | undefined;
+
+  const focusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "textarea:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ].join(",");
+
+  const getFocusableElements = () =>
+    Array.from(
+      dialogRef?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
+    ).filter((el) => !el.hasAttribute("disabled") && el.offsetParent !== null);
 
   const handleBackdropClick = () => {
     if (props.dismissible !== false) {
@@ -22,6 +37,42 @@ export function Dialog(props: DialogProps) {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape" && props.dismissible !== false) {
       props.onClose();
+      return;
+    }
+
+    if (e.key !== "Tab" || !props.isOpen || !dialogRef) {
+      return;
+    }
+
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) {
+      e.preventDefault();
+      dialogRef.focus();
+      return;
+    }
+
+    const firstElement = focusableElements[0]!;
+    const lastElement = focusableElements[focusableElements.length - 1]!;
+    const activeElement = document.activeElement;
+
+    if (e.shiftKey && activeElement === firstElement) {
+      e.preventDefault();
+      lastElement.focus();
+    } else if (!e.shiftKey && activeElement === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
+    }
+  };
+
+  const lockScroll = () => {
+    previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  };
+
+  const unlockScroll = () => {
+    if (previousBodyOverflow !== undefined) {
+      document.body.style.overflow = previousBodyOverflow;
+      previousBodyOverflow = undefined;
     }
   };
 
@@ -35,6 +86,8 @@ export function Dialog(props: DialogProps) {
 
         if (isOpen && !prevIsOpen) {
           previousActiveElement = document.activeElement as HTMLElement;
+          lockScroll();
+          document.addEventListener("keydown", handleKeyDown);
           containerRef.style.display = "flex";
           dialogRef.style.opacity = "0";
           dialogRef.style.transform = "translateY(12px)";
@@ -53,6 +106,7 @@ export function Dialog(props: DialogProps) {
             // animation was cancelled by a subsequent transition
           }
         } else if (!isOpen && prevIsOpen) {
+          document.removeEventListener("keydown", handleKeyDown);
           currentAnimation = animate(
             dialogRef as HTMLElement,
             { opacity: [1, 0], y: [0, 12] },
@@ -64,6 +118,7 @@ export function Dialog(props: DialogProps) {
             dialogRef.style.visibility = "hidden";
             dialogRef.style.transform = "";
             containerRef.style.display = "none";
+            unlockScroll();
             previousActiveElement?.focus();
           } catch {
             // animation was cancelled
@@ -72,12 +127,19 @@ export function Dialog(props: DialogProps) {
               dialogRef.style.visibility = "hidden";
               dialogRef.style.transform = "";
               containerRef.style.display = "none";
+              unlockScroll();
             }
           }
         }
       },
     ),
   );
+
+  onCleanup(() => {
+    currentAnimation?.stop();
+    document.removeEventListener("keydown", handleKeyDown);
+    unlockScroll();
+  });
 
   return (
     <>
@@ -93,7 +155,7 @@ export function Dialog(props: DialogProps) {
         <div
           ref={dialogRef}
           class={twMerge(
-            "bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-xs sm:max-w-sm overflow-hidden pointer-events-auto",
+            "bg-surface rounded-usible-xl shadow-usible-lg w-full max-w-xs sm:max-w-sm overflow-hidden pointer-events-auto",
             props.class,
           )}
           role="dialog"
@@ -101,7 +163,6 @@ export function Dialog(props: DialogProps) {
           aria-labelledby={props.title ? titleId : undefined}
           aria-describedby={props.children ? descId : undefined}
           tabindex={-1}
-          onKeyDown={handleKeyDown}
           style={{
             display: "none",
             visibility: "hidden",
@@ -123,9 +184,7 @@ export function Dialog(props: DialogProps) {
             id={descId}
             class={twMerge("px-6", props.title ? "pb-6 pt-2" : "p-6")}>
             {typeof props.children === "string" ? (
-              <Text
-                variant="body2"
-                class="text-center text-gray-500 dark:text-gray-400">
+              <Text variant="body2" class="text-center text-foreground-muted">
                 {props.children}
               </Text>
             ) : (
@@ -134,7 +193,7 @@ export function Dialog(props: DialogProps) {
           </div>
 
           {props.actions && (
-            <div class="border-t border-gray-100 dark:border-gray-700 p-2 flex flex-row justify-end gap-2 bg-gray-50/50 dark:bg-gray-800/50">
+            <div class="border-t border-border-muted p-2 flex flex-row justify-end gap-2 bg-surface-muted/50">
               {props.actions}
             </div>
           )}

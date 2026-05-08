@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-primary: var(--usible-primary, #2563eb);
+  --color-primary-50: var(--usible-primary-surface, #eff6ff);
+  --color-primary-light: var(--usible-primary-light, #93c5fd);
+  --color-primary-dark: var(--usible-primary-dark, #1e40af);
+  --color-primary-active: var(--usible-primary-active, #dbeafe);
+
+  --color-secondary: var(--usible-secondary, #f97316);
+  --color-secondary-50: var(--usible-secondary-surface, #fff7ed);
+  --color-secondary-light: var(--usible-secondary-light, #fdba74);
+  --color-secondary-dark: var(--usible-secondary-dark, #c2410c);
+  --color-secondary-active: var(--usible-secondary-active, #ffedd5);
+
+  --color-ternary: var(--usible-ternary, #0d9488);
+  --color-ternary-50: var(--usible-ternary-surface, #f0fdfa);
+  --color-ternary-light: var(--usible-ternary-light, #5eead4);
+  --color-ternary-dark: var(--usible-ternary-dark, #0f766e);
+  --color-ternary-active: var(--usible-ternary-active, #ccfbf1);
+
+  --color-success: var(--usible-success, #16a34a);
+  --color-success-50: var(--usible-success-surface, #f0fdf4);
+  --color-success-light: var(--usible-success-light, #86efac);
+  --color-success-dark: var(--usible-success-dark, #15803d);
+  --color-success-active: var(--usible-success-active, #dcfce7);
+
+  --color-warning: var(--usible-warning, #d97706);
+  --color-warning-50: var(--usible-warning-surface, #fffbeb);
+  --color-warning-light: var(--usible-warning-light, #fcd34d);
+  --color-warning-dark: var(--usible-warning-dark, #b45309);
+  --color-warning-active: var(--usible-warning-active, #fef3c7);
+
+  --color-error: var(--usible-error, #dc2626);
+  --color-error-50: var(--usible-error-surface, #fef2f2);
+  --color-error-light: var(--usible-error-light, #fca5a5);
+  --color-error-dark: var(--usible-error-dark, #991b1b);
+  --color-error-active: var(--usible-error-active, #fee2e2);
+
+  --color-background: var(--usible-background, #f8fafc);
+  --color-surface: var(--usible-surface, #ffffff);
+  --color-surface-muted: var(--usible-surface-muted, #f1f5f9);
+  --color-surface-subtle: var(--usible-surface-subtle, #e2e8f0);
+  --color-surface-hover: var(--usible-surface-hover, #f1f5f9);
+  --color-surface-active: var(--usible-surface-active, #e2e8f0);
+  --color-surface-disabled: var(--usible-surface-disabled, #f1f5f9);
+  --color-border: var(--usible-border, #dbe3ef);
+  --color-border-muted: var(--usible-border-muted, #e8eef6);
+  --color-border-strong: var(--usible-border-strong, #b7c4d6);
+  --color-foreground: var(--usible-foreground, #172033);
+  --color-foreground-muted: var(--usible-foreground-muted, #5b667a);
+  --color-foreground-subtle: var(--usible-foreground-subtle, #8792a6);
+  --color-foreground-disabled: var(--usible-foreground-disabled, #9aa6b7);
+  --color-placeholder: var(--usible-placeholder, #9aa6b7);
+  --color-inverse: var(--usible-inverse, #ffffff);
+  --color-backdrop: var(--usible-backdrop, #0f172a);
+  --color-overlay: var(--usible-overlay, rgb(15 23 42 / 0.55));
+
+  --radius-usible: var(--usible-radius, 0.75rem);
+  --radius-usible-lg: var(--usible-radius-lg, 1rem);
+  --radius-usible-xl: var(--usible-radius-xl, 1.25rem);
+  --radius-usible-pill: var(--usible-radius-pill, 9999px);
+
+  --shadow-usible-sm: var(--usible-shadow-sm, 0 1px 2px rgb(23 32 51 / 0.08));
+  --shadow-usible: var(--usible-shadow, 0 8px 24px -18px rgb(23 32 51 / 0.45));
+  --shadow-usible-lg: var(
+    --usible-shadow-lg,
+    0 24px 48px -28px rgb(23 32 51 / 0.55)
+  );
+}
+
+:root {
+  --usible-primary: #2563eb;
+  --usible-primary-surface: #eff6ff;
+  --usible-primary-light: #93c5fd;
+  --usible-primary-dark: #1e40af;
+  --usible-primary-active: #dbeafe;
+  --usible-secondary: #f97316;
+  --usible-secondary-surface: #fff7ed;
+  --usible-secondary-light: #fdba74;
+  --usible-secondary-dark: #c2410c;
+  --usible-secondary-active: #ffedd5;
+  --usible-ternary: #0d9488;
+  --usible-ternary-surface: #f0fdfa;
+  --usible-ternary-light: #5eead4;
+  --usible-ternary-dark: #0f766e;
+  --usible-ternary-active: #ccfbf1;
+  --usible-success: #16a34a;
+  --usible-success-surface: #f0fdf4;
+  --usible-success-light: #86efac;
+  --usible-success-dark: #15803d;
+  --usible-success-active: #dcfce7;
+  --usible-warning: #d97706;
+  --usible-warning-surface: #fffbeb;
+  --usible-warning-light: #fcd34d;
+  --usible-warning-dark: #b45309;
+  --usible-warning-active: #fef3c7;
+  --usible-error: #dc2626;
+  --usible-error-surface: #fef2f2;
+  --usible-error-light: #fca5a5;
+  --usible-error-dark: #991b1b;
+  --usible-error-active: #fee2e2;
+  --usible-background: #f8fafc;
+  --usible-surface: #ffffff;
+  --usible-surface-muted: #f1f5f9;
+  --usible-surface-subtle: #e2e8f0;
+  --usible-surface-hover: #f1f5f9;
+  --usible-surface-active: #e2e8f0;
+  --usible-surface-disabled: #f1f5f9;
+  --usible-border: #dbe3ef;
+  --usible-border-muted: #e8eef6;
+  --usible-border-strong: #b7c4d6;
+  --usible-foreground: #172033;
+  --usible-foreground-muted: #5b667a;
+  --usible-foreground-subtle: #8792a6;
+  --usible-foreground-disabled: #9aa6b7;
+  --usible-placeholder: #9aa6b7;
+  --usible-inverse: #ffffff;
+  --usible-backdrop: #0f172a;
+  --usible-overlay: rgb(15 23 42 / 0.55);
+  --usible-radius: 0.75rem;
+  --usible-radius-lg: 1rem;
+  --usible-radius-xl: 1.25rem;
+  --usible-radius-pill: 9999px;
+  --usible-shadow-sm: 0 1px 2px rgb(23 32 51 / 0.08);
+  --usible-shadow: 0 8px 24px -18px rgb(23 32 51 / 0.45);
+  --usible-shadow-lg: 0 24px 48px -28px rgb(23 32 51 / 0.55);
+}
+
+.dark {
+  --usible-background: #080d18;
+  --usible-surface: #121a2a;
+  --usible-surface-muted: #182235;
+  --usible-surface-subtle: #233047;
+  --usible-surface-hover: #182235;
+  --usible-surface-active: #233047;
+  --usible-surface-disabled: #111827;
+  --usible-border: #27344d;
+  --usible-border-muted: #1d293d;
+  --usible-border-strong: #3a4a68;
+  --usible-foreground: #f8fafc;
+  --usible-foreground-muted: #cbd5e1;
+  --usible-foreground-subtle: #94a3b8;
+  --usible-foreground-disabled: #64748b;
+  --usible-primary-surface: #172554;
+  --usible-secondary-surface: #431407;
+  --usible-ternary-surface: #134e4a;
+  --usible-error-surface: #7f1d1d;
+}

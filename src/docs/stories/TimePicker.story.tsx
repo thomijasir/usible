@@ -6,7 +6,11 @@ export const TimePickerStory: Component = () => {
   const [time, setTime] = createSignal<Date | null>(null);
 
   const propsReference = [
-    { name: "value", type: "Date | null", description: "Currently selected time as a Date object" },
+    {
+      name: "value",
+      type: "Date | null",
+      description: "Currently selected time as a Date object",
+    },
     {
       name: "onChange",
       type: "(date: Date) => void",
@@ -18,7 +22,11 @@ export const TimePickerStory: Component = () => {
       description: 'Time display format (default: "12h")',
     },
     { name: "label", type: "string", description: "Input label" },
-    { name: "placeholder", type: "string", description: "Input placeholder text" },
+    {
+      name: "placeholder",
+      type: "string",
+      description: "Input placeholder text",
+    },
     { name: "disabled", type: "boolean", description: "Disable the picker" },
     { name: "class", type: "string", description: "Additional CSS classes" },
   ];
@@ -33,7 +41,9 @@ export const TimePickerStory: Component = () => {
       title: "Controlled",
       code: `const [time, setTime] = createSignal<Date | null>(null);
 <TimePicker value={time()} onChange={setTime} label="Pick a time" />`,
-      render: <TimePicker value={time()} onChange={setTime} label="Pick a time" />,
+      render: (
+        <TimePicker value={time()} onChange={setTime} label="Pick a time" />
+      ),
     },
     {
       title: "24-Hour Format",
@@ -47,10 +57,7 @@ export const TimePickerStory: Component = () => {
   value={new Date(2026, 0, 1, 9, 30)}
 />`,
       render: (
-        <TimePicker
-          label="Meeting time"
-          value={new Date(2026, 0, 1, 9, 30)}
-        />
+        <TimePicker label="Meeting time" value={new Date(2026, 0, 1, 9, 30)} />
       ),
     },
     {

@@ -1,41 +1,23 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen } from "@solidjs/testing-library";
+import { describe, it, expect } from "vitest";
+import { MediaVideoUpload } from "./MediaVideoUpload.component";
 
-describe("MediaVideoUpload Component", () => {
-  it("renders placeholder component", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `
-      <div class="custom-class">
-        <p>MediaVideoUpload component - placeholder</p>
-      </div>
-    `;
-
-    const component = container.querySelector("div");
-    expect(component).toBeTruthy();
+describe("MediaVideoUpload", () => {
+  it("renders upload prompt", () => {
+    render(() => <MediaVideoUpload />);
+    expect(screen.getByText("Click to upload video")).toBeInTheDocument();
   });
 
-  it("renders with custom class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="video-upload-container">
-        <p>MediaVideoUpload component - placeholder</p>
-      </div>
-    `;
-
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.classList.contains("video-upload-container")).toBe(true);
+  it("applies custom class to container", () => {
+    const { container } = render(() => (
+      <MediaVideoUpload class="my-custom-class" />
+    ));
+    const wrapper = container.firstElementChild as HTMLElement;
+    expect(wrapper.className).toContain("my-custom-class");
   });
 
-  it("contains placeholder text", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <p>MediaVideoUpload component - placeholder</p>
-      </div>
-    `;
-
-    const text = container.querySelector("p");
-    expect(text?.textContent).toContain("MediaVideoUpload");
+  it("renders helper text", () => {
+    render(() => <MediaVideoUpload helperText="MP4 up to 50MB" />);
+    expect(screen.getByText("MP4 up to 50MB")).toBeInTheDocument();
   });
 });

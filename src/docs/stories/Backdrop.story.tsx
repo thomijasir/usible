@@ -127,7 +127,11 @@ export const BackdropStory: Component = () => {
               Please wait while we confirm your payment.
             </p>
           </div>
-          <Backdrop isOpen={loadingOpen()} opacity={0.7} onClick={() => setLoadingOpen(false)} />
+          <Backdrop
+            isOpen={loadingOpen()}
+            opacity={0.7}
+            onClick={() => setLoadingOpen(false)}
+          />
           <Show when={loadingOpen()}>
             <div class="absolute inset-0 flex items-center justify-center z-50">
               <Loader size="large" color="white" />

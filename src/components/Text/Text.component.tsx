@@ -1,4 +1,5 @@
 import { Dynamic } from "solid-js/web";
+import { twMerge } from "tailwind-merge";
 import type { TextProps, TextVariant, TextColor } from "./Text.interface";
 
 type HTMLElementTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
@@ -39,22 +40,19 @@ const colorClasses: Record<TextColor, string> = {
   primary: "text-primary",
   secondary: "text-secondary",
   ternary: "text-ternary",
-  text: "text-gray-900",
+  text: "text-foreground",
   error: "text-error",
   success: "text-success",
   warning: "text-warning",
-  white: "text-white",
+  white: "text-inverse",
 };
 
 export function Text(props: TextProps) {
   const variant = () => props.variant ?? "body1";
   const color = () => props.color ?? "text";
   const tag = () => variantMapping[variant()];
-  const classes = () => {
-    const parts = [variantClasses[variant()], colorClasses[color()]];
-    if (props.class) parts.push(props.class);
-    return parts.join(" ");
-  };
+  const classes = () =>
+    twMerge(variantClasses[variant()], colorClasses[color()], props.class);
 
   return (
     <Dynamic component={tag()} class={classes()}>

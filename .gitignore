@@ -8,6 +8,8 @@ coverage
 # Dist
 node_modules
 dist/
+dist-pack/
+*.tgz
 
 # Profile
 .rspack-profile-*/

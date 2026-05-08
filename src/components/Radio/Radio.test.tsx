@@ -1,83 +1,108 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Radio } from "./Radio.component";
 
-describe("Radio Component", () => {
+describe("Radio", () => {
   it("renders radio input", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative flex">
-        <input type="radio" id="r1" class="h-5 w-5 appearance-none rounded-full" />
-      </div>
-    `;
-    const input = container.querySelector("input");
-    expect(input?.type).toBe("radio");
+    render(() => <Radio value="test" onChange={() => {}} />);
+    expect(screen.getByRole("radio")).toBeInTheDocument();
   });
 
-  it("renders label when provided", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <label for="r1">My Label</label>
-        <input type="radio" id="r1" />
-      </div>
-    `;
-    const label = container.querySelector("label");
-    expect(label?.textContent).toBe("My Label");
+  it("renders label", () => {
+    render(() => <Radio value="test" onChange={() => {}} label="My Label" />);
+    expect(screen.getByText("My Label")).toBeInTheDocument();
   });
 
-  it("renders description when provided", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <input type="radio" id="r1" />
-        <span class="text-gray-500">Some description</span>
-      </div>
-    `;
-    expect(container.querySelector("span")?.textContent).toBe("Some description");
+  it("renders description", () => {
+    render(() => (
+      <Radio
+        value="test"
+        onChange={() => {}}
+        label="Label"
+        description="Some description"
+      />
+    ));
+    expect(screen.getByText("Some description")).toBeInTheDocument();
   });
 
-  it("renders as disabled", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="opacity-50 cursor-not-allowed">
-        <input type="radio" disabled />
-      </div>
-    `;
-    const input = container.querySelector("input");
-    expect(input?.disabled).toBe(true);
-    expect(container.querySelector("div")?.className).toContain("opacity-50");
+  it("calls onChange when radio is changed", () => {
+    const handleChange = vi.fn();
+    render(() => <Radio value="test" onChange={handleChange} label="Label" />);
+    fireEvent.change(screen.getByRole("radio"), { target: { checked: true } });
+    expect(handleChange).toHaveBeenCalled();
   });
 
-  it("renders boxed variant with border", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="p-4 rounded-xl border border-gray-200">
-        <input type="radio" />
-      </div>
-    `;
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("rounded-xl");
-    expect(wrapper?.className).toContain("border");
+  it("disabled radio has disabled attribute", () => {
+    render(() => (
+      <Radio value="test" onChange={() => {}} label="Label" disabled />
+    ));
+    expect(screen.getByRole("radio")).toBeDisabled();
   });
 
-  it("renders plain variant without border", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="p-0 border-0 bg-transparent">
-        <input type="radio" />
-      </div>
-    `;
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("border-0");
+  it("error state applies border-error class", () => {
+    const { container } = render(() => (
+      <Radio value="test" onChange={() => {}} label="Label" error />
+    ));
+    expect((container.firstElementChild as HTMLElement).className).toContain(
+      "border-error",
+    );
   });
 
-  it("renders error state", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="border-error bg-red-50">
-        <input type="radio" />
-      </div>
-    `;
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("border-error");
+  it("boxed variant with checked applies themed primary surface", () => {
+    const { container } = render(() => (
+      <Radio
+        value="test"
+        onChange={() => {}}
+        label="Label"
+        variant="boxed"
+        checked
+      />
+    ));
+    expect((container.firstElementChild as HTMLElement).className).toContain(
+      "bg-primary-50",
+    );
+  });
+
+  it("renders without label", () => {
+    render(() => <Radio value="test" onChange={() => {}} />);
+    expect(screen.getByRole("radio")).toBeInTheDocument();
+  });
+
+  it("applies containerClass", () => {
+    const { container } = render(() => (
+      <Radio
+        value="test"
+        onChange={() => {}}
+        label="Label"
+        containerClass="custom-container"
+      />
+    ));
+    expect((container.firstElementChild as HTMLElement).className).toContain(
+      "custom-container",
+    );
+  });
+
+  it("renders with inputPosition left", () => {
+    render(() => (
+      <Radio
+        value="test"
+        onChange={() => {}}
+        label="Label"
+        inputPosition="left"
+      />
+    ));
+    expect(screen.getByRole("radio")).toBeInTheDocument();
+  });
+
+  it("renders with icon", () => {
+    render(() => (
+      <Radio
+        value="test"
+        onChange={() => {}}
+        label="Label"
+        icon={<span>Icon</span>}
+      />
+    ));
+    expect(screen.getByText("Icon")).toBeInTheDocument();
   });
 });

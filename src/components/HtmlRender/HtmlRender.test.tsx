@@ -1,49 +1,39 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen } from "@solidjs/testing-library";
+import { describe, it, expect } from "vitest";
+import { HtmlRender } from "./HtmlRender.component";
 
-describe("HtmlRender Component", () => {
-  it("renders sanitized HTML content", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `<div><p>Hello <strong>World</strong></p></div>`;
-
-    expect(container.innerHTML).toContain("<p>");
-    expect(container.innerHTML).toContain("<strong>");
-    expect(container.textContent).toContain("Hello World");
+describe("HtmlRender", () => {
+  it("renders sanitized html content", () => {
+    render(() => <HtmlRender html="<p>Hello</p>" />);
+    expect(screen.getByText("Hello")).toBeInTheDocument();
   });
 
-  it("renders plain text without HTML tags", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div>Just plain text</div>`;
-
-    expect(container.textContent).toBe("Just plain text");
-    expect(container.querySelector("p")).toBeNull();
+  it("renders multiple html elements", () => {
+    render(() => <HtmlRender html="<p>First</p><p>Second</p>" />);
+    expect(screen.getByText("First")).toBeInTheDocument();
+    expect(screen.getByText("Second")).toBeInTheDocument();
   });
 
-  it("renders with custom class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="custom-html-class"><p>Content</p></div>`;
-
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("custom-html-class");
+  it("strips script tags to prevent XSS", () => {
+    const { container } = render(() => (
+      <HtmlRender html='<p>Safe content</p><script>alert("xss")</script>' />
+    ));
+    expect(container.querySelector("script")).not.toBeInTheDocument();
+    expect(screen.getByText("Safe content")).toBeInTheDocument();
   });
 
-  it("renders nested HTML elements", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div><ul><li>Item 1</li><li>Item 2</li></ul></div>`;
-
-    const list = container.querySelector("ul");
-    const items = container.querySelectorAll("li");
-    expect(list).toBeTruthy();
-    expect(items.length).toBe(2);
+  it("strips script content from innerHTML", () => {
+    const { container } = render(() => (
+      <HtmlRender html='<script>alert("xss")</script>' />
+    ));
+    expect(container.innerHTML).not.toContain("alert");
   });
 
-  it("renders links", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div><a href="https://example.com">Link</a></div>`;
-
-    const link = container.querySelector("a");
-    expect(link?.getAttribute("href")).toBe("https://example.com");
-    expect(link?.textContent).toBe("Link");
+  it("applies custom class to the wrapper element", () => {
+    const { container } = render(() => (
+      <HtmlRender html="<p>Text</p>" class="custom-html" />
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("custom-html");
   });
 });

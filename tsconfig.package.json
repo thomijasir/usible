@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false
+  },
+  "include": [
+    "src/package.ts",
+    "src/components/**/*.ts",
+    "src/components/**/*.tsx",
+    "src/assets/**/*.ts",
+    "src/assets/**/*.tsx",
+    "src/utils/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/docs/**",
+    "src/App.tsx",
+    "src/index.tsx"
+  ]
+}

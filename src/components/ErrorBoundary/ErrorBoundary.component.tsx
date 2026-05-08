@@ -7,23 +7,26 @@ export function ErrorBoundary(props: ErrorBoundaryProps) {
   return (
     <SolidErrorBoundary
       fallback={(err) => (
-        <div class="h-screen w-full flex flex-col items-center justify-center p-6 bg-white space-y-6 text-center">
+        <div class="h-screen w-full flex flex-col items-center justify-center p-6 bg-background space-y-6 text-center">
           <div class="space-y-2 max-w-md">
-            <Text variant="h4" class="font-bold text-gray-900">
+            <Text variant="h4" class="font-bold text-foreground">
               Oops! Something went wrong
             </Text>
-            <Text variant="body1" class="text-gray-600">
+            <Text variant="body1" class="text-foreground-muted">
               We encountered an unexpected error. Please try reloading the
               application.
             </Text>
-            <div class="mt-4 p-3 bg-red-50 rounded-lg border border-red-100 w-full text-left overflow-hidden">
-              <Text variant="caption" class="font-mono text-red-600 break-words">
+            <div class="mt-4 p-3 bg-error-50 rounded-usible border border-error-light w-full text-left overflow-hidden">
+              <Text variant="caption" class="font-mono text-error break-words">
                 {err?.message ?? String(err)}
               </Text>
             </div>
           </div>
           <div class="pt-4">
-            <Button onClick={() => window.location.reload()} size="large" class="px-8">
+            <Button
+              onClick={() => window.location.reload()}
+              size="large"
+              class="px-8">
               Reload Application
             </Button>
           </div>

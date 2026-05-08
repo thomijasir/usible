@@ -1,70 +1,51 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Autocomplete } from "./Autocomplete.component";
 
-describe("Autocomplete Component", () => {
-  it("renders a trigger input area", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="cursor-pointer">
-        <div class="relative">
-          <input type="text" readonly placeholder="Select..." value="" />
-        </div>
-      </div>
-    `;
-    const input = container.querySelector("input");
-    expect(input).toBeTruthy();
-    expect(input?.readOnly).toBe(true);
+const baseItems = [
+  { id: "1", label: "Bangkok" },
+  { id: "2", label: "Chiang Mai" },
+  { id: "3", label: "Phuket", description: "Island city" },
+];
+
+describe("Autocomplete", () => {
+  it("renders container div", () => {
+    const { container } = render(() => (
+      <Autocomplete items={baseItems} onChange={vi.fn()} />
+    ));
+    expect(container.firstChild).toBeTruthy();
   });
 
-  it("shows selected item label in trigger", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <input type="text" readonly value="Bangkok" />
-      </div>
-    `;
-    const input = container.querySelector<HTMLInputElement>("input");
-    expect(input?.value).toBe("Bangkok");
+  it("label shown when provided", () => {
+    render(() => (
+      <Autocomplete items={baseItems} onChange={vi.fn()} label="City" />
+    ));
+    expect(screen.getByText("City")).toBeTruthy();
   });
 
-  it("renders search overlay when open", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="fixed inset-0 z-50 bg-white flex flex-col">
-        <div>
-          <input type="text" placeholder="Search..." />
-          <button>Cancel</button>
-        </div>
-        <div class="flex-1 overflow-y-auto">
-          <button class="flex items-center gap-3 p-4">Item 1</button>
-          <button class="flex items-center gap-3 p-4">Item 2</button>
-        </div>
-      </div>
-    `;
-    expect(container.querySelector("input")?.placeholder).toBe("Search...");
-    expect(container.querySelectorAll("button").length).toBeGreaterThan(1);
+  it("placeholder shown via the Input inside", () => {
+    render(() => (
+      <Autocomplete
+        items={baseItems}
+        onChange={vi.fn()}
+        placeholder="Select a city"
+      />
+    ));
+    expect(screen.getByPlaceholderText("Select a city")).toBeTruthy();
   });
 
-  it("renders no results message", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col items-center justify-center py-8">
-        <p>No results found for "xyz"</p>
-      </div>
-    `;
-    expect(container.querySelector("p")?.textContent).toContain("No results found");
+  it("disabled prop passes through to Input", () => {
+    render(() => (
+      <Autocomplete items={baseItems} onChange={vi.fn()} disabled />
+    ));
+    const input = document.querySelector("input") as HTMLInputElement;
+    expect(input).toBeDisabled();
   });
 
-  it("renders item with description", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <button class="flex items-center gap-3 p-4">
-        <div>
-          <span class="font-medium">Bangkok</span>
-          <span class="text-gray-500">Capital city</span>
-        </div>
-      </button>
-    `;
-    expect(container.querySelector("button")).toBeTruthy();
-    expect(container.querySelector(".text-gray-500")?.textContent).toBe("Capital city");
+  it("renders without error when no value provided", () => {
+    const { container } = render(() => (
+      <Autocomplete items={baseItems} onChange={vi.fn()} />
+    ));
+    expect(container).toBeTruthy();
   });
 });

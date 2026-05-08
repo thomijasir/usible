@@ -64,18 +64,18 @@ export function Tabs(props: TabsProps) {
           props.centered && isHorizontal() ? "justify-center" : "",
           // Standard
           variant() === "standard" && isHorizontal()
-            ? "border-b border-gray-200 dark:border-gray-700"
+            ? "border-b border-border"
             : "",
           variant() === "standard" && !isHorizontal()
-            ? "border-r border-gray-200 dark:border-gray-700"
+            ? "border-r border-border"
             : "",
           // Filled
           variant() === "filled"
-            ? "bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-0.5 border-none"
+            ? "bg-surface-muted rounded-usible-lg p-1 gap-0.5 border-none"
             : "",
           // Block
           variant() === "block"
-            ? "border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800/50"
+            ? "border border-border rounded-usible-lg overflow-hidden bg-surface-muted"
             : "",
         )}>
         <For each={props.tabs}>
@@ -97,28 +97,28 @@ export function Tabs(props: TabsProps) {
                     ? "text-primary border-r-2 border-primary -mr-px"
                     : "",
                   variant() === "standard" && !isActive() && !tab.disabled
-                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border-b-2 border-transparent -mb-px"
+                    ? "text-foreground-muted hover:text-foreground border-b-2 border-transparent -mb-px"
                     : "",
 
                   // --- Filled ---
-                  variant() === "filled" ? "rounded-lg flex-1" : "",
+                  variant() === "filled" ? "rounded-usible flex-1" : "",
                   variant() === "filled" && isActive()
-                    ? "bg-white dark:bg-gray-700 shadow-sm text-primary dark:text-primary"
+                    ? "bg-surface shadow-usible-sm text-primary"
                     : "",
                   variant() === "filled" && !isActive() && !tab.disabled
-                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/60 dark:hover:bg-gray-700/60"
+                    ? "text-foreground-muted hover:text-foreground hover:bg-surface/60"
                     : "",
 
                   // --- Block ---
                   variant() === "block" ? "flex-1" : "",
                   variant() === "block" && index() > 0
-                    ? "border-l border-gray-200 dark:border-gray-700"
+                    ? "border-l border-border"
                     : "",
                   variant() === "block" && isActive()
-                    ? "bg-white dark:bg-gray-700 text-primary shadow-sm"
+                    ? "bg-surface text-primary shadow-usible-sm"
                     : "",
                   variant() === "block" && !isActive() && !tab.disabled
-                    ? "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-white/70 dark:hover:bg-gray-700/50"
+                    ? "text-foreground-muted hover:text-foreground hover:bg-surface/70"
                     : "",
 
                   // Disabled
@@ -130,7 +130,7 @@ export function Tabs(props: TabsProps) {
                   <span
                     class={twMerge(
                       "text-base leading-none",
-                      isActive() ? "text-primary" : "text-gray-400",
+                      isActive() ? "text-primary" : "text-foreground-subtle",
                     )}>
                     {tab.icon}
                   </span>
@@ -152,7 +152,7 @@ export function Tabs(props: TabsProps) {
         <Show
           when={activeTab()?.content}
           fallback={
-            <div class="flex items-center justify-center py-10 text-sm text-gray-400 dark:text-gray-600 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
+            <div class="flex items-center justify-center py-10 text-sm text-foreground-subtle border border-dashed border-border rounded-usible">
               No content available for this tab.
             </div>
           }>

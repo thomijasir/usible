@@ -1,85 +1,46 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Switch } from "./Switch.component";
 
-describe("Switch Component", () => {
-  it("renders with label", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `
-      <div class="flex items-center justify-between">
-        <label for="switch-1" class="mr-3 select-none cursor-pointer">Enable notifications</label>
-        <div class="relative inline-block w-12 h-7">
-          <input type="checkbox" id="switch-1" class="peer appearance-none w-full h-full rounded-full bg-gray-200" />
-          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow-sm"></span>
-        </div>
-      </div>
-    `;
-
-    const switchInput = container.querySelector('input[type="checkbox"]');
-    const label = container.querySelector("label");
-    expect(switchInput).toBeTruthy();
-    expect(label?.textContent).toBe("Enable notifications");
+describe("Switch", () => {
+  it("renders checkbox with role=switch", () => {
+    render(() => <Switch checked={false} onChange={() => {}} />);
+    expect(screen.getByRole("switch")).toBeInTheDocument();
   });
 
-  it("renders as checked (on)", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative inline-block w-12 h-7">
-        <input type="checkbox" checked class="peer appearance-none w-full h-full rounded-full bg-gray-200 checked:bg-primary" />
-        <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow-sm translate-x-5"></span>
-      </div>
-    `;
-
-    const switchInput = container.querySelector(
-      'input[type="checkbox"]',
-    ) as HTMLInputElement;
-    expect(switchInput?.checked).toBe(true);
+  it("aria-checked is true when checked=true", () => {
+    render(() => <Switch checked={true} onChange={() => {}} />);
+    expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "true");
   });
 
-  it("renders as unchecked (off)", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative inline-block w-12 h-7">
-        <input type="checkbox" class="peer appearance-none w-full h-full rounded-full bg-gray-200" />
-        <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow-sm"></span>
-      </div>
-    `;
-
-    const switchInput = container.querySelector(
-      'input[type="checkbox"]',
-    ) as HTMLInputElement;
-    expect(switchInput?.checked).toBe(false);
+  it("aria-checked is false when checked=false", () => {
+    render(() => <Switch checked={false} onChange={() => {}} />);
+    expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "false");
   });
 
-  it("renders as disabled", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex items-center">
-        <label class="cursor-not-allowed text-gray-400">Disabled</label>
-        <div class="relative inline-block w-12 h-7">
-          <input type="checkbox" disabled class="peer appearance-none w-full h-full rounded-full bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50" />
-        </div>
-      </div>
-    `;
-
-    const switchInput = container.querySelector(
-      'input[type="checkbox"]',
-    ) as HTMLInputElement;
-    expect(switchInput?.disabled).toBe(true);
+  it("renders label when provided", () => {
+    render(() => (
+      <Switch checked={false} onChange={() => {}} label="Enable feature" />
+    ));
+    expect(screen.getByText("Enable feature")).toBeInTheDocument();
   });
 
-  it("has proper toggle dimensions", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative inline-block w-12 h-7">
-        <input type="checkbox" class="peer appearance-none w-full h-full rounded-full" />
-        <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full"></span>
-      </div>
-    `;
+  it("calls onChange with true when toggled on", () => {
+    const handleChange = vi.fn();
+    render(() => <Switch checked={false} onChange={handleChange} />);
+    fireEvent.click(screen.getByRole("switch"));
+    expect(handleChange).toHaveBeenCalledWith(true);
+  });
 
-    const toggleContainer = container.querySelector(".relative");
-    const thumb = container.querySelector("span");
-    expect(toggleContainer?.className).toContain("w-12 h-7");
-    expect(thumb?.className).toContain("w-5 h-5");
+  it("calls onChange with false when toggled off", () => {
+    const handleChange = vi.fn();
+    render(() => <Switch checked={true} onChange={handleChange} />);
+    fireEvent.click(screen.getByRole("switch"));
+    expect(handleChange).toHaveBeenCalledWith(false);
+  });
+
+  it("checkbox is disabled when disabled=true", () => {
+    render(() => <Switch checked={false} onChange={() => {}} disabled />);
+    expect(screen.getByRole("switch")).toBeDisabled();
   });
 });

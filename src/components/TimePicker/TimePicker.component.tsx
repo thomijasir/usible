@@ -1,4 +1,11 @@
-import { createSignal, createEffect, createMemo, on, For } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  createMemo,
+  on,
+  For,
+  onCleanup,
+} from "solid-js";
 import { twMerge } from "tailwind-merge";
 import type { TimePickerProps } from "./TimePicker.interface";
 import { Input } from "../Input";
@@ -58,19 +65,27 @@ function ScrollColumn(props: ScrollColumnProps) {
     }, 150);
   };
 
+  onCleanup(() => {
+    if (scrollTimeoutRef) {
+      clearTimeout(scrollTimeoutRef);
+    }
+  });
+
   return (
     <div class="flex-1 flex flex-col items-center relative z-20">
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        class="h-[220px] w-full overflow-y-auto snap-y snap-mandatory relative z-20"
+        class="h-55 w-full overflow-y-auto snap-y snap-mandatory relative z-20"
         style={{
           "scroll-behavior": "smooth",
           "scrollbar-width": "none",
           "touch-action": "pan-y",
           "-webkit-overflow-scrolling": "touch",
         }}>
-        <div style={{ height: `${ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2)}px` }} />
+        <div
+          style={{ height: `${ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2)}px` }}
+        />
         <For each={props.items}>
           {(item) => (
             <div
@@ -79,20 +94,22 @@ function ScrollColumn(props: ScrollColumnProps) {
                 "flex items-center justify-center snap-center cursor-pointer transition-all duration-200 select-none",
                 props.selectedValue() === item.value
                   ? "text-primary font-bold text-xl scale-110"
-                  : "text-gray-400 text-lg scale-100 opacity-60 hover:opacity-100",
+                  : "text-foreground-subtle text-lg scale-100 opacity-60 hover:opacity-100",
               )}
               style={{ height: `${ITEM_HEIGHT}px` }}>
               {item.label}
             </div>
           )}
         </For>
-        <div style={{ height: `${ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2)}px` }} />
+        <div
+          style={{ height: `${ITEM_HEIGHT * Math.floor(VISIBLE_ITEMS / 2)}px` }}
+        />
       </div>
       {props.label && (
         <div class="mt-2">
           <Text
             variant="caption"
-            class="font-bold text-gray-400 tracking-wider text-[10px] uppercase">
+            class="font-bold text-foreground-subtle tracking-wider text-[10px] uppercase">
             {props.label}
           </Text>
         </div>
@@ -209,8 +226,8 @@ export function TimePicker(props: TimePickerProps) {
         endAdornment={
           <div
             onClick={() => !props.disabled && setIsOpen(true)}
-            class="cursor-pointer p-1 hover:bg-gray-100 rounded-full transition-colors">
-            <ClockIcon class="w-5 h-5 text-gray-500" />
+            class="cursor-pointer p-1 hover:bg-surface-hover rounded-usible-pill transition-colors">
+            <ClockIcon class="w-5 h-5 text-foreground-muted" />
           </div>
         }
         containerClass="cursor-pointer"
@@ -222,10 +239,10 @@ export function TimePicker(props: TimePickerProps) {
         height="auto"
         showHandle={false}
         disableDrag>
-        <div class="flex flex-col h-auto bg-white dark:bg-gray-800 rounded-t-3xl overflow-hidden">
+        <div class="flex flex-col h-auto bg-surface rounded-t-usible-xl overflow-hidden">
           {/* Header */}
-          <div class="py-4 border-b border-gray-100 dark:border-gray-700 flex justify-center items-center z-30">
-            <Text variant="h6" class="font-bold text-gray-900 dark:text-white text-lg">
+          <div class="py-4 border-b border-border-muted flex justify-center items-center z-30">
+            <Text variant="h6" class="font-bold text-foreground text-lg">
               Select Time
             </Text>
           </div>
@@ -234,7 +251,7 @@ export function TimePicker(props: TimePickerProps) {
           <div class="py-5 w-full max-w-sm mx-auto relative">
             {/* Selection Highlight Bar */}
             <div
-              class="absolute left-4 right-4 h-[44px] bg-gray-50 dark:bg-gray-700 rounded-xl pointer-events-none z-10"
+              class="absolute left-4 right-4 h-11 bg-surface-muted rounded-usible-lg pointer-events-none z-10"
               style={{
                 transform: "translateY(-50%)",
                 top: "calc(20px + 110px)",
@@ -249,8 +266,10 @@ export function TimePicker(props: TimePickerProps) {
                 label="HOUR"
               />
 
-              <div class="h-[220px] flex items-center justify-center pb-1 z-20 pointer-events-none w-4">
-                <Text variant="h4" class="text-gray-300 font-light mb-2">
+              <div class="h-55 flex items-center justify-center pb-1 z-20 pointer-events-none w-4">
+                <Text
+                  variant="h4"
+                  class="text-foreground-subtle font-light mb-2">
                   :
                 </Text>
               </div>

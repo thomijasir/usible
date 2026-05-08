@@ -46,13 +46,21 @@ export const DocumentUploadStory: Component = () => {
       type: "boolean",
       description: "Show a file size badge on the preview",
     },
-    { name: "required", type: "boolean", description: "Mark the field as required" },
+    {
+      name: "required",
+      type: "boolean",
+      description: "Mark the field as required",
+    },
     {
       name: "error",
       type: "string | boolean",
       description: "Error state or message",
     },
-    { name: "helperText", type: "string", description: "Helper text below the upload area" },
+    {
+      name: "helperText",
+      type: "string",
+      description: "Helper text below the upload area",
+    },
     {
       name: "fullWidth",
       type: "boolean",
@@ -113,7 +121,10 @@ export const DocumentUploadStory: Component = () => {
 />`,
       render: (
         <div class="max-w-sm">
-          <DocumentUpload label="Proof of Address" error="File must be less than 5MB" />
+          <DocumentUpload
+            label="Proof of Address"
+            error="File must be less than 5MB"
+          />
         </div>
       ),
     },
@@ -178,13 +189,15 @@ export const DocumentUploadStory: Component = () => {
           DocumentUpload Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          A file upload component for documents with single and multi-file modes, extension
-          filtering, and file size display.
+          A file upload component for documents with single and multi-file
+          modes, extension filtering, and file size display.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

@@ -24,15 +24,31 @@ export const AutocompleteStory: Component = () => {
       description: "Change handler — receives the selected item id",
     },
     { name: "label", type: "string", description: "Input label" },
-    { name: "placeholder", type: "string", description: "Input placeholder text" },
-    { name: "disabled", type: "boolean", description: "Disable the autocomplete" },
+    {
+      name: "placeholder",
+      type: "string",
+      description: "Input placeholder text",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Disable the autocomplete",
+    },
     {
       name: "error",
       type: "string | boolean",
       description: "Error state or message",
     },
-    { name: "helperText", type: "string", description: "Helper text below the input" },
-    { name: "id", type: "string", description: "HTML id for the input element" },
+    {
+      name: "helperText",
+      type: "string",
+      description: "Helper text below the input",
+    },
+    {
+      name: "id",
+      type: "string",
+      description: "HTML id for the input element",
+    },
     { name: "class", type: "string", description: "Additional CSS classes" },
   ];
 
@@ -222,13 +238,15 @@ export const AutocompleteStory: Component = () => {
           Autocomplete Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          A searchable select that opens a full-screen overlay with highlighted matching text and
-          icon support.
+          A searchable select that opens a full-screen overlay with highlighted
+          matching text and icon support.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

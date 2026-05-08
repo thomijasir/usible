@@ -8,7 +8,7 @@ import type {
 const variantClasses: Record<SkeletonVariant, string> = {
   text: "rounded mt-1 mb-1 h-4 w-full",
   rectangular: "rounded",
-  circular: "rounded-full",
+  circular: "rounded-usible-pill",
 };
 
 const animationClasses: Record<SkeletonAnimation, string> = {
@@ -22,7 +22,7 @@ export function Skeleton(props: SkeletonProps) {
 
   const classes = () =>
     twMerge(
-      "bg-gray-200 dark:bg-gray-700",
+      "bg-surface-subtle",
       variantClasses[variant()],
       animationClasses[animation()],
       props.class,

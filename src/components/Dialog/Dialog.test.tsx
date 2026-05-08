@@ -1,80 +1,116 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Dialog } from "./Dialog.component";
+import { Text } from "../Text";
 
-describe("Dialog Component", () => {
-  it("renders when isOpen is true", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
+describe("Dialog", () => {
+  it("renders role=dialog element", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()}>
+        <p>Dialog content</p>
+      </Dialog>
+    ));
+    expect(document.querySelector('[role="dialog"]')).toBeTruthy();
+  });
 
-    container.innerHTML = `
-      <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-xs sm:max-w-sm overflow-hidden pointer-events-auto" role="dialog" aria-modal="true">
-          <div class="px-6 pt-6 pb-2">
-            <h3 class="text-center font-semibold">Dialog Title</h3>
-          </div>
-          <div class="px-6 pb-6 pt-2">
-            <p class="text-center text-gray-500">Dialog content goes here.</p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    const dialog = container.querySelector('[role="dialog"]');
-    expect(dialog).toBeTruthy();
+  it("has aria-modal=true", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()}>
+        <p>Content</p>
+      </Dialog>
+    ));
+    const dialog = document.querySelector('[role="dialog"]');
     expect(dialog?.getAttribute("aria-modal")).toBe("true");
   });
 
-  it("renders with title", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="bg-white rounded-2xl" role="dialog">
-        <div class="px-6 pt-6 pb-2">
-          <h3 class="text-center font-semibold">Confirm Action</h3>
-        </div>
-      </div>
-    `;
-
-    const title = container.querySelector("h3");
-    expect(title?.textContent).toBe("Confirm Action");
+  it("title string is rendered in the DOM", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()} title="Confirm Action">
+        <p>Content</p>
+      </Dialog>
+    ));
+    expect(document.body.textContent).toContain("Confirm Action");
   });
 
-  it("renders with actions", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="bg-white rounded-2xl" role="dialog">
-        <div class="px-6 pb-6">Content</div>
-        <div class="border-t border-gray-100 p-2 flex flex-row justify-end gap-2 bg-gray-50/50">
-          <button class="px-4 py-2 text-gray-600">Cancel</button>
-          <button class="px-4 py-2 bg-usible-primary text-white rounded">Confirm</button>
-        </div>
-      </div>
-    `;
-
-    const buttons = container.querySelectorAll("button");
-    expect(buttons.length).toBe(2);
+  it("title as JSX element is rendered", () => {
+    render(() => (
+      <Dialog
+        isOpen={false}
+        onClose={vi.fn()}
+        title={<Text variant="h6">Custom Title</Text>}>
+        <p>Content</p>
+      </Dialog>
+    ));
+    expect(document.body.textContent).toContain("Custom Title");
   });
 
-  it("has correct modal attributes", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="bg-white rounded-2xl" role="dialog" aria-modal="true">
-        <div>Content</div>
-      </div>
-    `;
-
-    const dialog = container.querySelector('[role="dialog"]');
-    expect(dialog?.getAttribute("role")).toBe("dialog");
-    expect(dialog?.getAttribute("aria-modal")).toBe("true");
+  it("children content is rendered in the DOM", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()}>
+        <p>My dialog body</p>
+      </Dialog>
+    ));
+    expect(document.body.textContent).toContain("My dialog body");
   });
 
-  it("renders with custom class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="bg-white rounded-2xl custom-dialog-class" role="dialog">
-        <div>Content</div>
-      </div>
-    `;
+  it("children as string is rendered with Text component", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()}>
+        String content
+      </Dialog>
+    ));
+    expect(document.body.textContent).toContain("String content");
+  });
 
-    const dialog = container.querySelector('[role="dialog"]');
-    expect(dialog?.className).toContain("custom-dialog-class");
+  it("actions are rendered in the DOM", () => {
+    render(() => (
+      <Dialog
+        isOpen={false}
+        onClose={vi.fn()}
+        actions={
+          <>
+            <button type="button">Cancel</button>
+            <button type="button">Confirm</button>
+          </>
+        }>
+        <p>Content</p>
+      </Dialog>
+    ));
+    expect(document.body.textContent).toContain("Cancel");
+    expect(document.body.textContent).toContain("Confirm");
+  });
+
+  it("Escape key calls onClose when dismissible=true", () => {
+    const onClose = vi.fn();
+    render(() => (
+      <Dialog isOpen={true} onClose={onClose} dismissible>
+        <p>Content</p>
+      </Dialog>
+    ));
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("Escape key does not call onClose when dismissible=false", () => {
+    const onClose = vi.fn();
+    render(() => (
+      <Dialog isOpen={true} onClose={onClose} dismissible={false}>
+        <p>Content</p>
+      </Dialog>
+    ));
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("applies custom class to dialog", () => {
+    render(() => (
+      <Dialog isOpen={false} onClose={vi.fn()} class="custom-class">
+        <p>Content</p>
+      </Dialog>
+    ));
+    const dialog = document.querySelector('[role="dialog"]');
+    expect(dialog?.className).toContain("custom-class");
   });
 });

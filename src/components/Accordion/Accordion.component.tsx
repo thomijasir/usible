@@ -27,7 +27,7 @@ export function Accordion(props: AccordionProps) {
 
   return (
     <div
-      class={`w-full flex flex-col divide-y divide-gray-100 dark:divide-gray-800 border-t border-b border-gray-100 dark:border-gray-800 ${props.class ?? ""}`}>
+      class={`w-full flex flex-col divide-y divide-border-muted border-t border-b border-border-muted ${props.class ?? ""}`}>
       <For each={props.items}>
         {(item) => {
           const isExpanded = createMemo(() => expandedIds().includes(item.id));
@@ -77,7 +77,7 @@ export function Accordion(props: AccordionProps) {
           const isLeft = () => caretPosition() === "left";
 
           return (
-            <div class="bg-white dark:bg-gray-900">
+            <div class="bg-surface">
               <button
                 type="button"
                 onClick={() => !isDisabled() && toggleItem(item.id)}
@@ -85,7 +85,7 @@ export function Accordion(props: AccordionProps) {
                 class={`w-full flex items-center justify-between p-4 text-left transition-colors ${
                   isDisabled()
                     ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer active:bg-gray-50 dark:active:bg-gray-800"
+                    : "cursor-pointer active:bg-surface-hover"
                 }`}
                 aria-expanded={isExpanded()}
                 aria-controls={`accordion-panel-${item.id}`}>
@@ -100,13 +100,15 @@ export function Accordion(props: AccordionProps) {
                 </div>
 
                 <div
-                  class={`text-gray-400 shrink-0 ${
+                  class={`text-foreground-subtle shrink-0 ${
                     isLeft() ? "order-1 mr-auto" : ""
                   }`}>
                   {hasCustomIcon() ? (
-                    typeof props.caretIcon === "function"
-                      ? props.caretIcon(isExpanded())
-                      : props.caretIcon
+                    typeof props.caretIcon === "function" ? (
+                      props.caretIcon(isExpanded())
+                    ) : (
+                      props.caretIcon
+                    )
                   ) : (
                     <ChevronDownIcon ref={iconRef} class="w-5 h-5" />
                   )}
@@ -120,7 +122,7 @@ export function Accordion(props: AccordionProps) {
                 aria-hidden={!isExpanded()}
                 class="overflow-hidden"
                 style={{ display: "none", height: 0, opacity: 0 }}>
-                <div class="p-4 pt-0 text-gray-600 dark:text-gray-400">
+                <div class="p-4 pt-0 text-foreground-muted">
                   {typeof item.content === "string" ? (
                     <Text variant="body2">{item.content}</Text>
                   ) : (

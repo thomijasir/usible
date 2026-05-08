@@ -125,18 +125,20 @@ export function DatePicker(props: DatePickerProps) {
           onClick={() => handleDayClick(day.date)}
           disabled={isDisabled}
           class={twMerge(
-            "w-full h-full rounded-full flex items-center justify-center text-sm transition-all duration-200",
-            !isCurrentMonth && !isSelected && "text-gray-300",
-            isCurrentMonth && !isSelected && "text-gray-700",
-            !isDisabled && !isSelected && "hover:bg-gray-100 active:scale-95",
+            "w-full h-full rounded-usible-pill flex items-center justify-center text-sm transition-all duration-200",
+            !isCurrentMonth && !isSelected && "text-foreground-subtle",
+            isCurrentMonth && !isSelected && "text-foreground",
+            !isDisabled &&
+              !isSelected &&
+              "hover:bg-surface-hover active:scale-95",
             isSelected
-              ? "bg-primary text-white font-bold shadow-md transform scale-105"
+              ? "bg-primary text-inverse font-bold shadow-usible transform scale-105"
               : "",
             isToday &&
               !isSelected &&
               "border-2 border-primary text-primary font-bold",
             isDisabled &&
-              "text-gray-200 cursor-not-allowed hover:bg-transparent active:scale-100",
+              "text-foreground-disabled cursor-not-allowed hover:bg-transparent active:scale-100",
           )}>
           {day.dayNumber}
         </button>
@@ -168,8 +170,8 @@ export function DatePicker(props: DatePickerProps) {
         endAdornment={
           <div
             onClick={handleInputClick}
-            class="cursor-pointer p-1 hover:bg-gray-100 rounded-full transition-colors">
-            <CalendarIcon class="w-5 h-5 text-gray-500" />
+            class="cursor-pointer p-1 hover:bg-surface-hover rounded-usible-pill transition-colors">
+            <CalendarIcon class="w-5 h-5 text-foreground-muted" />
           </div>
         }
         containerClass="cursor-pointer"
@@ -187,21 +189,21 @@ export function DatePicker(props: DatePickerProps) {
             <Button
               variant="text"
               onClick={handlePrevMonth}
-              class="p-3 rounded-full hover:bg-gray-100 active:bg-gray-200 min-w-0 h-auto text-gray-600"
+              class="p-3 rounded-usible-pill hover:bg-surface-hover active:bg-surface-active min-w-0 h-auto text-foreground-muted"
               aria-label="Previous month">
               <ChevronLeftIcon class="w-6 h-6" />
             </Button>
 
             <Text
               variant="h6"
-              class="text-xl font-bold text-gray-900 w-40 text-center">
+              class="text-xl font-bold text-foreground w-40 text-center">
               {monthYearDisplay()}
             </Text>
 
             <Button
               variant="text"
               onClick={handleNextMonth}
-              class="p-3 rounded-full hover:bg-gray-100 active:bg-gray-200 min-w-0 h-auto text-gray-600"
+              class="p-3 rounded-usible-pill hover:bg-surface-hover active:bg-surface-active min-w-0 h-auto text-foreground-muted"
               aria-label="Next month">
               <ChevronRightIcon class="w-6 h-6" />
             </Button>
@@ -213,7 +215,7 @@ export function DatePicker(props: DatePickerProps) {
                 {(d) => (
                   <Text
                     variant="caption"
-                    class="font-semibold text-gray-400 text-sm">
+                    class="font-semibold text-foreground-subtle text-sm">
                     {d}
                   </Text>
                 )}
@@ -224,7 +226,7 @@ export function DatePicker(props: DatePickerProps) {
             </div>
           </div>
 
-          <div class="mt-2 pt-4 border-t border-gray-100 flex justify-end">
+          <div class="mt-2 pt-4 border-t border-border-muted flex justify-end">
             <Button
               variant="text"
               onClick={() => setIsOpen(false)}

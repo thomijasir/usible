@@ -35,7 +35,7 @@ export function Backdrop(props: BackdropProps) {
       ref={backdropRef}
       onClick={props.onClick}
       aria-hidden="true"
-      class="fixed inset-0 bg-black z-40 backdrop-blur-md"
+      class="fixed inset-0 bg-backdrop z-40 backdrop-blur-md"
       style={{
         opacity: 0,
         display: "none",

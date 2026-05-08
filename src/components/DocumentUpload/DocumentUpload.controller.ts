@@ -15,6 +15,15 @@ export function createDocumentUploadController(props: DocumentUploadProps) {
     if (props.value) setFiles(props.value);
   });
 
+  const validateMaxFiles = (selectedCount: number): string | null => {
+    if (mode() === "multi" && props.maxFiles !== undefined) {
+      if (files().length + selectedCount > props.maxFiles) {
+        return `You can only upload a maximum of ${props.maxFiles} files.`;
+      }
+    }
+    return null;
+  };
+
   const validateFile = (file: File): string | null => {
     if (!validateFileExtension(file, extension())) {
       return `Invalid file extension. Allowed: ${extension().join(", ")}`;
@@ -29,6 +38,13 @@ export function createDocumentUploadController(props: DocumentUploadProps) {
     const input = e.currentTarget as HTMLInputElement;
     const selected = input.files;
     if (!selected || selected.length === 0) return;
+
+    const maxFilesError = validateMaxFiles(selected.length);
+    if (maxFilesError) {
+      setInternalError(maxFilesError);
+      input.value = "";
+      return;
+    }
 
     setLoading(true);
     setInternalError(null);
@@ -63,7 +79,13 @@ export function createDocumentUploadController(props: DocumentUploadProps) {
   };
 
   const handleRemoveFile = (index: number) => {
+    if (props.minFiles !== undefined && files().length <= props.minFiles) {
+      setInternalError(`You must upload at least ${props.minFiles} files.`);
+      return;
+    }
+
     const updated = files().filter((_, i) => i !== index);
+    setInternalError(null);
     setFiles(updated);
     props.onChange?.(updated);
   };

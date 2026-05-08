@@ -9,64 +9,40 @@ export function GettingStartedPage() {
             Getting Started
           </h1>
           <p class="text-gray-600 dark:text-gray-400">
-            Welcome to Usible — a mobile-first UI component library for SolidJS.
-            Learn how to integrate it into your project and ship faster.
+            Welcome to Usible, a mobile-first UI component library for SolidJS.
+            Use it as a packaged dependency when you want shared updates, or
+            copy the source into a project when you want full ownership.
           </p>
         </div>
 
         <section>
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Why Usible?
+            Choose a Workflow
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Usible was built out of a need for a reliable starter kit that
-            accelerates mobile-first application development. Every component is
-            designed with a mobile-first mindset from the ground up — not as an
-            afterthought.
+            Usible supports two integration styles. The package workflow is best
+            for reusing the library across multiple apps. The legacy source copy
+            workflow is best when a project needs direct control over every
+            component file.
           </p>
-          <p class="text-gray-600 dark:text-gray-400 mb-4">
-            The goal is simple: reduce the time between idea and working product.
-            Instead of rebuilding the same Input, Button, or Autocomplete every
-            project, Usible gives you a solid, consistent foundation so you can
-            focus on what makes your app unique.
-          </p>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900 rounded-xl p-4">
               <h3 class="font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                Mobile First
+                Package Install
               </h3>
               <p class="text-sm text-blue-700 dark:text-blue-300">
-                Every component is built and tested for touch interactions,
-                small viewports, and mobile UX patterns before scaling up to
-                desktop.
+                Build a local tarball, install it in another SolidJS project,
+                and import components from <code>usible</code>.
               </p>
             </div>
             <div class="bg-purple-50 dark:bg-purple-950 border border-purple-100 dark:border-purple-900 rounded-xl p-4">
               <h3 class="font-semibold text-purple-900 dark:text-purple-100 mb-1">
-                Copy-Paste Ownership
+                Legacy Source Copy
               </h3>
               <p class="text-sm text-purple-700 dark:text-purple-300">
-                No npm package lock-in. Copy the components into your project
-                and own them completely — customize freely without constraints.
-              </p>
-            </div>
-            <div class="bg-green-50 dark:bg-green-950 border border-green-100 dark:border-green-900 rounded-xl p-4">
-              <h3 class="font-semibold text-green-900 dark:text-green-100 mb-1">
-                SolidJS Native
-              </h3>
-              <p class="text-sm text-green-700 dark:text-green-300">
-                Built specifically for SolidJS reactivity model — no wrappers,
-                no compatibility layers. Just lean, fast components that feel
-                natural.
-              </p>
-            </div>
-            <div class="bg-amber-50 dark:bg-amber-950 border border-amber-100 dark:border-amber-900 rounded-xl p-4">
-              <h3 class="font-semibold text-amber-900 dark:text-amber-100 mb-1">
-                Starter Kit Ready
-              </h3>
-              <p class="text-sm text-amber-700 dark:text-amber-300">
-                Drop Usible into a new project and immediately have a complete
-                UI foundation — inputs, buttons, modals, navigation, and more.
+                Copy components, utilities, and assets directly into the target
+                app so the project owns and customizes the code.
               </p>
             </div>
           </div>
@@ -74,38 +50,78 @@ export function GettingStartedPage() {
 
         <section>
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Installation
+            Package Workflow
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Usible UI is designed to be copy-pasted directly into your project.
-            This gives you full control over the components and makes
-            customization straightforward.
+            Build the npm tarball from this repository, then install the tarball
+            in the consuming project. This keeps imports clean and lets multiple
+            apps share the same component library build.
           </p>
 
           <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto mb-4">
             <pre>
-              <code>{`# Copy the components folder to your project
-cp -r src/components your-project/src/
+              <code>{`# From the Usible repository
+bun run build:pack
 
-# Copy the assets folder if you need icons
-cp -r src/assets your-project/src/`}</code>
+# From the consuming project
+bun add ./dist-pack/usible-0.0.1.tgz
+# or
+npm install ./dist-pack/usible-0.0.1.tgz`}</code>
+            </pre>
+          </div>
+
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Import the package stylesheet once in the app entry point, then
+            import components, utilities, or icons from <code>usible</code>.
+          </p>
+
+          <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto">
+            <pre>
+              <code>{`import 'usible/style.css';
+import { Button, Input, useTheme } from 'usible';
+
+function App() {
+  const { toggleTheme } = useTheme();
+
+  return (
+    <form>
+      <Input label="Email" placeholder="name@example.com" />
+      <Button variant="filled" color="primary" onClick={toggleTheme}>
+        Save
+      </Button>
+    </form>
+  );
+}`}</code>
             </pre>
           </div>
         </section>
 
         <section>
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            CSS Setup
+            Legacy Source Copy Workflow
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Import the Usible CSS file in your app entry point. This includes
-            Tailwind CSS imports and CSS variables for theming.
+            Copy the source folders into the consuming project when you want to
+            edit the components locally. Include utilities and assets because
+            several components use shared helpers and icons.
           </p>
 
           <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto mb-4">
             <pre>
+              <code>{`# From the Usible repository
+cp -r src/components your-project/src/
+cp -r src/utils your-project/src/
+cp -r src/assets your-project/src/`}</code>
+            </pre>
+          </div>
+
+          <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto">
+            <pre>
               <code>{`// In your main.tsx or index.tsx
-import './components/usible.css';`}</code>
+import './components/usible.css';
+
+// In app code
+import { Button, Input } from './components';`}</code>
             </pre>
           </div>
         </section>
@@ -115,22 +131,40 @@ import './components/usible.css';`}</code>
             CSS Variables
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Customize the theme by overriding CSS variables in your global
-            stylesheet:
+            Customize the theme by importing one complete Usible theme file or
+            by overriding CSS variables in your global stylesheet:
           </p>
+
+          <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto mb-4">
+            <pre>
+              <code>{`// Choose exactly one theme stylesheet.
+import 'usible/style.css';
+// import 'usible/themes/materialize.css';
+// import 'usible/themes/aurora.css';
+// import 'usible/themes/trusible.css';`}</code>
+            </pre>
+          </div>
 
           <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto mb-4">
             <pre>
               <code>{`:root {
   --usible-primary: #3b82f6;
+  --usible-primary-surface: #eff6ff;
   --usible-primary-light: #93c5fd;
   --usible-primary-dark: #1d4ed8;
+  --usible-primary-active: #dbeafe;
 
   --usible-secondary: #8b5cf6;
   --usible-ternary: #06b6d4;
   --usible-success: #22c55e;
   --usible-warning: #f59e0b;
   --usible-error: #ef4444;
+
+  --usible-surface: #ffffff;
+  --usible-surface-muted: #f9fafb;
+  --usible-border: #e5e7eb;
+  --usible-foreground: #111827;
+  --usible-foreground-muted: #6b7280;
 
   --usible-radius: 0.5rem;
   --usible-radius-lg: 1rem;
@@ -141,35 +175,11 @@ import './components/usible.css';`}</code>
 
         <section>
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Usage
+            Consumer Dependencies
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Import and use components directly:
-          </p>
-
-          <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto mb-4">
-            <pre>
-              <code>{`import { Button, Input, Chip } from './components';
-
-function App() {
-  return (
-    <div>
-      <Input placeholder="Enter text" />
-      <Button variant="primary">Submit</Button>
-      <Chip label="Tag" variant="filled" color="primary" />
-    </div>
-  );
-}`}</code>
-            </pre>
-          </div>
-        </section>
-
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Dependencies
-          </h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Make sure you have these dependencies installed in your project:
+            The consuming project should be a SolidJS app with Tailwind CSS v4
+            support. These runtime packages are required by Usible components:
           </p>
 
           <div class="bg-gray-900 rounded-xl p-4 text-white text-sm overflow-x-auto">

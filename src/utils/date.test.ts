@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@rstest/core";
+import { describe, it, expect } from "vitest";
 import {
   daysInMonth,
   getFirstDayOfMonth,
@@ -34,7 +34,9 @@ describe("isSameDate", () => {
     expect(isSameDate(new Date(2024, 0, 15), new Date(2024, 0, 15))).toBe(true);
   });
   it("returns false for different dates", () => {
-    expect(isSameDate(new Date(2024, 0, 15), new Date(2024, 0, 16))).toBe(false);
+    expect(isSameDate(new Date(2024, 0, 15), new Date(2024, 0, 16))).toBe(
+      false,
+    );
   });
   it("returns false if either is null", () => {
     expect(isSameDate(null, new Date(2024, 0, 15))).toBe(false);
@@ -44,13 +46,23 @@ describe("isSameDate", () => {
 
 describe("isDateDisabled", () => {
   it("returns true when date is before minDate", () => {
-    expect(isDateDisabled(new Date(2024, 0, 1), new Date(2024, 0, 5))).toBe(true);
+    expect(isDateDisabled(new Date(2024, 0, 1), new Date(2024, 0, 5))).toBe(
+      true,
+    );
   });
   it("returns true when date is after maxDate", () => {
-    expect(isDateDisabled(new Date(2024, 0, 10), undefined, new Date(2024, 0, 5))).toBe(true);
+    expect(
+      isDateDisabled(new Date(2024, 0, 10), undefined, new Date(2024, 0, 5)),
+    ).toBe(true);
   });
   it("returns false when date is within range", () => {
-    expect(isDateDisabled(new Date(2024, 0, 5), new Date(2024, 0, 1), new Date(2024, 0, 10))).toBe(false);
+    expect(
+      isDateDisabled(
+        new Date(2024, 0, 5),
+        new Date(2024, 0, 1),
+        new Date(2024, 0, 10),
+      ),
+    ).toBe(false);
   });
   it("returns false with no constraints", () => {
     expect(isDateDisabled(new Date(2024, 0, 5))).toBe(false);

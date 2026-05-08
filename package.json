@@ -3,22 +3,47 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "main": "./dist/package.js",
+  "module": "./dist/package.js",
+  "types": "./dist/package.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/package.d.ts",
+      "import": "./dist/package.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./themes/materialize.css": "./dist/themes/materialize.css",
+    "./themes/aurora.css": "./dist/themes/aurora.css",
+    "./themes/trusible.css": "./dist/themes/trusible.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./dist/style.css",
+    "./dist/themes/*.css",
+    "./dist/*.css"
+  ],
   "scripts": {
     "build": "rsbuild build",
+    "build:lib": "rslib build",
+    "build:pack": "bun run build:lib && bun pm pack --destination ./dist-pack",
     "dev": "rsbuild dev --open",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/ && tsc --noEmit",
     "preview": "rsbuild preview",
-    "test": "rstest src/",
-    "test:coverage": "bun run test --coverage",
-    "test:watch": "bun run test --watch"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.4",
     "dompurify": "^3.3.1",
     "motion": "^12.34.0",
     "solid-js": "^1.9.10",
+    "tailwindcss": "^4.1.18",
     "tailwind-merge": "^3.4.1"
   },
   "devDependencies": {
@@ -26,17 +51,20 @@
     "@rsbuild/core": "^1.7.1",
     "@rsbuild/plugin-babel": "^1.0.6",
     "@rsbuild/plugin-solid": "^1.0.6",
-    "@rstest/core": "^0.7.8",
-    "@rstest/coverage-istanbul": "^0.2.1",
+    "@rslib/core": "^0.21.4",
+    "@solidjs/testing-library": "^0.8.10",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
+    "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "happy-dom": "^20.0.11",
     "prettier": "^3.7.3",
-    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0"
+    "typescript-eslint": "^8.48.0",
+    "vite": "^8.0.11",
+    "vite-plugin-solid": "^2.11.12",
+    "vitest": "^4.1.5"
   }
 }

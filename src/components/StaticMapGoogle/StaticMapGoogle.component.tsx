@@ -26,7 +26,7 @@ export function StaticMapGoogle(props: StaticMapGoogleProps) {
       when={!error()}
       fallback={
         <div
-          class={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ${props.class ?? ""}`}
+          class={`flex items-center justify-center bg-surface-muted border border-border ${props.class ?? ""}`}
           style={{ width: "100%", height: "100%", "min-height": "200px" }}>
           <Text variant="body2" color="secondary">
             Map currently not available
@@ -42,7 +42,7 @@ export function StaticMapGoogle(props: StaticMapGoogleProps) {
         />
         <Show when={props.showPin !== false}>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full pointer-events-none pb-1">
-            <MapPinFilledIcon class="w-8 h-8 drop-shadow-md fill-primary text-white" />
+            <MapPinFilledIcon class="w-8 h-8 drop-shadow-md fill-primary text-inverse" />
           </div>
         </Show>
       </div>

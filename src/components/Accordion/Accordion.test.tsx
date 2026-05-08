@@ -1,80 +1,58 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect } from "vitest";
+import { Accordion } from "./Accordion.component";
 
-describe("Accordion Component", () => {
-  it("renders accordion items", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
+const items = [
+  { id: "1", title: "Item 1", content: "Content 1" },
+  { id: "2", title: "Item 2", content: "Content 2" },
+  { id: "3", title: "Disabled", content: "Content 3", disabled: true },
+];
 
-    container.innerHTML = `
-      <div class="flex flex-col divide-y divide-gray-100 border-t border-b border-gray-100">
-        <div class="bg-white">
-          <button class="w-full flex items-center justify-between p-4 text-left" aria-expanded="false">
-            <span class="font-medium">Section 1</span>
-            <svg class="w-5 h-5 text-gray-400">▼</svg>
-          </button>
-        </div>
-        <div class="bg-white">
-          <button class="w-full flex items-center justify-between p-4 text-left" aria-expanded="false">
-            <span class="font-medium">Section 2</span>
-            <svg class="w-5 h-5 text-gray-400">▼</svg>
-          </button>
-        </div>
-      </div>
-    `;
-
-    const buttons = container.querySelectorAll("button");
-    expect(buttons.length).toBe(2);
+describe("Accordion", () => {
+  it("renders item titles", () => {
+    render(() => <Accordion items={items} />);
+    expect(screen.getByText("Item 1")).toBeInTheDocument();
+    expect(screen.getByText("Item 2")).toBeInTheDocument();
+    expect(screen.getByText("Disabled")).toBeInTheDocument();
   });
 
-  it("renders expanded item", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col divide-y divide-gray-100">
-        <div class="bg-white">
-          <button class="w-full flex items-center justify-between p-4 text-left" aria-expanded="true">
-            <span class="font-medium">Expanded Section</span>
-          </button>
-          <div class="overflow-hidden p-4 pt-0 text-gray-600">
-            <p>Expanded content goes here.</p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    const button = container.querySelector("button");
-    const content = container.querySelector(".overflow-hidden p");
-    expect(button?.getAttribute("aria-expanded")).toBe("true");
-    expect(content?.textContent).toBe("Expanded content goes here.");
+  it("headers are collapsed initially (aria-expanded=false)", () => {
+    render(() => <Accordion items={items} />);
+    const buttons = screen.getAllByRole("button");
+    buttons.forEach((button) => {
+      expect(button).toHaveAttribute("aria-expanded", "false");
+    });
   });
 
-  it("renders disabled item", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col divide-y divide-gray-100">
-        <div class="bg-white">
-          <button class="w-full flex items-center justify-between p-4 text-left opacity-50 cursor-not-allowed" disabled aria-expanded="false">
-            <span class="font-medium">Disabled Section</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    const button = container.querySelector("button") as HTMLButtonElement;
-    expect(button?.disabled).toBe(true);
-    expect(button?.className).toContain("opacity-50");
+  it("clicking header expands it (aria-expanded=true)", () => {
+    render(() => <Accordion items={items} />);
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[0]);
+    expect(buttons[0]).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("has proper border styling", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col divide-y divide-gray-100 border-t border-b border-gray-100">
-        <div class="bg-white"><button>Item 1</button></div>
-        <div class="bg-white"><button>Item 2</button></div>
-      </div>
-    `;
+  it("clicking again collapses (aria-expanded=false)", () => {
+    render(() => <Accordion items={items} />);
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[0]);
+    expect(buttons[0]).toHaveAttribute("aria-expanded", "true");
+    fireEvent.click(buttons[0]);
+    expect(buttons[0]).toHaveAttribute("aria-expanded", "false");
+  });
 
-    const accordion = container.querySelector("div");
-    expect(accordion?.className).toContain("divide-y");
-    expect(accordion?.className).toContain("border-t border-b");
+  it("disabled item has disabled button", () => {
+    render(() => <Accordion items={items} />);
+    const buttons = screen.getAllByRole("button");
+    const disabledButton = buttons[2];
+    expect(disabledButton).toBeDisabled();
+  });
+
+  it("allowMultiple allows multiple items open", () => {
+    render(() => <Accordion items={items} allowMultiple />);
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[0]);
+    fireEvent.click(buttons[1]);
+    expect(buttons[0]).toHaveAttribute("aria-expanded", "true");
+    expect(buttons[1]).toHaveAttribute("aria-expanded", "true");
   });
 });

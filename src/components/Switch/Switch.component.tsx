@@ -12,7 +12,8 @@ export function Switch(props: SwitchProps) {
     "id",
     "disabled",
   ]);
-  const id = () => local.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => local.id ?? fallbackId;
 
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -29,8 +30,8 @@ export function Switch(props: SwitchProps) {
           class={twMerge(
             "mr-3 select-none flex-1",
             local.disabled
-              ? "cursor-not-allowed text-gray-400"
-              : "cursor-pointer text-gray-900 dark:text-gray-100",
+              ? "cursor-not-allowed text-foreground-disabled"
+              : "cursor-pointer text-foreground",
           )}>
           <Text variant="body1">{local.label}</Text>
         </label>
@@ -45,9 +46,9 @@ export function Switch(props: SwitchProps) {
           disabled={local.disabled}
           role="switch"
           aria-checked={local.checked}
-          class="peer appearance-none w-full h-full rounded-full bg-gray-200 transition-colors duration-300 checked:bg-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+          class="peer appearance-none w-full h-full rounded-usible-pill bg-surface-subtle transition-colors duration-300 checked:bg-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
         />
-        <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-300 peer-checked:translate-x-5 pointer-events-none" />
+        <span class="absolute left-1 top-1 w-5 h-5 bg-surface rounded-usible-pill shadow-usible-sm transition-transform duration-300 peer-checked:translate-x-5 pointer-events-none" />
       </div>
     </div>
   );

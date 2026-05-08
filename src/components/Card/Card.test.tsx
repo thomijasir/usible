@@ -1,51 +1,53 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Card } from "./Card.component";
 
-describe("Card Component", () => {
-  it("renders with elevated variant by default", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="rounded-2xl overflow-hidden transition-all duration-200 bg-white shadow-sm border border-gray-100">
-        Content
-      </div>
-    `;
-    const card = container.querySelector("div");
-    expect(card?.className).toContain("shadow-sm");
-    expect(card?.className).toContain("rounded-2xl");
-  });
-
-  it("renders with outlined variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="rounded-2xl overflow-hidden bg-transparent border border-gray-200">
-        Content
-      </div>
-    `;
-    const card = container.querySelector("div");
-    expect(card?.className).toContain("border-gray-200");
-    expect(card?.className).not.toContain("shadow-sm");
-  });
-
-  it("renders with filled variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="rounded-2xl overflow-hidden bg-gray-50">
-        Content
-      </div>
-    `;
-    const card = container.querySelector("div");
-    expect(card?.className).toContain("bg-gray-50");
-  });
-
+describe("Card", () => {
   it("renders children", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div><span>Hello</span></div>`;
-    expect(container.querySelector("span")?.textContent).toBe("Hello");
+    render(() => <Card>Card Content</Card>);
+    expect(screen.getByText("Card Content")).toBeInTheDocument();
   });
 
-  it("adds cursor-pointer when onClick provided", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<div class="cursor-pointer active:scale-[0.98]">Content</div>`;
-    const card = container.querySelector("div");
-    expect(card?.className).toContain("cursor-pointer");
+  it("elevated variant (default) has themed shadow class", () => {
+    const { container } = render(() => <Card>Content</Card>);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("shadow-usible-sm");
+  });
+
+  it("outlined variant has border class", () => {
+    const { container } = render(() => <Card variant="outlined">Content</Card>);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("border");
+  });
+
+  it("filled variant has themed surface class", () => {
+    const { container } = render(() => <Card variant="filled">Content</Card>);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("bg-surface-muted");
+  });
+
+  it("calls onClick when clicked", () => {
+    const handleClick = vi.fn();
+    const { container } = render(() => (
+      <Card onClick={handleClick}>Content</Card>
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    fireEvent.click(el);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("applies clickable class when onClick is provided", () => {
+    const handleClick = vi.fn();
+    const { container } = render(() => (
+      <Card onClick={handleClick}>Content</Card>
+    ));
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("cursor-pointer");
+  });
+
+  it("applies custom class", () => {
+    const { container } = render(() => <Card class="my-card">Content</Card>);
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.className).toContain("my-card");
   });
 });

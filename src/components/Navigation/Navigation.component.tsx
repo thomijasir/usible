@@ -204,7 +204,7 @@ export function Navigation(props: NavigationProps) {
                   "z-index": index(),
                   ...initialConfig.initial,
                 }}
-                class="app-navigation bg-white absolute w-full h-full shadow-xl">
+                class="app-navigation bg-surface absolute w-full h-full shadow-usible-lg">
                 {route.component}
               </div>
             );

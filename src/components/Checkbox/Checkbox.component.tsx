@@ -29,7 +29,8 @@ function CheckIcon(props: { class?: string }) {
 }
 
 export function Checkbox(props: CheckboxProps) {
-  const id = () => props.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => props.id ?? fallbackId;
   const size = () => props.size ?? "medium";
   const isError = () => !!props.error;
   const errorId = () => `${id()}-error`;
@@ -56,11 +57,11 @@ export function Checkbox(props: CheckboxProps) {
           aria-invalid={isError() ? "true" : undefined}
           aria-describedby={isError() ? errorId() : undefined}
           class={twMerge(
-            "peer appearance-none rounded border-2 transition-colors duration-200",
+            "peer appearance-none rounded-usible border-2 transition-colors duration-200",
             "checked:bg-primary checked:border-primary",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-            "disabled:bg-gray-100 disabled:border-gray-200",
-            isError() ? "border-error" : "border-gray-300 dark:border-gray-600",
+            "disabled:bg-surface-disabled disabled:border-border",
+            isError() ? "border-error" : "border-border-strong",
             sizeClasses[size()],
             props.class,
           )}
@@ -68,7 +69,7 @@ export function Checkbox(props: CheckboxProps) {
         <div
           class={twMerge(
             "pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-            "text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200 flex items-center justify-center",
+            "text-inverse opacity-0 peer-checked:opacity-100 transition-opacity duration-200 flex items-center justify-center",
             checkmarkSizeClasses[size()],
           )}>
           <CheckIcon />
@@ -81,8 +82,8 @@ export function Checkbox(props: CheckboxProps) {
           class={twMerge(
             "ml-3 select-none",
             props.disabled
-              ? "cursor-not-allowed text-gray-400"
-              : "cursor-pointer text-gray-900 dark:text-gray-100",
+              ? "cursor-not-allowed text-foreground-disabled"
+              : "cursor-pointer text-foreground",
           )}>
           {typeof props.label === "string" ? (
             <Text variant="body2">{props.label}</Text>

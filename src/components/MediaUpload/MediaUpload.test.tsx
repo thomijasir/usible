@@ -1,91 +1,55 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { MediaUpload } from "./MediaUpload.component";
 
-describe("MediaUpload Component", () => {
-  it("renders upload area when empty", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="w-auto">
-        <div class="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer border-gray-300">
-          <svg class="w-10 h-10 text-gray-400 mb-3"></svg>
-          <p class="text-gray-500"><span class="font-semibold">Click to upload</span></p>
-          <p class="text-xs text-gray-500">PNG, JPG, JPEG</p>
-        </div>
-      </div>
-    `;
-    expect(container.querySelector(".border-dashed")).toBeTruthy();
-    expect(container.querySelector(".text-xs")?.textContent).toBe("PNG, JPG, JPEG");
+describe("MediaUpload", () => {
+  it("renders container div", () => {
+    const { container } = render(() => <MediaUpload onChange={vi.fn()} />);
+    expect(container.firstChild).toBeTruthy();
   });
 
-  it("renders label with required asterisk", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <label class="block mb-2 text-sm font-medium">
-          Photo <span class="text-red-500">*</span>
-        </label>
-      </div>
-    `;
-    expect(container.querySelector("label")?.textContent).toContain("Photo");
-    expect(container.querySelector(".text-red-500")).toBeTruthy();
+  it("label shown when provided", () => {
+    render(() => <MediaUpload onChange={vi.fn()} label="Upload Photo" />);
+    expect(screen.getByText("Upload Photo")).toBeTruthy();
   });
 
-  it("renders hidden file input", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<input type="file" class="hidden" accept=".png,.jpg,.jpeg" />`;
-    const input = container.querySelector<HTMLInputElement>("input");
-    expect(input?.type).toBe("file");
-    expect(input?.className).toContain("hidden");
+  it("required shows asterisk", () => {
+    render(() => <MediaUpload onChange={vi.fn()} label="Photo" required />);
+    const asterisk = document.querySelector(".text-error");
+    expect(asterisk).toBeTruthy();
+    expect(asterisk?.textContent).toContain("*");
   });
 
-  it("renders image preview in single mode", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 group">
-        <img src="blob:preview" alt="Preview" class="w-full h-full object-cover" />
-        <button class="absolute top-2 right-2">Remove</button>
-      </div>
-    `;
-    const img = container.querySelector("img");
-    expect(img?.alt).toBe("Preview");
-    expect(container.querySelector("button")).toBeTruthy();
+  it("upload area rendered with Click to upload text", () => {
+    render(() => <MediaUpload onChange={vi.fn()} />);
+    expect(screen.getByText("Click to upload")).toBeTruthy();
   });
 
-  it("renders multi-upload grid", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="grid grid-cols-3 gap-4 mt-4">
-        <div class="relative aspect-square"><img src="blob:1" alt="Preview 0" /></div>
-        <div class="relative aspect-square"><img src="blob:2" alt="Preview 1" /></div>
-        <div class="border-2 border-dashed cursor-pointer flex items-center justify-center">
-          <span>Add more</span>
-        </div>
-      </div>
-    `;
-    const imgs = container.querySelectorAll("img");
-    expect(imgs.length).toBe(2);
-    expect(container.querySelector(".border-dashed")).toBeTruthy();
+  it("hidden file input is present", () => {
+    render(() => <MediaUpload onChange={vi.fn()} />);
+    const input = document.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    expect(input).toBeTruthy();
+    expect(input.className).toContain("hidden");
   });
 
-  it("renders error state", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <div class="border-red-300 bg-red-50 border-2 border-dashed"></div>
-        <p class="text-red-600">File too large</p>
-      </div>
-    `;
-    expect(container.querySelector(".border-red-300")).toBeTruthy();
-    expect(container.querySelector(".text-red-600")?.textContent).toBe("File too large");
+  it("helperText shown when provided", () => {
+    render(() => <MediaUpload onChange={vi.fn()} helperText="Max size 5MB" />);
+    expect(screen.getByText("Max size 5MB")).toBeTruthy();
   });
 
-  it("does not show Add more button when maxFiles reached", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="grid grid-cols-3 gap-4 mt-4">
-        <div class="relative aspect-square"><img alt="Preview 0" /></div>
-        <div class="relative aspect-square"><img alt="Preview 1" /></div>
-      </div>
-    `;
-    expect(container.querySelector(".border-dashed")).toBeNull();
+  it("error shown when error prop is provided", () => {
+    render(() => <MediaUpload onChange={vi.fn()} error="File too large" />);
+    expect(screen.getByText("File too large")).toBeTruthy();
+  });
+
+  it("file input accepts specified extensions", () => {
+    render(() => <MediaUpload onChange={vi.fn()} extension={["png", "jpg"]} />);
+    const input = document.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    expect(input.accept).toContain(".png");
+    expect(input.accept).toContain(".jpg");
   });
 });

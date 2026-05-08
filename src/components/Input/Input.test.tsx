@@ -1,129 +1,80 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Input } from "./Input.component";
 
-describe("Input Component", () => {
-  it("renders with label", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `
-      <div class="flex flex-col w-full">
-        <label for="input-1" class="mb-1.5 text-sm font-medium text-gray-700">Email</label>
-        <div class="relative">
-          <div class="flex items-center w-full rounded-lg border bg-gray-100">
-            <input id="input-1" type="text" placeholder="Enter email" class="w-full bg-transparent py-3 px-3 text-base" />
-          </div>
-        </div>
-      </div>
-    `;
-
-    const input = container.querySelector("input");
-    const label = container.querySelector("label");
-    expect(input).toBeTruthy();
-    expect(label?.textContent).toBe("Email");
+describe("Input", () => {
+  it("renders an input element", () => {
+    render(() => <Input />);
+    expect(screen.getByRole("textbox")).toBeTruthy();
   });
 
-  it("renders with placeholder", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <input type="text" placeholder="Enter your name" class="w-full bg-transparent" />
-    `;
-
-    const input = container.querySelector("input");
-    expect(input?.placeholder).toBe("Enter your name");
+  it("renders label", () => {
+    render(() => <Input label="Email" />);
+    expect(screen.getByText("Email")).toBeTruthy();
   });
 
-  it("renders with value", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <input type="text" value="John Doe" class="w-full bg-transparent" />
-    `;
-
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input?.value).toBe("John Doe");
+  it("renders placeholder", () => {
+    render(() => <Input placeholder="Enter value" />);
+    expect(screen.getByPlaceholderText("Enter value")).toBeTruthy();
   });
 
-  it("renders as disabled", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex items-center w-full rounded-lg border opacity-50 cursor-not-allowed bg-gray-100">
-        <input type="text" disabled class="w-full bg-transparent disabled:cursor-not-allowed" />
-      </div>
-    `;
-
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input?.disabled).toBe(true);
+  it("displays value", () => {
+    render(() => <Input value="hello" />);
+    expect(screen.getByRole("textbox")).toHaveValue("hello");
   });
 
-  it("renders with error state", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex items-center w-full rounded-lg border border-error bg-red-50 text-error">
-        <input type="text" class="w-full bg-transparent" />
-      </div>
-      <div class="mt-1 text-xs text-error">This field is required</div>
-    `;
-
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("border-error");
+  it("calls onInput with new value", () => {
+    const onInput = vi.fn();
+    render(() => <Input onInput={onInput} />);
+    fireEvent.input(screen.getByRole("textbox"), { target: { value: "test" } });
+    expect(onInput).toHaveBeenCalledWith("test");
   });
 
-  it("renders with helper text", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col">
-        <input type="text" class="w-full" />
-        <div class="mt-1 text-xs text-gray-500">Enter your email address</div>
-      </div>
-    `;
-
-    const helper = container.querySelector(".text-xs");
-    expect(helper?.textContent).toBe("Enter your email address");
+  it("calls onChange", () => {
+    const onChange = vi.fn();
+    render(() => <Input onChange={onChange} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "abc" } });
+    expect(onChange).toHaveBeenCalledWith("abc");
   });
 
-  it("renders with start adornment", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex items-center w-full rounded-lg border bg-gray-100">
-        <div class="pl-3 text-gray-500">@</div>
-        <input type="text" class="w-full bg-transparent pl-2" />
-      </div>
-    `;
-
-    const adornment = container.querySelector(".pl-3");
-    expect(adornment?.textContent).toBe("@");
+  it("shows error string", () => {
+    render(() => <Input error="Required" />);
+    expect(screen.getByText("Required")).toBeTruthy();
   });
 
-  it("renders with end adornment", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex items-center w-full rounded-lg border bg-gray-100">
-        <input type="text" class="w-full bg-transparent pr-2" />
-        <div class="pr-3 text-gray-500">.com</div>
-      </div>
-    `;
-
-    const adornment = container.querySelector(".pr-3");
-    expect(adornment?.textContent).toBe(".com");
+  it("marks input as invalid on error", () => {
+    render(() => <Input error="Err" />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("renders with small size", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <input type="text" class="w-full bg-transparent py-2 px-3 text-sm" />
-    `;
-
-    const input = container.querySelector("input");
-    expect(input?.className).toContain("py-2 px-3");
-    expect(input?.className).toContain("text-sm");
+  it("shows helper text", () => {
+    render(() => <Input helperText="Helper" />);
+    expect(screen.getByText("Helper")).toBeTruthy();
   });
 
-  it("renders password input type", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <input type="password" class="w-full bg-transparent" />
-    `;
+  it("is disabled when disabled=true", () => {
+    render(() => <Input disabled />);
+    expect(screen.getByRole("textbox")).toBeDisabled();
+  });
 
-    const input = container.querySelector("input");
-    expect(input?.type).toBe("password");
+  it("renders type=password", () => {
+    const { container } = render(() => <Input type="password" />);
+    expect(container.querySelector('input[type="password"]')).toBeTruthy();
+  });
+
+  it("applies uppercase text case", () => {
+    const onInput = vi.fn();
+    render(() => <Input textCase="uppercase" onInput={onInput} />);
+    fireEvent.input(screen.getByRole("textbox"), {
+      target: { value: "hello" },
+    });
+    expect(onInput).toHaveBeenCalledWith("HELLO");
+  });
+
+  it("calls onBlur", () => {
+    const onBlur = vi.fn();
+    render(() => <Input onBlur={onBlur} />);
+    fireEvent.blur(screen.getByRole("textbox"));
+    expect(onBlur).toHaveBeenCalledOnce();
   });
 });

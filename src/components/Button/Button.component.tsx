@@ -8,38 +8,37 @@ import type {
 import { Loader } from "../Loader";
 
 const baseClasses =
-  "select-none inline-flex items-center justify-center rounded-md font-semibold focus:outline-none transition-colors duration-200 relative overflow-hidden";
+  "select-none inline-flex items-center justify-center rounded-usible font-semibold focus:outline-none transition-colors duration-200 relative overflow-hidden";
 
 const variantClasses: Record<ButtonVariant, Record<ButtonColor, string>> = {
   filled: {
     primary:
-      "bg-primary text-white hover:bg-primary-dark active:bg-primary-dark",
+      "bg-primary text-inverse hover:bg-primary-dark active:bg-primary-dark",
     secondary:
-      "bg-secondary text-white hover:bg-secondary-dark active:bg-secondary-dark",
+      "bg-secondary text-inverse hover:bg-secondary-dark active:bg-secondary-dark",
     ternary:
-      "bg-ternary text-white hover:bg-ternary-dark active:bg-ternary-dark",
+      "bg-ternary text-inverse hover:bg-ternary-dark active:bg-ternary-dark",
     success:
-      "bg-success text-white hover:bg-success-dark active:bg-success-dark",
+      "bg-success text-inverse hover:bg-success-dark active:bg-success-dark",
     warning:
-      "bg-warning text-white hover:bg-warning-dark active:bg-warning-dark",
-    error:
-      "bg-error text-white hover:bg-error-dark active:bg-error-dark",
+      "bg-warning text-inverse hover:bg-warning-dark active:bg-warning-dark",
+    error: "bg-error text-inverse hover:bg-error-dark active:bg-error-dark",
     transparent:
       "bg-transparent text-current hover:opacity-80 active:opacity-70",
   },
   outlined: {
     primary:
-      "border border-primary text-primary hover:bg-primary hover:text-white active:bg-primary active:text-white",
+      "border border-primary text-primary hover:bg-primary hover:text-inverse active:bg-primary active:text-inverse",
     secondary:
-      "border border-secondary text-secondary hover:bg-secondary hover:text-white active:bg-secondary active:text-white",
+      "border border-secondary text-secondary hover:bg-secondary hover:text-inverse active:bg-secondary active:text-inverse",
     ternary:
-      "border border-ternary text-ternary hover:bg-ternary hover:text-white active:bg-ternary active:text-white",
+      "border border-ternary text-ternary hover:bg-ternary hover:text-inverse active:bg-ternary active:text-inverse",
     success:
-      "border border-success text-success hover:bg-success hover:text-white active:bg-success active:text-white",
+      "border border-success text-success hover:bg-success hover:text-inverse active:bg-success active:text-inverse",
     warning:
-      "border border-warning text-warning hover:bg-warning hover:text-white active:bg-warning active:text-white",
+      "border border-warning text-warning hover:bg-warning hover:text-inverse active:bg-warning active:text-inverse",
     error:
-      "border border-error text-error hover:bg-error hover:text-white active:bg-error active:text-white",
+      "border border-error text-error hover:bg-error hover:text-inverse active:bg-error active:text-inverse",
     transparent:
       "border border-current text-current hover:opacity-80 active:opacity-70",
   },
@@ -53,30 +52,29 @@ const variantClasses: Record<ButtonVariant, Record<ButtonColor, string>> = {
     transparent: "text-current hover:opacity-80",
   },
   icon: {
-    primary: "text-primary hover:bg-primary-light rounded-full",
-    secondary:
-      "text-secondary hover:bg-secondary-light rounded-full",
-    ternary: "text-ternary hover:bg-ternary-light rounded-full",
-    success: "text-success hover:bg-success-light rounded-full",
-    warning: "text-warning hover:bg-warning-light rounded-full",
-    error: "text-error hover:bg-error-light rounded-full",
-    transparent: "text-current hover:opacity-80 rounded-full",
+    primary: "text-primary hover:bg-primary-50 rounded-usible-pill",
+    secondary: "text-secondary hover:bg-secondary-50 rounded-usible-pill",
+    ternary: "text-ternary hover:bg-ternary-50 rounded-usible-pill",
+    success: "text-success hover:bg-success-50 rounded-usible-pill",
+    warning: "text-warning hover:bg-warning-50 rounded-usible-pill",
+    error: "text-error hover:bg-error-50 rounded-usible-pill",
+    transparent: "text-current hover:opacity-80 rounded-usible-pill",
   },
   iconOutline: {
     primary:
-      "border border-primary text-primary hover:bg-primary hover:text-white active:bg-primary active:text-white rounded-full",
+      "border border-primary text-primary hover:bg-primary hover:text-inverse active:bg-primary active:text-inverse rounded-usible-pill",
     secondary:
-      "border border-secondary text-secondary hover:bg-secondary hover:text-white active:bg-secondary active:text-white rounded-full",
+      "border border-secondary text-secondary hover:bg-secondary hover:text-inverse active:bg-secondary active:text-inverse rounded-usible-pill",
     ternary:
-      "border border-ternary text-ternary hover:bg-ternary hover:text-white active:bg-ternary active:text-white rounded-full",
+      "border border-ternary text-ternary hover:bg-ternary hover:text-inverse active:bg-ternary active:text-inverse rounded-usible-pill",
     success:
-      "border border-success text-success hover:bg-success hover:text-white active:bg-success active:text-white rounded-full",
+      "border border-success text-success hover:bg-success hover:text-inverse active:bg-success active:text-inverse rounded-usible-pill",
     warning:
-      "border border-warning text-warning hover:bg-warning hover:text-white active:bg-warning active:text-white rounded-full",
+      "border border-warning text-warning hover:bg-warning hover:text-inverse active:bg-warning active:text-inverse rounded-usible-pill",
     error:
-      "border border-error text-error hover:bg-error hover:text-white active:bg-error active:text-white rounded-full",
+      "border border-error text-error hover:bg-error hover:text-inverse active:bg-error active:text-inverse rounded-usible-pill",
     transparent:
-      "border border-current text-current hover:opacity-80 active:opacity-70 rounded-full",
+      "border border-current text-current hover:opacity-80 active:opacity-70 rounded-usible-pill",
   },
 };
 

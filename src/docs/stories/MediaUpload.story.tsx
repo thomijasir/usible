@@ -42,13 +42,21 @@ export const MediaUploadStory: Component = () => {
       type: "boolean",
       description: "Show a file size badge on the preview",
     },
-    { name: "required", type: "boolean", description: "Mark the field as required" },
+    {
+      name: "required",
+      type: "boolean",
+      description: "Mark the field as required",
+    },
     {
       name: "error",
       type: "string | boolean",
       description: "Error state or message",
     },
-    { name: "helperText", type: "string", description: "Helper text below the upload area" },
+    {
+      name: "helperText",
+      type: "string",
+      description: "Helper text below the upload area",
+    },
     {
       name: "fullWidth",
       type: "boolean",
@@ -128,7 +136,10 @@ export const MediaUploadStory: Component = () => {
 />`,
       render: (
         <div class="max-w-sm">
-          <MediaUpload label="Profile Photo" error="Image must be less than 2MB" />
+          <MediaUpload
+            label="Profile Photo"
+            error="Image must be less than 2MB"
+          />
         </div>
       ),
     },
@@ -181,13 +192,15 @@ export const MediaUploadStory: Component = () => {
           MediaUpload Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          An image upload component with live preview, single and multi-file modes, and optional
-          file size display.
+          An image upload component with live preview, single and multi-file
+          modes, and optional file size display.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

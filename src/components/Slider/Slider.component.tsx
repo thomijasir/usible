@@ -23,24 +23,25 @@ const colorClasses: Record<
     ring: "focus:ring-ternary",
   },
   success: {
-    accent: "accent-green-500",
-    text: "text-green-500",
-    ring: "focus:ring-green-500",
+    accent: "accent-success",
+    text: "text-success",
+    ring: "focus:ring-success",
   },
   warning: {
-    accent: "accent-yellow-500",
-    text: "text-yellow-500",
-    ring: "focus:ring-yellow-500",
+    accent: "accent-warning",
+    text: "text-warning",
+    ring: "focus:ring-warning",
   },
   error: {
-    accent: "accent-red-500",
-    text: "text-red-500",
-    ring: "focus:ring-red-500",
+    accent: "accent-error",
+    text: "text-error",
+    ring: "focus:ring-error",
   },
 };
 
 export function Slider(props: SliderProps) {
-  const id = () => props.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => props.id ?? fallbackId;
   const color = () => props.color ?? "primary";
   const colorClass = () => colorClasses[color()];
 
@@ -60,7 +61,7 @@ export function Slider(props: SliderProps) {
               for={id()}
               class={twMerge(
                 "font-medium",
-                props.disabled ? "text-slate-400" : "text-slate-700",
+                props.disabled ? "text-foreground-disabled" : "text-foreground",
               )}>
               <Text variant="body2">{props.label}</Text>
             </label>
@@ -70,7 +71,7 @@ export function Slider(props: SliderProps) {
               variant="caption"
               class={twMerge(
                 "font-semibold transition-colors",
-                props.disabled ? "text-slate-400" : colorClass().text,
+                props.disabled ? "text-foreground-disabled" : colorClass().text,
               )}>
               {props.value}
             </Text>
@@ -92,7 +93,7 @@ export function Slider(props: SliderProps) {
           aria-valuenow={props.value}
           aria-valuetext={props.showValue ? String(props.value) : undefined}
           class={twMerge(
-            "w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer",
+            "w-full h-2 bg-surface-subtle rounded-usible appearance-none cursor-pointer",
             "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-30",
             props.disabled
               ? "opacity-50 cursor-not-allowed pointer-events-none"

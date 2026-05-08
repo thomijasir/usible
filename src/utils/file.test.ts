@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@rstest/core";
+import { describe, it, expect } from "vitest";
 import { formatFileSize, validateFileExtension } from "./file";
 
 describe("formatFileSize", () => {
@@ -22,7 +22,9 @@ describe("validateFileExtension", () => {
     expect(validateFileExtension(file, ["pdf", "doc"])).toBe(true);
   });
   it("returns false for invalid extension", () => {
-    const file = new File([""], "image.exe", { type: "application/octet-stream" });
+    const file = new File([""], "image.exe", {
+      type: "application/octet-stream",
+    });
     expect(validateFileExtension(file, ["pdf", "doc"])).toBe(false);
   });
   it("is case insensitive", () => {

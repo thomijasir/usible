@@ -69,7 +69,9 @@ export const ButtonStory: Component = () => {
       render: (
         <div class="flex flex-wrap gap-2">
           <Button variant="text">Primary</Button>
-          <Button variant="text" color="secondary">Secondary</Button>
+          <Button variant="text" color="secondary">
+            Secondary
+          </Button>
         </div>
       ),
     },
@@ -80,7 +82,9 @@ export const ButtonStory: Component = () => {
       render: (
         <div class="flex flex-wrap gap-2">
           <Button variant="icon">★</Button>
-          <Button variant="icon" color="secondary">★</Button>
+          <Button variant="icon" color="secondary">
+            ★
+          </Button>
         </div>
       ),
     },
@@ -91,7 +95,9 @@ export const ButtonStory: Component = () => {
       render: (
         <div class="flex flex-wrap gap-2">
           <Button variant="iconOutline">★</Button>
-          <Button variant="iconOutline" color="secondary">★</Button>
+          <Button variant="iconOutline" color="secondary">
+            ★
+          </Button>
         </div>
       ),
     },

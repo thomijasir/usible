@@ -4,7 +4,7 @@ Coding agent instructions for the Usible component library.
 
 ## Project Overview
 
-Usible is a Solid.js UI component library built with Tailwind CSS. The project uses Rsbuild for building and Rstest for testing.
+Usible is a Solid.js UI component library built with Tailwind CSS. The project uses Rsbuild for building and Vitest for testing.
 
 ## Build/Lint/Test Commands
 
@@ -26,7 +26,7 @@ bun test:watch       # Run tests in watch mode
 bun test:coverage    # Run tests with coverage report
 
 # Run a single test file
-bunx rstest src/components/Button/Button.test.tsx
+bun run test -- src/components/Button/Button.test.tsx
 bun test -- src/components/Button/Button.test.tsx
 ```
 
@@ -143,7 +143,7 @@ aria-describedby={isError() ? errorId() : undefined}
 ### Testing
 
 ```typescript
-import { describe, it, expect } from "@rstest/core";
+import { describe, it, expect } from "vitest";
 
 describe("Button Component", () => {
   it("renders with default props", () => {

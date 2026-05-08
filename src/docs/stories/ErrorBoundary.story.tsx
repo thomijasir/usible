@@ -3,7 +3,9 @@ import { ComponentPreview, PropsTable } from "../components";
 import { For, type Component } from "solid-js";
 
 const BrokenComponent: Component = () => {
-  throw new Error("TypeError: Cannot read properties of undefined (reading 'map')");
+  throw new Error(
+    "TypeError: Cannot read properties of undefined (reading 'map')",
+  );
 };
 
 export const ErrorBoundaryStory: Component = () => {
@@ -51,13 +53,15 @@ export const ErrorBoundaryStory: Component = () => {
           ErrorBoundary Component Guidelines
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          Wraps a component tree and catches runtime errors, displaying a full-screen fallback UI
-          with the error message and a reload button.
+          Wraps a component tree and catches runtime errors, displaying a
+          full-screen fallback UI with the error message and a reload button.
         </p>
       </div>
 
       <section>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Examples:</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          Examples:
+        </h2>
         <For each={example}>
           {(item) => (
             <ComponentPreview title={item.title} code={item.code}>

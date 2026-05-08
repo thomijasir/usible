@@ -1,53 +1,68 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen } from "@solidjs/testing-library";
+import { describe, it, expect } from "vitest";
+import { Text } from "./Text.component";
 
-describe("Text Component", () => {
-  it("renders with default variant and color", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    container.innerHTML = `<p class="text-base text-gray-900">Hello World</p>`;
-
-    const textElement = container.querySelector("p");
-    expect(textElement?.textContent).toBe("Hello World");
-    expect(textElement?.className).toContain("text-base");
-    expect(textElement?.className).toContain("text-gray-900");
+describe("Text", () => {
+  it("renders body1 (p) by default", () => {
+    render(() => <Text>Hello</Text>);
+    const el = screen.getByText("Hello");
+    expect(el.tagName).toBe("P");
+    expect(el.className).toContain("text-base");
+    expect(el.className).toContain("text-foreground");
   });
 
-  it("renders with h1 variant", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<h1 class="text-5xl font-bold">Heading 1</h1>`;
-
-    const textElement = container.querySelector("h1");
-    expect(textElement?.textContent).toBe("Heading 1");
-    expect(textElement?.className).toContain("text-5xl");
-    expect(textElement?.className).toContain("font-bold");
+  it("renders h1 variant", () => {
+    render(() => <Text variant="h1">Heading</Text>);
+    const el = screen.getByText("Heading");
+    expect(el.tagName).toBe("H1");
+    expect(el.className).toContain("text-5xl");
+    expect(el.className).toContain("font-bold");
   });
 
-  it("renders with primary color", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<p class="text-base text-primary">Primary Text</p>`;
-
-    const textElement = container.querySelector("p");
-    expect(textElement?.className).toContain("text-primary");
+  it("renders h6 variant", () => {
+    render(() => <Text variant="h6">Sub</Text>);
+    const el = screen.getByText("Sub");
+    expect(el.tagName).toBe("H6");
+    expect(el.className).toContain("text-lg");
   });
 
-  it("renders with custom class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<p class="text-base text-gray-900 custom-class">Custom Text</p>`;
-
-    const textElement = container.querySelector("p");
-    expect(textElement?.className).toContain("custom-class");
+  it("renders caption as span", () => {
+    render(() => <Text variant="caption">Cap</Text>);
+    const el = screen.getByText("Cap");
+    expect(el.tagName).toBe("SPAN");
+    expect(el.className).toContain("text-xs");
   });
 
-  it("renders with combined variant, color, and class", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `<h3 class="text-3xl font-bold text-secondary extra-class">Combined Text</h3>`;
+  it("applies primary color", () => {
+    render(() => <Text color="primary">Primary</Text>);
+    expect(screen.getByText("Primary").className).toContain("text-primary");
+  });
 
-    const textElement = container.querySelector("h3");
-    expect(textElement?.textContent).toBe("Combined Text");
-    expect(textElement?.className).toContain("text-3xl");
-    expect(textElement?.className).toContain("font-bold");
-    expect(textElement?.className).toContain("text-secondary");
-    expect(textElement?.className).toContain("extra-class");
+  it("applies error color", () => {
+    render(() => <Text color="error">Error</Text>);
+    expect(screen.getByText("Error").className).toContain("text-error");
+  });
+
+  it("applies custom class", () => {
+    render(() => <Text class="custom-cls">Custom</Text>);
+    expect(screen.getByText("Custom").className).toContain("custom-cls");
+  });
+
+  it("lets custom text color classes override the default color", () => {
+    render(() => (
+      <Text class="text-blue-600 dark:text-blue-400">Custom color</Text>
+    ));
+    const className = screen.getByText("Custom color").className;
+
+    expect(className).toContain("text-blue-600");
+    expect(className).toContain("dark:text-blue-400");
+    expect(className).not.toContain("text-foreground");
+  });
+
+  it("renders subtitle1 as h6", () => {
+    render(() => <Text variant="subtitle1">Sub1</Text>);
+    expect(screen.getByText("Sub1").tagName).toBe("H6");
+    expect(screen.getByText("Sub1").className).toContain("text-base");
+    expect(screen.getByText("Sub1").className).toContain("font-medium");
   });
 });

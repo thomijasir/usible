@@ -10,7 +10,8 @@ const sizeClasses: Record<TextAreaSize, string> = {
 };
 
 export function TextArea(props: TextAreaProps) {
-  const id = () => props.id ?? createUniqueId();
+  const fallbackId = createUniqueId();
+  const id = () => props.id ?? fallbackId;
   const size = () => props.size ?? "medium";
   const isError = () => !!props.error;
 
@@ -29,7 +30,7 @@ export function TextArea(props: TextAreaProps) {
         <label
           for={id()}
           class={twMerge(
-            "mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-200",
+            "mb-1.5 text-sm font-medium text-foreground",
             props.disabled ? "opacity-50" : "",
           )}>
           {props.label}
@@ -39,12 +40,12 @@ export function TextArea(props: TextAreaProps) {
       <div class="relative">
         <div
           class={twMerge(
-            "flex items-start w-full rounded-lg border bg-gray-100 dark:bg-gray-800 transition-colors duration-200",
+            "flex items-start w-full rounded-usible border bg-surface-muted transition-colors duration-200",
             isError()
-              ? "border-error bg-red-50 dark:bg-red-900/10 text-error focus-within:border-error"
-              : "border-transparent focus-within:bg-white dark:focus-within:bg-gray-900 focus-within:border-primary-light",
+              ? "border-error bg-error-50 text-error focus-within:border-error"
+              : "border-transparent focus-within:bg-surface focus-within:border-primary-light",
             props.disabled
-              ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-900"
+              ? "opacity-50 cursor-not-allowed bg-surface-disabled"
               : "",
           )}>
           <textarea
@@ -55,7 +56,7 @@ export function TextArea(props: TextAreaProps) {
             rows={props.rows ?? 4}
             placeholder={props.placeholder}
             class={twMerge(
-              "w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed resize-none",
+              "w-full bg-transparent text-foreground placeholder-placeholder focus:outline-none disabled:cursor-not-allowed resize-none",
               sizeClasses[size()],
               props.class,
             )}

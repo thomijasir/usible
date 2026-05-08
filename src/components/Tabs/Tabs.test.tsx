@@ -1,78 +1,117 @@
-import { describe, it, expect } from "@rstest/core";
+import { render, screen, fireEvent } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import { Tabs } from "./Tabs.component";
 
-describe("Tabs Component", () => {
-  it("renders tab buttons", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col w-full">
-        <div class="relative flex flex-row border-b border-gray-200">
-          <button class="px-4 py-3 font-medium text-sm text-primary">Tab 1</button>
-          <button class="px-4 py-3 font-medium text-sm text-gray-600">Tab 2</button>
-        </div>
-        <div class="mt-4">Content 1</div>
-      </div>
-    `;
-    const buttons = container.querySelectorAll("button");
-    expect(buttons.length).toBe(2);
+const baseTabs = [
+  { value: "tab1", label: "Tab 1", content: <div>Content 1</div> },
+  { value: "tab2", label: "Tab 2", content: <div>Content 2</div> },
+  { value: "tab3", label: "Tab 3", content: <div>Content 3</div> },
+];
+
+describe("Tabs", () => {
+  it("renders all tab labels", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} />);
+    expect(screen.getByText("Tab 1")).toBeTruthy();
+    expect(screen.getByText("Tab 2")).toBeTruthy();
+    expect(screen.getByText("Tab 3")).toBeTruthy();
   });
 
-  it("marks active tab with text-primary", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <button class="text-primary font-medium" data-active="true">Active Tab</button>
-        <button class="text-gray-600 font-medium">Inactive Tab</button>
-      </div>
-    `;
-    const activeBtn = container.querySelector("[data-active='true']");
-    expect(activeBtn?.className).toContain("text-primary");
+  it("shows first tab content by default", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} />);
+    expect(screen.getByText("Content 1")).toBeTruthy();
   });
 
-  it("renders disabled tab", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div>
-        <button class="opacity-40 cursor-not-allowed" disabled>Disabled</button>
-      </div>
-    `;
-    const btn = container.querySelector("button");
-    expect(btn?.disabled).toBe(true);
-    expect(btn?.className).toContain("opacity-40");
+  it("clicking second tab calls onChange with its value", () => {
+    const onChange = vi.fn();
+    render(() => <Tabs tabs={baseTabs} onChange={onChange} />);
+    fireEvent.click(screen.getByText("Tab 2"));
+    expect(onChange).toHaveBeenCalledWith("tab2");
   });
 
-  it("renders filled variant with bg-gray-100", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="bg-gray-100 rounded-lg p-1">
-        <button class="rounded-md">Tab</button>
-      </div>
-    `;
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("bg-gray-100");
+  it("disabled tab button has disabled attribute", () => {
+    const tabs = [
+      { value: "tab1", label: "Tab 1", content: <div>Content 1</div> },
+      {
+        value: "tab2",
+        label: "Tab 2",
+        content: <div>Content 2</div>,
+        disabled: true,
+      },
+    ];
+    render(() => <Tabs tabs={tabs} onChange={vi.fn()} />);
+    const buttons = screen.getAllByRole("button");
+    const disabledBtn = buttons.find((b) => b.textContent?.includes("Tab 2"));
+    expect(disabledBtn).toBeDisabled();
   });
 
-  it("renders vertical orientation as flex-col", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="relative flex flex-col">
-        <button>Tab 1</button>
-        <button>Tab 2</button>
-      </div>
-    `;
-    const wrapper = container.querySelector("div");
-    expect(wrapper?.className).toContain("flex-col");
+  it("controlled value prop shows correct tab content", () => {
+    render(() => <Tabs tabs={baseTabs} value="tab2" onChange={vi.fn()} />);
+    expect(screen.getByText("Content 2")).toBeTruthy();
   });
 
-  it("renders tab content area", () => {
-    const container = document.createElement("div");
-    container.innerHTML = `
-      <div class="flex flex-col w-full">
-        <div class="relative flex border-b border-gray-200">
-          <button>Tab 1</button>
-        </div>
-        <div class="mt-4"><p>Tab content here</p></div>
-      </div>
-    `;
-    expect(container.querySelector("p")?.textContent).toBe("Tab content here");
+  it("clicking a tab shows new content when uncontrolled", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} />);
+    fireEvent.click(screen.getByText("Tab 3"));
+    expect(screen.getByText("Content 3")).toBeTruthy();
+  });
+
+  it("disabled tab cannot be clicked to change content", () => {
+    const onChange = vi.fn();
+    const tabs = [
+      { value: "tab1", label: "Tab 1", content: <div>Content 1</div> },
+      {
+        value: "tab2",
+        label: "Tab 2",
+        content: <div>Content 2</div>,
+        disabled: true,
+      },
+    ];
+    render(() => <Tabs tabs={tabs} onChange={onChange} />);
+    const buttons = screen.getAllByRole("button");
+    const disabledBtn = buttons.find((b) => b.textContent?.includes("Tab 2"))!;
+    fireEvent.click(disabledBtn);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("renders with vertical orientation", () => {
+    render(() => (
+      <Tabs tabs={baseTabs} onChange={vi.fn()} orientation="vertical" />
+    ));
+    expect(screen.getByText("Tab 1")).toBeTruthy();
+  });
+
+  it("renders with filled variant", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} variant="filled" />);
+    expect(screen.getByText("Tab 1")).toBeTruthy();
+  });
+
+  it("renders with block variant", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} variant="block" />);
+    expect(screen.getByText("Tab 1")).toBeTruthy();
+  });
+
+  it("renders with centered prop", () => {
+    render(() => <Tabs tabs={baseTabs} onChange={vi.fn()} centered />);
+    expect(screen.getByText("Tab 1")).toBeTruthy();
+  });
+
+  it("renders with icons", () => {
+    const tabs = [
+      {
+        value: "tab1",
+        label: "Tab 1",
+        icon: <span>Icon1</span>,
+        content: <div>Content 1</div>,
+      },
+      {
+        value: "tab2",
+        label: "Tab 2",
+        icon: <span>Icon2</span>,
+        content: <div>Content 2</div>,
+      },
+    ];
+    render(() => <Tabs tabs={tabs} onChange={vi.fn()} />);
+    expect(screen.getByText("Icon1")).toBeTruthy();
+    expect(screen.getByText("Icon2")).toBeTruthy();
   });
 });

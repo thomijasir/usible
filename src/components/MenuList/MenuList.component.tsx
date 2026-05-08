@@ -36,22 +36,24 @@ export function MenuItem(props: MenuItemProps) {
       role="menuitem"
       tabIndex={0}
       class={twMerge(
-        "flex items-center p-4 bg-white active:bg-gray-50 cursor-pointer transition-colors duration-200 focus:bg-gray-50 focus:outline-none",
+        "flex items-center p-4 bg-surface active:bg-surface-hover cursor-pointer transition-colors duration-200 focus:bg-surface-hover focus:outline-none",
         props.class,
       )}>
-      {props.leftIcon && <div class="mr-4 text-gray-500">{props.leftIcon}</div>}
+      {props.leftIcon && (
+        <div class="mr-4 text-foreground-muted">{props.leftIcon}</div>
+      )}
       <div class="flex-1 min-w-0">
-        <div class="text-base font-medium text-gray-900 truncate">
+        <div class="text-base font-medium text-foreground truncate">
           {props.label}
         </div>
         {props.description && (
-          <div class="text-sm text-gray-500 mt-0.5 truncate">
+          <div class="text-sm text-foreground-muted mt-0.5 truncate">
             {props.description}
           </div>
         )}
       </div>
       {(props.rightIcon || showChevron()) && (
-        <div class="ml-4 text-gray-400 shrink-0">
+        <div class="ml-4 text-foreground-subtle shrink-0">
           {props.rightIcon ? (
             props.rightIcon
           ) : (
@@ -68,13 +70,13 @@ export function MenuList(props: MenuListProps) {
 
   const containerClasses = () =>
     variant() === "rounded"
-      ? "rounded-2xl overflow-hidden shadow-sm border border-gray-100 mx-4"
-      : "border-y border-gray-100 w-full";
+      ? "rounded-usible-lg overflow-hidden shadow-usible-sm border border-border-muted mx-4"
+      : "border-y border-border-muted w-full";
 
   const titleClasses = () =>
     variant() === "rounded"
-      ? "px-4 pb-2 mx-4 text-sm font-semibold text-gray-500 uppercase tracking-wider"
-      : "px-4 pb-2 text-sm font-semibold text-gray-500 uppercase tracking-wider";
+      ? "px-4 pb-2 mx-4 text-sm font-semibold text-foreground-muted uppercase tracking-wider"
+      : "px-4 pb-2 text-sm font-semibold text-foreground-muted uppercase tracking-wider";
 
   return (
     <div class={twMerge("w-full", props.class)}>
@@ -82,7 +84,7 @@ export function MenuList(props: MenuListProps) {
       <div
         role="menu"
         class={twMerge(
-          "bg-white divide-y divide-gray-100",
+          "bg-surface divide-y divide-border-muted",
           containerClasses(),
         )}>
         {props.children}

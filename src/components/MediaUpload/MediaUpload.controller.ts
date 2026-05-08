@@ -15,6 +15,15 @@ export function createMediaUploadController(props: MediaUploadProps) {
     if (props.value) setFiles(props.value);
   });
 
+  const validateMaxFiles = (selectedCount: number): string | null => {
+    if (mode() === "multi" && props.maxFiles !== undefined) {
+      if (files().length + selectedCount > props.maxFiles) {
+        return `You can only upload a maximum of ${props.maxFiles} files.`;
+      }
+    }
+    return null;
+  };
+
   const validateFile = (file: File): string | null => {
     if (!validateFileExtension(file, extension())) {
       return `Invalid file extension. Allowed: ${extension().join(", ")}`;
@@ -30,12 +39,11 @@ export function createMediaUploadController(props: MediaUploadProps) {
     const selected = input.files;
     if (!selected || selected.length === 0) return;
 
-    if (mode() === "multi" && props.maxFiles !== undefined) {
-      if (files().length + selected.length > props.maxFiles) {
-        setInternalError(`You can only upload a maximum of ${props.maxFiles} files.`);
-        input.value = "";
-        return;
-      }
+    const maxFilesError = validateMaxFiles(selected.length);
+    if (maxFilesError) {
+      setInternalError(maxFilesError);
+      input.value = "";
+      return;
     }
 
     setLoading(true);
@@ -71,7 +79,13 @@ export function createMediaUploadController(props: MediaUploadProps) {
   };
 
   const handleRemoveFile = (index: number) => {
+    if (props.minFiles !== undefined && files().length <= props.minFiles) {
+      setInternalError(`You must upload at least ${props.minFiles} files.`);
+      return;
+    }
+
     const updated = files().filter((_, i) => i !== index);
+    setInternalError(null);
     setFiles(updated);
     props.onChange?.(updated);
   };
